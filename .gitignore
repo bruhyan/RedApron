@@ -1,2 +1,32 @@
+# Compiled class file
+*.class
+
+
+# Log file
+*.log
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# User defined
+nbproject/private/
+build/
+dist/
+
+
 /RedApron/RedApron-ejb/setup
+
 /RedApron/RedApronJsf-war/nbproject/private/
+/RedApron/RedApronJsf-war/dist/
+/RedApron/RedApronJsf-war/build/
+
+/RedApron/RedApron-ejb/nbproject/private/
+/RedApron/RedApron-ejb/build/
+/RedApron/RedApron-ejb/dist/
+
+/RedApron/build/
+/RedApron/dist/
