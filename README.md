@@ -1,21 +1,17 @@
-IS3106 Group Project Proposal	Group Leader:	Bryan Koh Hai Wen	Matric: A0172743A
-Project Group:	GP21	Member 1:	Pereira Yip Ding Xian	Matric: A0166907U
-	Member 2:	Matthea Loo Wei Ern	Matric: A0171967N
-	Member 3:	Koh Min Xuan	Matric: A0160297B
-Name of Idea:	Red Apron
+<h1>Red Apron<h1>
 
 
-<h2>Project Overview<h2>
+<h2>Project Overview</h2>
 
 Red Apron is a food subscription service that aims to provide a fun, exciting and convenient means to planning versatile meals. With the hectic lifestyle that we have today, planning meals can become extremely tiresome and even daunting. Red Apron provides a local solution to this by shifting the planning away from the consumer, the consumer only has to say what kind of meals they are looking for and their budget. For their respective meal plans, portioned out ingredients will be delivered to our customers along with recipes with nutritional values accounted for. 
 
-Value Proposition
+<h2>Value Proposition</h2>
 
 The main value proposition for Red Apron is that “Quality meals should be hassle-free”. In this day and age, not many have the time to research recipes, shop for groceries and food items with a particular brand or labelling. Upon subscribing to a Red Apron Meal Box comes with the freshest ingredients, handled and portioned exactly the way it should be. The subscription box comes with printed step-by-step recipes (also available on our web application) ensuring that users will never not know how to cook a perfect meal again. We provide versatile and diverse options for any form of food plans with various themes and different price categories. Trackable delivery will also be provided, scheduled in a manner such that the ingredients are fresh and convenient for our users. Our application provides diet suggestions to users after they enter their basic details such as weight, height and age. With consultations from dieticians, we will be able to ensure that the meals meet daily nutritional requirements and also cater the needs of the category chosen. 
 
 We also designed a gift system to reward our loyal customers. Depending on the amount spent/ their subscription plans, the feature allows our users to enjoy the wide range of rewards including cooking equipment, accessories or small gifts coupon for future boxes.
 
-Revenue Model
+<h2>Revenue Model</h2>
 
 Red Apron’s main revenue pipeline will come from a subscription-based model where subscribers can choose to pay for a weekly or monthly package. Prices of each subscription package vary according to the food category selected (eg. Budget Baking, Premium Baking, Meals for 2, Meals for 4 etc) and the number of recipes the subscriber indicates per week to be delivered. On top of that, to encourage subscribers to continue with our services, the monthly package will be 10% cheaper per week than a weekly subscription. By tiering subscription prices according to functionality through categories, discounts to incentivise bulk purchases, metered according to usage levels (eg. when subscribers decide on number of recipes per week), and optimized to reward loyalty, Red Apron offers a multitude of solutions to meet the diverse needs of customers. Though seemingly complex, our pricing strategies will be transparent and organised, giving us a competitive edge in the market.
 
@@ -26,7 +22,7 @@ Secondary revenue can come from advertising on the food/ingredients packaging. D
 Future revenue can stream from food vendors/suppliers as Red Apron expands. The larger our consumer base is, the more we will be able to make bulk purchases for ingredients required, allowing us to enjoy cost savings with lowered cost per unit.
 
 
-Competitive Environment and Advantages
+<h2>Competitive Environment and Advantages</h2>
 
 Food delivery services have been growing in recent times especially in Singapore and this trend does not seem to be slowing down. Given that Red Apron belongs to the food industry and is new, we face the dangers of phasing out in a sea of emerging competitors, both online and offline. In order to get past the barrier to entry, Red Apron will definitely have to fight the price war at least until sufficient market traction is achieved. Venture Capitalist and Angel Investors will definitely be necessary in order to achieve sufficient funding at this beginning stage.
 
