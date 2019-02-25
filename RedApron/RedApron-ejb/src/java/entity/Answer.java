@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,6 +25,9 @@ public class Answer implements Serializable {
     private Long answerId;
     private String text;
 
+    @OneToOne
+    private Enquiry enquiry;
+    
     public Answer() {
     }
     
@@ -33,6 +37,16 @@ public class Answer implements Serializable {
         this.text = text;
     }
 
+    public Enquiry getEnquiry() {
+        return enquiry;
+    }
+
+    public void setEnquiry(Enquiry enquiry) {
+        this.enquiry = enquiry;
+    }
+
+    
+    
     public String getText() {
         return text;
     }
