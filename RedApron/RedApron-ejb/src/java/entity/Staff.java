@@ -7,10 +7,12 @@ package entity;
 
 import enumeration.Role;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,6 +31,8 @@ public class Staff implements Serializable {
     private String password;
     private Role role;
 
+    @OneToMany
+    private List<Answer> answers;
 
     public Staff() {
     }
@@ -113,6 +117,14 @@ public class Staff implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 
 }

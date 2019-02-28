@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -21,12 +22,15 @@ public class Answer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
     private String text;
 
     @OneToOne
     private Enquiry enquiry;
+    
+    @ManyToOne
+    private Staff staff;
     
     public Answer() {
     }
@@ -85,6 +89,14 @@ public class Answer implements Serializable {
     @Override
     public String toString() {
         return "entity.Answer[ id=" + answerId + " ]";
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
     
 }

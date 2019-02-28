@@ -9,10 +9,14 @@ import enumeration.DeliveryDay;
 import enumeration.SubscriptionPlanStatus;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -32,6 +36,18 @@ public class SubscriptionPlan implements Serializable {
     private Integer numOfRecipes;
     private SubscriptionPlanStatus status;
     private DeliveryDay deliveryDay;
+    
+    @ManyToOne
+    private Catergory catergory;
+    
+    @OneToOne
+    private Transaction transaction;
+    
+    @OneToMany
+    private List<Recipe> recipes;
+    
+    @ManyToOne
+    private Subscriber subscriber;
 
     public SubscriptionPlan() {
     }
@@ -135,6 +151,41 @@ public class SubscriptionPlan implements Serializable {
 
     public void setDeliveryDay(DeliveryDay deliveryDay) {
         this.deliveryDay = deliveryDay;
+    }
+
+    /**
+     * @return the catergory
+     */
+    public Catergory getCatergory() {
+        return catergory;
+    }
+
+    public void setCatergory(Catergory catergory) {
+        this.catergory = catergory;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public Subscriber getSubscriber() {
+        return subscriber;
+    }
+
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
     }
     
 }
