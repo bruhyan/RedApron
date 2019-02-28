@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://www.netbeans.org/ns/project/1">
-    <type>org.netbeans.modules.j2ee.ejbjarproject</type>
+    <type>org.netbeans.modules.web.project</type>
     <configuration>
-        <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
-            <name>RedApron-ejb</name>
+        <data xmlns="http://www.netbeans.org/ns/web-project/3">
+            <name>RedApronJsf-war</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">libs.jpa20-persistence.classpath</included-library>
+            <web-module-libraries/>
+            <web-module-additional-libraries/>
             <source-roots>
                 <root id="src.dir" name="Source Packages"/>
             </source-roots>
