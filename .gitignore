@@ -1,2 +1,8 @@
 /RedApron/RedApron-ejb/setup
 /RedApron/RedApronJsf-war/nbproject/private/
+/RedApron/build/
+/RedApron/dist/
+/RedApron/RedApronJsf-war/dist/
+/RedApron/RedApronJsf-war/build/
+/RedApron/RedApron-ejb/build/
+/RedApron/RedApron-ejb/dist/
