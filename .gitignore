@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /RedApron/RedApron-ejb/setup
 /RedApron/RedApronJsf-war/nbproject/private/
 /RedApron/build/
@@ -6,3 +7,38 @@
 /RedApron/RedApronJsf-war/build/
 /RedApron/RedApron-ejb/build/
 /RedApron/RedApron-ejb/dist/
+=======
+# Compiled class file
+*.class
+
+
+# Log file
+*.log
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# User defined
+nbproject/private/
+build/
+dist/
+
+
+/RedApron/RedApron-ejb/setup
+
+/RedApron/RedApronJsf-war/nbproject/private/
+/RedApron/RedApronJsf-war/dist/
+/RedApron/RedApronJsf-war/build/
+
+/RedApron/RedApron-ejb/nbproject/private/
+/RedApron/RedApron-ejb/build/
+/RedApron/RedApron-ejb/dist/
+
+/RedApron/build/
+/RedApron/dist/
+>>>>>>> 4f12a4697e75154deb8c26a0957ff6e585eac656
+/RedApron/nbproject/private/
