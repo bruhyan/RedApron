@@ -31,11 +31,14 @@ public class Recipe implements Serializable {
     private String image;
     private Boolean isAvailable;
     
-    @OneToMany
+    @OneToMany 
     private List<Step> steps;
     
-    @ManyToMany
+    @ManyToMany 
     private List<Category> categories;
+    
+    @OneToMany (mappedBy = "recipe")
+    private List<Review> reviews;
 
     public Recipe() {
     }
@@ -48,6 +51,17 @@ public class Recipe implements Serializable {
         this.isAvailable = isAvailable;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    
+    
+    
     public Long getRecipeId() {
         return recipeId;
     }
