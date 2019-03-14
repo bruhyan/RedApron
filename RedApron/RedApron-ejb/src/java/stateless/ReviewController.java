@@ -43,14 +43,14 @@ public class ReviewController implements ReviewControllerLocal {
         }
     }
 
-//  @Override
-//    public List<Review> retrieveAllReviews(Long recipeId)
-//    {
-//        Query query = em.createQuery("SELECT r FROM Review r WHERE r.recipe.recipeId :=  BY r.date ASC");
-//        List<Review> reviewEntities = query.getResultList();
-//        
-//        return reviewEntities;
-//    }  
+  @Override
+    public List<Review> retrieveAllReviews(Long recipeId)
+    {
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.recipe.recipeId := recipeId BY r.date ASC");
+        query.setParameter("recipeId", recipeId);
+        List<Review> reviewEntities = query.getResultList();
+        return reviewEntities;
+    }  
     
     
 }

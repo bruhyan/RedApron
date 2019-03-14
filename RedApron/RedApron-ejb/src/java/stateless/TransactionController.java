@@ -40,7 +40,6 @@ public class TransactionController implements TransactionControllerLocal {
             throw new TransactionNotFoundException("Answer ID " + transactionId + " does not exist");
         }
     }
-
     
 }
 
