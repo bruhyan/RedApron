@@ -5,6 +5,9 @@
  */
 package stateless;
 
+import entity.Answer;
+import entity.Staff;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +16,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface StaffControllerLocal {
+
+    public List<Answer> retrieveStaffAnswers(Staff staff);
     
 }

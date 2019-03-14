@@ -14,7 +14,7 @@ import javax.ejb.Local;
  * @author matthealoo
  */
 public interface AnswerControllerLocal {
-        public Answer persist(Answer answer);
+        public Answer createNewAnswer(Answer answer);
         public Answer retrieveAnswerById(Long answerId) throws AnswerNotFoundException;
     
 }

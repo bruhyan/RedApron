@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-/RedApron/RedApron-ejb/setup
-/RedApron/RedApronJsf-war/nbproject/private/
-/RedApron/build/
-/RedApron/dist/
-/RedApron/RedApronJsf-war/dist/
-/RedApron/RedApronJsf-war/build/
-/RedApron/RedApron-ejb/build/
-/RedApron/RedApron-ejb/dist/
-=======
 # Compiled class file
 *.class
 
@@ -40,5 +30,4 @@ dist/
 
 /RedApron/build/
 /RedApron/dist/
->>>>>>> 4f12a4697e75154deb8c26a0957ff6e585eac656
 /RedApron/nbproject/private/

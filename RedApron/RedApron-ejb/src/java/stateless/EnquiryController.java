@@ -34,7 +34,7 @@ public class EnquiryController implements EnquiryControllerLocal {
     }
     
     @Override
-    public Enquiry retrieveAnswerById(Long enquiryId) throws EnquiryNotFoundException {
+    public Enquiry retrieveEnquiryById(Long enquiryId) throws EnquiryNotFoundException {
         Enquiry enquiry = em.find(Enquiry.class, enquiryId);
 
         if (enquiry != null) {
