@@ -17,6 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface StaffControllerLocal {
 
-    public List<Answer> retrieveStaffAnswers(Staff staff);
+    public List<Answer> retrieveStaffAnswers(Long staffId);
     
 }
