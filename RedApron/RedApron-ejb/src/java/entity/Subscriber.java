@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,6 +31,15 @@ public class Subscriber implements Serializable {
     private String addressLine2;
     private Integer postalCode;
     private String password;
+    
+    @OneToMany
+    private List<SubscriptionPlan> subscriptionPlans;
+    
+    @OneToMany
+    private List<Review> reviews;
+    
+    @OneToMany
+    private List<Enquiry> enquiries;
 
     public Subscriber() {
     }
@@ -131,6 +142,30 @@ public class Subscriber implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<SubscriptionPlan> getSubscriptionPlans() {
+        return subscriptionPlans;
+    }
+
+    public void setSubscriptionPlans(List<SubscriptionPlan> subscriptionPlans) {
+        this.subscriptionPlans = subscriptionPlans;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Enquiry> getEnquiries() {
+        return enquiries;
+    }
+
+    public void setEnquiries(List<Enquiry> enquiries) {
+        this.enquiries = enquiries;
     }
     
 }
