@@ -7,6 +7,8 @@ package stateless;
 
 import entity.Answer;
 import entity.Staff;
+import exceptions.EnquiryNotFoundException;
+import exceptions.StaffNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -17,6 +19,14 @@ import javax.ejb.Local;
 @Local
 public interface StaffControllerLocal {
 
-    public List<Answer> retrieveStaffAnswers(Long staffId);
+    public List<Answer> retrieveStaffAnswers(Long staffId) throws StaffNotFoundException;
+
+    public void deleteStaff(Long staffId) throws StaffNotFoundException;
+
+    public void answerEnquiry(String answerContent, Long enquiryId, Long staffId) throws StaffNotFoundException, EnquiryNotFoundException;
+
+    public Staff retrieveStaffById(long id) throws StaffNotFoundException;
+
+    public Staff persist(Staff staff);
     
 }

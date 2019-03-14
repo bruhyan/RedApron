@@ -122,9 +122,17 @@ public class Staff implements Serializable {
     public List<Answer> getAnswers() {
         return answers;
     }
+    
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 
+    public void removeAnswer(Answer answer){
+        this.answers.remove(answer);
+    }
+    
+    public void addAnswer(Answer answer){
+        this.answers.add(answer);
+    }
 }
