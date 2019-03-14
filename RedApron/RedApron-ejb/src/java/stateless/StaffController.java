@@ -5,12 +5,16 @@
  */
 package stateless;
 
+import entity.Answer;
+import static entity.Answer_.staff;
 import entity.Staff;
 import exceptions.StaffNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -38,5 +42,14 @@ public class StaffController implements StaffControllerLocal {
         }
 
     }
-
+    
+    public List<Answer> retrieveStaffAnswers(Staff staff){
+        Query query = em.createQuery("SELECT r FROM Answer r WHERE r.staff=:staff");
+        query.setParameter("staff", staff);
+        
+        return query.getResultList();
+        
+        
+    }
+            
 }
