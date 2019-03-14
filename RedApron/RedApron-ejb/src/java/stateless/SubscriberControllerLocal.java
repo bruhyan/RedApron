@@ -5,6 +5,9 @@
  */
 package stateless;
 
+import entity.Subscriber;
+import exceptions.SubscriberNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +16,15 @@ import javax.ejb.Local;
  */
 @Local
 public interface SubscriberControllerLocal {
+
+    public Subscriber createNewSubscriber(Subscriber newSubscriber);
+
+    public List<Subscriber> retrieveAllSubscribers();
+
+    public Subscriber retrieveSubscriberById(Long subscriberId) throws SubscriberNotFoundException;
+
+    public Subscriber retrieveSubscriberByEmail(String subscriberEmail) throws SubscriberNotFoundException;
+
+    public void deleteSubscriber(Long subscriberId) throws SubscriberNotFoundException;
     
 }
