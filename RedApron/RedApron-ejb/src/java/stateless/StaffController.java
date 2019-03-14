@@ -43,7 +43,8 @@ public class StaffController implements StaffControllerLocal {
 
     }
     
-    public List<Answer> retrieveStaffAnswers(Staff staff){
+    public List<Answer> retrieveStaffAnswers(Long staffId){
+        Staff staff = em.find(Staff.class, staffId);
         Query query = em.createQuery("SELECT r FROM Answer r WHERE r.staff=:staff");
         query.setParameter("staff", staff);
         
