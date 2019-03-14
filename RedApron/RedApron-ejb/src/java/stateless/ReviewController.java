@@ -5,15 +5,41 @@
  */
 package stateless;
 
+import entity.Review;
+import exceptions.ReviewNotFoundException;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author matthealoo
  */
 @Stateless
+@Local(ReviewControllerLocal.class)
 public class ReviewController implements ReviewControllerLocal {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @PersistenceContext(unitName = "RedApron-ejbPU")
+    private EntityManager em;
+
+    public Review createNewReview(Review review) {
+        em.persist(review);
+        em.flush();
+        
+        return review;
+    }
+    
+    @Override
+    public Review retrieveReviewById(Long reviewId) throws ReviewNotFoundException {
+        Review review = em.find(Review.class, reviewId);
+
+        if (review != null) {
+            return review;
+        } else {
+            throw new ReviewNotFoundException("Answer ID " + reviewId + " does not exist");
+        }
+    }
+
+    
 }

@@ -5,13 +5,18 @@
  */
 package stateless;
 
+import entity.Review;
+import exceptions.ReviewNotFoundException;
 import javax.ejb.Local;
 
 /**
  *
  * @author matthealoo
  */
-@Local
 public interface ReviewControllerLocal {
+    
+     public Review createNewReview(Review review);
+    public Review retrieveReviewById(Long reviewId) throws ReviewNotFoundException;
+
     
 }

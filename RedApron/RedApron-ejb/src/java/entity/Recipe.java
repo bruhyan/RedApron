@@ -35,7 +35,7 @@ public class Recipe implements Serializable {
     private List<Step> steps;
     
     @ManyToMany
-    private List<Catergory> categories;
+    private List<Category> categories;
 
     public Recipe() {
     }
@@ -129,11 +129,11 @@ public class Recipe implements Serializable {
         this.steps = steps;
     }
 
-    public List<Catergory> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Catergory> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
     
