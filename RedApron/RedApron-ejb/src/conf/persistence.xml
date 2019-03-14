@@ -5,6 +5,10 @@
     <class>entity.Review</class>
     <class>entity.Enquiry</class>
     <class>entity.Transaction</class>
+    <class>entity.Answer</class>
+    <class>entity.Staff</class>
+    <class>entity.Subscriber</class>
+    <class>entity.SubscriptionPlan</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
