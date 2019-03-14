@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Enquiry;
 import exceptions.EnquiryNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +19,6 @@ public interface EnquiryControllerLocal {
     
      public Enquiry persist(Enquiry enquiry);
      public Enquiry retrieveEnquiryById(Long enquiryId) throws EnquiryNotFoundException;
+    public List<Enquiry> retrieveEnquiryBySubscriber(Long subscriberId);
     
 }

@@ -9,10 +9,12 @@ import entity.Answer;
 import entity.Enquiry;
 import exceptions.AnswerNotFoundException;
 import exceptions.EnquiryNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -43,6 +45,13 @@ public class EnquiryController implements EnquiryControllerLocal {
             throw new EnquiryNotFoundException("Enquiry ID " + enquiryId + " does not exist");
         }
     }
-
+    
+    @Override
+    public List<Enquiry> retrieveEnquiryBySubscriber(Long subscriberId) {
+        Query query = em.createQuery("SELECT e FROM Enquiry e WHERE e.subscriber.subscriberId := subscriberId");
+        query.setParameter("subscriberId", subscriberId);
+        List<Enquiry> enquiryEntities = query.getResultList();
+        return enquiryEntities;
+    } 
     
 }

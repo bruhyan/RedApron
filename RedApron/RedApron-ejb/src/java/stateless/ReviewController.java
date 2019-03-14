@@ -7,10 +7,12 @@ package stateless;
 
 import entity.Review;
 import exceptions.ReviewNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -41,5 +43,14 @@ public class ReviewController implements ReviewControllerLocal {
         }
     }
 
+  @Override
+    public List<Review> retrieveAllReviews(Long recipeId)
+    {
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.recipe.recipeId := recipeId BY r.date ASC");
+        query.setParameter("recipeId", recipeId);
+        List<Review> reviewEntities = query.getResultList();
+        return reviewEntities;
+    }  
+    
     
 }

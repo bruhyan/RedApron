@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Review;
 import exceptions.ReviewNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -17,6 +18,6 @@ public interface ReviewControllerLocal {
     
      public Review createNewReview(Review review);
     public Review retrieveReviewById(Long reviewId) throws ReviewNotFoundException;
-
+    public List<Review> retrieveAllReviews(Long recipeId);
     
 }
