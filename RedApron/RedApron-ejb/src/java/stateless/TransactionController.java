@@ -5,15 +5,42 @@
  */
 package stateless;
 
+import entity.Transaction;
+import exceptions.TransactionNotFoundException;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author matthealoo
  */
 @Stateless
+@Local(TransactionControllerLocal.class)
 public class TransactionController implements TransactionControllerLocal {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @PersistenceContext(unitName = "RedApron-ejbPU")
+    private EntityManager em;
+
+    public Transaction createNewTransaction(Transaction transaction) {
+        em.persist(transaction);
+        em.flush();
+        
+        return transaction;
+    }
+    
+    @Override
+    public Transaction retrieveAnswerById(Long transactionId) throws TransactionNotFoundException {
+        Transaction transaction = em.find(Transaction.class, transactionId);
+
+        if (transaction != null) {
+            return transaction;
+        } else {
+            throw new TransactionNotFoundException("Answer ID " + transactionId + " does not exist");
+        }
+    }
+
+    
 }
+

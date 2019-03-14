@@ -19,12 +19,12 @@ import javax.persistence.OneToMany;
  * @author MX
  */
 @Entity
-public class Catergory implements Serializable {
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long catergoryId;
+    private Long categoryId;
     private String name; 
     private Boolean isAvailable;
     
@@ -34,37 +34,37 @@ public class Catergory implements Serializable {
     @OneToMany
     private List<SubscriptionPlan> subscriptionPlans;
 
-    public Catergory() {
+    public Category() {
     }
 
-    public Catergory(String name, Boolean isAvailable) {
+    public Category(String name, Boolean isAvailable) {
         this.name = name;
         this.isAvailable = isAvailable;
     }
 
-    public Long getCatergoryId() {
-        return catergoryId;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCatergoryId(Long catergoryId) {
-        this.catergoryId = catergoryId;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (catergoryId != null ? catergoryId.hashCode() : 0);
+        hash += (categoryId != null ? categoryId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Catergory)) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        Catergory other = (Catergory) object;
-        if ((this.catergoryId == null && other.catergoryId != null) || (this.catergoryId != null && !this.catergoryId.equals(other.catergoryId))) {
+        Category other = (Category) object;
+        if ((this.categoryId == null && other.categoryId != null) || (this.categoryId != null && !this.categoryId.equals(other.categoryId))) {
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ public class Catergory implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Catergory[ id=" + catergoryId + " ]";
+        return "entity.Catergory[ id=" + categoryId + " ]";
     }
 
     public String getName() {

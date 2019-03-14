@@ -23,7 +23,7 @@ public class AnswerController implements AnswerControllerLocal {
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
 
-    public Answer persist(Answer answer) {
+    public Answer createNewAnswer(Answer answer) {
         em.persist(answer);
         em.flush();
         
@@ -40,6 +40,5 @@ public class AnswerController implements AnswerControllerLocal {
             throw new AnswerNotFoundException("Answer ID " + answerId + " does not exist");
         }
     }
-
     
 }
