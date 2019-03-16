@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,20 +26,42 @@ public class Review implements Serializable {
     private Long reviewId;
     private String text;
     private Integer rating;
+    private Date date;
     
     @ManyToOne
     private Subscriber subscriber;
+    
+    @ManyToOne
+    private Recipe recipe;
 
     public Review() {
     }
 
-    public Review(String text, Integer rating, Subscriber subscriber) {
+    public Review(String text, Integer rating, Date date, Subscriber subscriber, Recipe recipe) {
         this.text = text;
         this.rating = rating;
+        this.date = date;
         this.subscriber = subscriber;
+        this.recipe = recipe;
     }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
     
     
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Long getReviewId() {
         return reviewId;

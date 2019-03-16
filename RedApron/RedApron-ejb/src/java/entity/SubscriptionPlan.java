@@ -38,7 +38,7 @@ public class SubscriptionPlan implements Serializable {
     private DeliveryDay deliveryDay;
     
     @ManyToOne
-    private Catergory catergory;
+    private Category catergory;
     
     @OneToOne
     private Transaction transaction;
@@ -156,11 +156,11 @@ public class SubscriptionPlan implements Serializable {
     /**
      * @return the catergory
      */
-    public Catergory getCatergory() {
+    public Category getCatergory() {
         return catergory;
     }
 
-    public void setCatergory(Catergory catergory) {
+    public void setCatergory(Category catergory) {
         this.catergory = catergory;
     }
 
