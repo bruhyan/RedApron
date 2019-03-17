@@ -17,7 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface SubscriberControllerLocal {
 
-    public Subscriber createNewSubscriber(Subscriber newSubscriber);
+    public Long createNewSubscriber(Subscriber newSubscriber);
 
     public List<Subscriber> retrieveAllSubscribers();
 
