@@ -27,18 +27,18 @@ public class SubscriberController implements SubscriberControllerLocal {
     }
 
     @Override
-    public Subscriber createNewSubscriber(Subscriber newSubscriber) {
+    public Long createNewSubscriber(Subscriber newSubscriber) {
         //check if subscriber already exist
         //if not then persist
         
         em.persist(newSubscriber);
         em.flush();
-        return newSubscriber;
+        return newSubscriber.getSubscriberId();
     }
     
     @Override
     public List<Subscriber> retrieveAllSubscribers() {
-        Query query = em.createQuery("SELECT s FROM Subscriber ORDER BY s.subscriberId");
+        Query query = em.createQuery("SELECT s FROM Subscriber s ORDER BY s.subscriberId ");
         List<Subscriber> subscribers = query.getResultList();
         
         for(Subscriber subs:subscribers) {
