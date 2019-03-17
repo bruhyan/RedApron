@@ -58,7 +58,7 @@ public class StaffController implements StaffControllerLocal {
     @Override
     public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException
     {
-        Query query = em.createQuery("SELECT s FROM StaffEntity s WHERE s.email = :inEmail");
+        Query query = em.createQuery("SELECT s FROM Staff s WHERE s.email = :inEmail");
         query.setParameter("inEmail", email);
         
         try

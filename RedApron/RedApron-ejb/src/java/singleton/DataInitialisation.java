@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
+import javax.ejb.Startup;
 import stateless.StaffControllerLocal;
 
 /**
@@ -20,6 +21,7 @@ import stateless.StaffControllerLocal;
  */
 @Singleton
 @LocalBean
+@Startup
 public class DataInitialisation {
 
     @EJB
