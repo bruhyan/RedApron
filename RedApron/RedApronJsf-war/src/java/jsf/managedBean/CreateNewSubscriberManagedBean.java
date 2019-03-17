@@ -23,17 +23,18 @@ import stateless.SubscriberControllerLocal;
 public class CreateNewSubscriberManagedBean {
 
     @EJB
-    private SubscriberControllerLocal subscriberController;
+    private SubscriberControllerLocal subscriberControllerLocal;
 
     private Subscriber newSubscriber; //model
     
     
     public CreateNewSubscriberManagedBean() {
+        newSubscriber = new Subscriber();
     }
     
     public void createNewSubscriber() {
-        newSubscriber = subscriberController.createNewSubscriber(newSubscriber);
-        Long newSubscriberId = newSubscriber.getSubscriberId();
+        Long newSubscriberId = subscriberControllerLocal.createNewSubscriber(newSubscriber);
+        //Long newSubscriberId = newSubscriber.getSubscriberId();
     
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New subscriber created successfully: " + newSubscriberId,"New subscriber created successfully: " + newSubscriberId ));
     }

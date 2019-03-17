@@ -13,6 +13,37 @@
             <!-- check if jsf and prime faces tag the same -->
             <h:messages />
             <h:panelGrid columns="2">
+                <!-- for value must match input test id value -->
+                <h:outputLabel for="firstName" value="First Name"/>
+                <h:inputText id="firstName" value="#{createNewSubscriberManagedBean.newSubscriber.firstName}"/>
+                
+                <h:outputLabel for="lastName" value="Last Name"/>
+                <h:inputText id="lastName" value="#{createNewSubscriberManagedBean.newSubscriber.lastName}"/>
+                
+                <h:outputLabel for="email" value="Email"/>
+                <h:inputText id="email" value="#{createNewSubscriberManagedBean.newSubscriber.email}"/>
+                
+                <h:outputLabel for="phoneNumber" value="Phone Number"/>
+                <h:inputText id="phoneNumber" value="#{createNewSubscriberManagedBean.newSubscriber.phoneNumber}"/>
+                
+                <h:outputLabel for="addressLine1" value="Address Line 1"/>
+                <h:inputText id="addressLine1" value="#{createNewSubscriberManagedBean.newSubscriber.addressLine1}"/>
+                
+                <h:outputLabel for="addressLine2" value="Address Line 2"/>
+                <h:inputText id="addressLine2" value="#{createNewSubscriberManagedBean.newSubscriber.addressLine2}"/>
+                
+                <h:outputLabel for="postalCode" value="Postal Code"/>
+                <h:inputText id="postalCode" value="#{createNewSubscriberManagedBean.newSubscriber.postalCode}"/>
+                
+                <h:outputLabel for="password" value="Password"/>
+                <h:inputText id="password" value="#{createNewSubscriberManagedBean.newSubscriber.password}"/>
+                
+                <h:commandButton type="reset" value="Clear"/>
+                <h:commandButton type="submit" value="Create">
+                    <f:ajax event="click" execute="@form" render="@form" listener="#{createNewSubscriberManagedBean.createNewSubscriber}"/>
+                </h:commandButton> 
+                
+                             
                 
             </h:panelGrid>
         </h:form>
