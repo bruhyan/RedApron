@@ -19,6 +19,7 @@
         </p:column>
     </h:head>
     <h:body styleClass="cyan lighten-5">
+<!--       <p:growl autoUpdate="true"/>-->
         <div class="valign-wrapper" id ="login-page">
             <div class="container">
                 <div class =" center-align">
@@ -29,23 +30,23 @@
                                     <div class="left-align">
                                          <h:panelGrid columns="2" style="height: 300px; width: 500px; margin-left: 10px; margin-right: 10px">
                                             <p:graphicImage library="images" name="login3.png" height="300" width="320" style="margin: 40px"/>
-                                           <h:form id="login-form">
+                                                <h:form id="login-form">
                                                                             <div class="row">
                                                                                 <h:outputText value="Login as an Admin" /> 
 
                                                                                 <div class="ui-g-6 input-field">
-                                                                                    <h:inputText id="username" value = "#{StaffLoginManagedBean.username}" required="true" requiredMessage="Username is required!"/>
+                                                                                    <h:inputText id="username" value = "#{staffLoginManagedBean.email}" required="true" requiredMessage="Username is required!"/>
                                                                                     <h:outputLabel for="username" value="Username"/>
                                                                                 </div>
                                                                                 <div class="ui-g-6 input-field">
-                                                                                    <h:inputText id="password" value = "#{StaffLoginManagedBean.password}" required="true" requiredMessage="Password is required!"/>
+                                                                                    <h:inputText id="password" value = "#{staffLoginManagedBean.password}" required="true" requiredMessage="Password is required!"/>
                                                                                     <h:outputLabel for="password" value="Password"/>
                                                                                 </div>
                                                                                 <div class="col s12 input-field">
-                                                                                    <h:commandButton value="Login" styleClass="btn btn-large" actionListener="#{StaffLoginManagedBean.login}"/>
+                                                                                    <h:commandButton value="Login" styleClass="btn btn-large" actionListener="#{staffLoginManagedBean.login}"/>
                                                                                 </div>
                                                                             </div>
-                                                                        </h:form>
+                                               </h:form>
                                         </h:panelGrid>
                                         
                                     </div>
