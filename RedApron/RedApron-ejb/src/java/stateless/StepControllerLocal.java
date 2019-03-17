@@ -5,19 +5,22 @@
  */
 package stateless;
 
-import entity.SubscriptionPlan;
+import entity.Step;
+import exceptions.StepNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author matthealoo
+ * @author MX
  */
 @Local
-public interface SubscriptionPlanControllerLocal {
+public interface StepControllerLocal {
 
-    public SubscriptionPlan createSubscriptionPlan(SubscriptionPlan subscriptionPlan);
+    public Step createNewStep(Step step);
 
-    public List<SubscriptionPlan> retrieveAllSubscriptionPlans();
+    public Step retrieveStepById(long id) throws StepNotFoundException;
+
+    public List<Step> retrieveAllSteps();
     
 }

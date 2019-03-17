@@ -35,11 +35,10 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-    public Transaction(Double amount, Date paymentDate, PaymentType paymentType, SubscriptionPlan subscriptionPlan) {
+    public Transaction(Double amount, Date paymentDate, PaymentType paymentType) {
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.paymentType = paymentType;
-        this.subscriptionPlan = subscriptionPlan;
     }
 
     public SubscriptionPlan getSubscriptionPlan() {
