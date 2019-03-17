@@ -31,6 +31,7 @@ public class Subscriber implements Serializable {
     private String addressLine2;
     private Integer postalCode;
     private String password;
+    private String phoneNumber;
     
     @OneToMany
     private List<SubscriptionPlan> subscriptionPlans;
@@ -44,10 +45,11 @@ public class Subscriber implements Serializable {
     public Subscriber() {
     }
 
-    public Subscriber(String firstName, String lastName, String email, String addressLine1, String addressLine2, Integer postalCode, String password) {
+    public Subscriber(String firstName, String lastName, String email, String phoneNumber, String addressLine1, String addressLine2, Integer postalCode, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
@@ -166,6 +168,14 @@ public class Subscriber implements Serializable {
 
     public void setEnquiries(List<Enquiry> enquiries) {
         this.enquiries = enquiries;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     
 }
