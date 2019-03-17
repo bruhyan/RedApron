@@ -7,10 +7,20 @@ package enumeration;
 
 /**
  *
- * @author Bryan
+ * @author mdk12
  */
 public enum SubscriptionPlanStatus {
-    ONGOING,
-    COMPLETED,
-    CANCELLED
+    ONGOING("Ongoing"),
+    COMPLETED("Completed"),
+    CANCELLED("Cancelled");
+    
+    private String label;
+    
+    private SubscriptionPlanStatus(String label){
+        this.label = label;
+    }
+    
+    public String getLabel(){
+        return label;
+    }
 }

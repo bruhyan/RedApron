@@ -12,6 +12,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import stateless.SubscriptionPlanControllerLocal;
+import enumeration.SubscriptionPlanStatus;
+import enumeration.DeliveryDay;
 
 /**
  *
@@ -25,6 +27,7 @@ public class CreateNewSubscriptionPlanManagedBean {
     private SubscriptionPlanControllerLocal subscriptionPlanControllerLocal;
     
     private SubscriptionPlan subscriptionPlan;
+    private SubscriptionPlanStatus mySubscriptionPlanStatusEnum;
 
 
     
@@ -35,7 +38,7 @@ public class CreateNewSubscriptionPlanManagedBean {
     public void createNewSubscriptionPlan(){
         Long subscriptionPlanId = subscriptionPlanControllerLocal.createSubscriptionPlan(subscriptionPlan);
         
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New subscription plan made with ID " + subscriptionPlanId, "New subscription plan made with ID " + subscriptionPlanId));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New subscription plan made with ID " + subscriptionPlanId));
         
     }
 
@@ -47,6 +50,13 @@ public class CreateNewSubscriptionPlanManagedBean {
         this.subscriptionPlan = subscriptionPlan;
     }
     
+    public SubscriptionPlanStatus[] subscriptionPlanStatus(){
+        return SubscriptionPlanStatus.values();
+    }
+    
+    public DeliveryDay[] deliveryDays(){
+        return DeliveryDay.values();
+    }
     
     
 }

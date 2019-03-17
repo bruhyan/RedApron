@@ -25,54 +25,51 @@
 
                     <div class="card-body">
 
-                        <div class="form-group">
-
-                            <h:panelGrid columns="2" cellpadding="5">
-
-                                <p:outputLabel for="startDate" value="Start Date">&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
-                                <p:calendar id="startDate" value="#{calendarView.startDate}"/>
-
-                                <p:outputLabel for="endDate" value="End Date" >&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
-                                <p:calendar id="endDate" value="#{calendarView.endDate}"/>
-
-                                <p:outputLabel for="preferences"  value="Preferences">&nbsp;&nbsp;<i class="fa fa-question"></i></p:outputLabel>
-                                <p:inputText id="preferences" />
-
-                                <p:outputLabel for="numOfWeeks"  value="Number of Weeks">&nbsp;&nbsp;<i class="fa fa-calendar-week"></i></p:outputLabel>
-                                <p:inputNumber id="numOfWeeks" decimalPlaces="0"/>
-
-                                <p:outputLabel for="numOfRecipes"  value="Number of Recipes">&nbsp;&nbsp;<i class="fa fa-utensils"></i></p:outputLabel>
-                                <p:inputNumber id="numOfRecipes" />
-
-                                <p:outputLabel for="status"  value="Status">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
-                                <p:selectOneRadio id="status">
-
-                                    <f:selectItem itemLabel="Ongoing" itemValue="ongoing" />
-                                    <f:selectItem itemLabel="Completed" itemValue="completed" />
-                                    <f:selectItem itemLabel="Cancelled" itemValue="cancelled" />
-
-                                </p:selectOneRadio>
-
-                                <p:outputLabel value="Delivery Day" for="deliveryDay">&nbsp;&nbsp;<i class="fa fa-truck"></i></p:outputLabel>
-                                <p:selectOneRadio id="deliveryDay">
-
-                                    <f:selectItem itemLabel="Monday" itemValue="mon" />
-                                    <f:selectItem itemLabel="Tuesday" itemValue="tue" />
-                                    <f:selectItem itemLabel="Wednesday" itemValue="wed" />
-                                    <f:selectItem itemLabel="Thursday" itemValue="thu" />
-                                    <f:selectItem itemLabel="Friday" itemValue="fri" />
-
-                                </p:selectOneRadio>
-                            </h:panelGrid>
+                        <p:panelGrid columns="2">
 
 
-                        </div>
+                            <p:outputLabel for="startDate" value="Start Date">&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
+                            <p:calendar id="startDate" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.startDate}"/>
+
+                            <p:outputLabel for="endDate" value="End Date" >&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
+                            <p:calendar id="endDate" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.endDate}"/>
+
+                            <p:outputLabel for="preferences"  value="Preferences">&nbsp;&nbsp;<i class="fa fa-question"></i></p:outputLabel>
+                            <p:inputText id="preferences" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.preferences}" />
+
+                            <p:outputLabel for="numOfWeeks"  value="Number of Weeks">&nbsp;&nbsp;<i class="fa fa-calendar-week"></i></p:outputLabel>
+                            <p:inputNumber id="numOfWeeks" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.numOfWeeks}" decimalPlaces="0"/>
+
+                            <p:outputLabel for="numOfRecipes"  value="Number of Recipes">&nbsp;&nbsp;<i class="fa fa-utensils"></i></p:outputLabel>
+                            <p:inputNumber id="numOfRecipes" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.numOfRecipes}" decimalPlaces="0"/>
+
+
+                            <p:outputLabel for="status"  value="Status">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
+                            <p:selectOneRadio id="status" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.status}">
+                                <f:selectItems value="#{createNewSubscriptionPlanManagedBean.subscriptionPlanStatus()}" var="status" itemValue="#{status}" itemLabel="#{status.label}"/>
+
+                            </p:selectOneRadio>
+
+                            <p:outputLabel value="Delivery Day" for="deliveryDay">&nbsp;&nbsp;<i class="fa fa-truck"></i></p:outputLabel>
+                            <p:selectOneRadio id="deliveryDay" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.deliveryDay}">
+
+                                <f:selectItems value="#{createNewSubscriptionPlanManagedBean.deliveryDays()}" var="days" itemValue="#{days}" itemLabel="#{days.label}"/>
+
+                            </p:selectOneRadio>
+                        </p:panelGrid>
+                        
+                        <p:messages id="message" showDetail="true" closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
 
                     </div>
 
+
+
+
                     <div class="card-footer">
 
-                        <p:commandButton value="Submit" action="#{createNewSubscriptionPlanManagedBean}" iconPos="right" icon="fa fa-check-circle" />
+                        <p:commandButton value="Submit" action="#{createNewSubscriptionPlanManagedBean.createNewSubscriptionPlan()}" iconPos="right" icon="fa fa-check-circle"/>
                     </div>
                 </div>
 
