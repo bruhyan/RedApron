@@ -40,6 +40,7 @@ public class StaffController implements StaffControllerLocal {
         return staff;
     }
 
+    @Override
     public Staff retrieveStaffById(long id) throws StaffNotFoundException {
         Staff staff = em.find(Staff.class, id);
 
