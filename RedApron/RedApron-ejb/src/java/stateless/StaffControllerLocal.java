@@ -8,6 +8,7 @@ package stateless;
 import entity.Answer;
 import entity.Staff;
 import exceptions.EnquiryNotFoundException;
+import exceptions.InvalidLoginCredentialException;
 import exceptions.StaffNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -27,6 +28,12 @@ public interface StaffControllerLocal {
 
     public Staff retrieveStaffById(long id) throws StaffNotFoundException;
 
-    public Staff persist(Staff staff);
+    public List<Staff> retrieveAllStaffs();
+
+    public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException;
+
+    public Staff staffLogin(String email, String password) throws InvalidLoginCredentialException;
+
+    public Staff createNewStaff(Staff staff);
     
 }

@@ -9,12 +9,15 @@ import entity.Answer;
 import entity.Enquiry;
 import entity.Staff;
 import exceptions.EnquiryNotFoundException;
+import exceptions.InvalidLoginCredentialException;
 import exceptions.StaffNotFoundException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -35,8 +38,9 @@ public class StaffController implements StaffControllerLocal {
     private EntityManager em;
     
 
-    public Staff persist(Staff staff) {
+    public Staff createNewStaff(Staff staff) {
         em.persist(staff);
+        em.flush();
         return staff;
     }
 
@@ -50,6 +54,31 @@ public class StaffController implements StaffControllerLocal {
             throw new StaffNotFoundException("Staff does not exist!");
         }
 
+    }
+    
+    @Override
+    public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException
+    {
+        Query query = em.createQuery("SELECT s FROM Staff s WHERE s.email = :inEmail");
+        query.setParameter("inEmail", email);
+        
+        try
+        {
+            return (Staff)query.getSingleResult();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new StaffNotFoundException("Staff Email " + email + " does not exist!");
+        }
+    }
+    
+    
+      @Override
+    public List<Staff> retrieveAllStaffs()
+    {
+        Query query = em.createQuery("SELECT s FROM StaffEntity s");
+        
+        return query.getResultList();
     }
 
     @Override
@@ -78,6 +107,28 @@ public class StaffController implements StaffControllerLocal {
     public void deleteStaff(Long staffId) throws StaffNotFoundException{
         Staff staff = retrieveStaffById(staffId);
         em.remove(staff);
+    }
+    
+     @Override
+    public Staff staffLogin(String email, String password) throws InvalidLoginCredentialException
+    {
+        try
+        {
+            Staff staff = retrieveStaffByEmail(email);
+            
+            if(staff.getPassword().equals(password))
+            {
+                return staff;
+            }
+            else
+            {
+                throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
+            }
+        }
+        catch(StaffNotFoundException ex)
+        {
+            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
     }
 
 }
