@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface SubscriptionPlanControllerLocal {
 
-    public Long createSubscriberPlan(SubscriptionPlan subscriptionPlan);
+    public Long createSubscriptionPlan(SubscriptionPlan subscriptionPlan);
 
     public List<SubscriptionPlan> retrieveAllSubscriptionPlans();
     

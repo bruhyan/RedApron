@@ -33,7 +33,7 @@ public class CreateNewSubscriptionPlanManagedBean {
     }
     
     public void createNewSubscriptionPlan(){
-        Long subscriptionPlanId = subscriptionPlanControllerLocal.createSubscriberPlan(subscriptionPlan);
+        Long subscriptionPlanId = subscriptionPlanControllerLocal.createSubscriptionPlan(subscriptionPlan);
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New subscription plan made with ID " + subscriptionPlanId, "New subscription plan made with ID " + subscriptionPlanId));
         

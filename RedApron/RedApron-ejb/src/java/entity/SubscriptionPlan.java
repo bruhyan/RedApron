@@ -52,8 +52,8 @@ public class SubscriptionPlan implements Serializable {
     public SubscriptionPlan() {
     }
 
-    public SubscriptionPlan(Long subscriptionPlanId, Date startDate, Date endDate, String preferences, Integer numOfWeeks, Integer numOfRecipes, SubscriptionPlanStatus status, DeliveryDay deliveryDay) {
-        this.subscriptionPlanId = subscriptionPlanId;
+    public SubscriptionPlan(Date startDate, Date endDate, String preferences, Integer numOfWeeks, Integer numOfRecipes, SubscriptionPlanStatus status, DeliveryDay deliveryDay) {
+        
         this.startDate = startDate;
         this.endDate = endDate;
         this.preferences = preferences;

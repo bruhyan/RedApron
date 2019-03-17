@@ -8,6 +8,7 @@
     <property name="URL" value="jdbc:mysql://localhost:3307/RedApron?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC"/>
     <property name="User" value="root"/>
 
+
     <property name="Password" value="12345678"/>
 
     <property name="autoConnect" value="true"/>
