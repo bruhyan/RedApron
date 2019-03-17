@@ -27,7 +27,7 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
     }
     
     @Override
-    public SubscriptionPlan createSubscriberPlan(SubscriptionPlan subscriptionPlan) {
+    public SubscriptionPlan createSubscriptionPlan(SubscriptionPlan subscriptionPlan) {
         em.persist(subscriptionPlan);
         em.flush();
         return subscriptionPlan;

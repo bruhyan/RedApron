@@ -23,6 +23,7 @@ public class TransactionController implements TransactionControllerLocal {
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
 
+    @Override
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
         em.flush();
