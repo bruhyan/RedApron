@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>Facelets Template</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="left">
+            <div id="menu">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+
+                <p:panelMenu style="width:300px">
+                    <p:submenu label="General">
+                        <p:menuitem value="Home"   icon="pi pi-refresh" />
+                        <p:menuitem value="Analytics"  icon="pi pi-save" />
+                        <p:menuitem value="Messages"  icon="pi pi-refresh" />
+                        <p:menuitem value="Tasks"  icon="pi pi-refresh" />
+                        <p:menuitem value="Calendar"   icon="pi pi-refresh" />
+                        <p:menuitem value="Team"  icon="pi pi-refresh" />
+
+                    </p:submenu>
+                    <p:submenu label="Product Management">
+                        <p:menuitem value="View Products"  icon="pi pi-refresh" />
+                        <p:menuitem value="View Orders" icon="pi pi-save" />
+                        <p:menuitem value="View Transactions"   icon="pi pi-refresh" />
+
+                    </p:submenu>
+                    <p:submenu label="Customer Management">
+                        <p:menuitem value="View Customers"   icon="pi pi-refresh" />
+                        <p:menuitem value="View Reviews"  icon="pi pi-save" />
+                        <p:menuitem value="View Enquiries"  icon="pi pi-refresh" />
+
+                    </p:submenu>
+                    <p:submenu label="System Administration">
+                        <p:menuitem value="Staff Management"   icon="pi pi-refresh" />
+                    </p:submenu>
+                    <p:submenu label="More">
+                        <p:menuitem value="Help"  icon="pi pi-refresh"/>
+                        <p:menuitem value="Logout" icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:separator/>
+ 
+                </p:panelMenu>
+            </h:form>    
+  
+            </div>
+        </div>
+    </h:body>
+
+</html>
