@@ -63,7 +63,7 @@ public class CategoryController implements CategoryControllerLocal {
     }
     
     @Override
-    public List<Category> retrieveAllStaffs()
+    public List<Category> retrieveAllCategories()
     {
         Query query = em.createQuery("SELECT c FROM Category c");
         
@@ -71,7 +71,7 @@ public class CategoryController implements CategoryControllerLocal {
     }
     
     @Override
-    public List<Recipe> retrieveCategoryRecipesById(Long id) throws CategoryNotFoundException{
+    public List<Recipe> retrieveRecipesByCategoryId(Long id) throws CategoryNotFoundException{
         Category category = retrieveCategoryById(id);
         Query query = em.createQuery("SELECT c FROM Recipe c WHERE c.categories.categoryId=:id");
         query.setParameter("id", id);
@@ -80,7 +80,7 @@ public class CategoryController implements CategoryControllerLocal {
     }
     
     @Override
-    public List<Recipe> retrieveCategoryRecipesByName(String name) throws CategoryNotFoundException{
+    public List<Recipe> retrieveRecipesByCategoryName(String name) throws CategoryNotFoundException{
         Category category = retrieveCategoryByName(name);
         Query query = em.createQuery("SELECT c FROM Recipe c WHERE c.categories.name=:name");
         query.setParameter("name", name);
@@ -89,7 +89,7 @@ public class CategoryController implements CategoryControllerLocal {
     }
     
     @Override
-    public List<Recipe> retrieveCategorySubscPlansById(Long id) throws CategoryNotFoundException{
+    public List<Recipe> retrieveSubscPlansByCategoryId(Long id) throws CategoryNotFoundException{
         Category category = retrieveCategoryById(id);
         Query query = em.createQuery("SELECT c FROM SubscriptionPlan c WHERE c.catergory.categoryId=:id");
         query.setParameter("id", id);
@@ -98,7 +98,7 @@ public class CategoryController implements CategoryControllerLocal {
     }
     
     @Override
-    public List<Recipe> retrieveCategorySubscPlansByName(String name) throws CategoryNotFoundException{
+    public List<Recipe> retrieveSubscPlansByCategoryName(String name) throws CategoryNotFoundException{
         Category category = retrieveCategoryByName(name);
         Query query = em.createQuery("SELECT c FROM SubscriptionPlan c WHERE c.catergory.name=:name");
         query.setParameter("name", name);

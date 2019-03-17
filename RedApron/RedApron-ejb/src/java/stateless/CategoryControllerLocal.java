@@ -24,15 +24,15 @@ public interface CategoryControllerLocal {
 
     public Category retrieveCategoryByName(String name) throws CategoryNotFoundException;
 
-    public List<Category> retrieveAllStaffs();
+    public List<Category> retrieveAllCategories();
 
-    public List<Recipe> retrieveCategoryRecipesById(Long id) throws CategoryNotFoundException;
+    public List<Recipe> retrieveRecipesByCategoryId(Long id) throws CategoryNotFoundException;
 
-    public List<Recipe> retrieveCategoryRecipesByName(String name) throws CategoryNotFoundException;
+    public List<Recipe> retrieveRecipesByCategoryName(String name) throws CategoryNotFoundException;
 
-    public List<Recipe> retrieveCategorySubscPlansById(Long id) throws CategoryNotFoundException;
+    public List<Recipe> retrieveSubscPlansByCategoryId(Long id) throws CategoryNotFoundException;
 
-    public List<Recipe> retrieveCategorySubscPlansByName(String name) throws CategoryNotFoundException;
+    public List<Recipe> retrieveSubscPlansByCategoryName(String name) throws CategoryNotFoundException;
 
     public void deleteCategory(Long id) throws CategoryNotFoundException;
     
