@@ -23,6 +23,7 @@ import javax.persistence.PersistenceContext;
 import stateless.StaffControllerLocal;
 import stateless.SubscriberControllerLocal;
 import stateless.SubscriptionPlanControllerLocal;
+import stateless.TransactionControllerLocal;
 
 /**
  *
@@ -33,9 +34,12 @@ import stateless.SubscriptionPlanControllerLocal;
 @Startup
 public class DataInitialisation {
 
+    @EJB(name = "TransactionControllerLocal")
+    private TransactionControllerLocal transactionControllerLocal;
+
     @EJB(name = "SubscriptionPlanControllerLocal")
     private SubscriptionPlanControllerLocal subscriptionPlanControllerLocal;
-
+    
     @EJB(name = "SubscriberControllerLocal")
     private SubscriberControllerLocal subscriberControllerLocal;
     
@@ -75,7 +79,10 @@ public class DataInitialisation {
         subscriberControllerLocal.createNewSubscriber(new Subscriber("Bady", "Tan", "bady@gmail.com", "90000003", "kent ridge", "corner3", 000003, "password"));
         
         subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019,4,1), new Date(2019,6,1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
-        
+        subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019,4,1), new Date(2019,6,1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019,4,1), new Date(2019,6,1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        //need set relations
+        //transactionControllerLocal.createNewTransaction(new Transaction())
         
         
         
