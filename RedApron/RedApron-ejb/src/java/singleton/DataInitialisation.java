@@ -6,6 +6,7 @@
 package singleton;
 
 import entity.Category;
+import entity.Recipe;
 import entity.Staff;
 import entity.Subscriber;
 import entity.SubscriptionPlan;
@@ -101,10 +102,17 @@ public class DataInitialisation {
         categoryControllerLocal.createNewCategory(new Category("Healthy Living For 2", 45.00, true));
         categoryControllerLocal.createNewCategory(new Category("Healthy Living For 4", 62.00, true));
         
-        recipeController
+        recipeControllerLocal.createNewRecipe(new Recipe("Hainan-style Roasted Chicken", "", "with Steamed Oiled Rice & Fresh Cucumbers", "", true));
+        recipeControllerLocal.createNewRecipe(new Recipe("Smoky Ancho Baked Chicken", "", "with Spiced Rice & Black Beans", "", true)); //860 cal, 35 min
+        recipeControllerLocal.createNewRecipe(new Recipe("Nashville-Style Hot Chicken", "", "with Maple Kale & Mashed Sweet Potatoes", "", true)); //810 calroies, 
+        recipeControllerLocal.createNewRecipe(new Recipe("Calabrian Shrimp & Orzo", "", "with Zucchini", "", true)); //480 calories, 20 mins
+        recipeControllerLocal.createNewRecipe(new Recipe("Goat Cheese & Mushroom Quesadillas", "", "with Lemon-Dressed Zucchini", "", true)); //vegeterian, 590 cal, 45 mins
+        recipeControllerLocal.createNewRecipe(new Recipe("Middle Eastern-Style Pasta", "", "with Roasted Broccoli & Brown Butter-Tomato Sauce", "", true)); //800 cal, 25 mins, vegeterian
+        recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "", "with Kombu & Peanuts", "", true)); //440 cal, 35 mins, vegeterian
+        recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "", "with Carrot & Currant Rice", "", true)); // 590 cal, 25 mins
         
         
-        transactionControllerLocal.createNewTransaction(new Transaction());
+        //transactionControllerLocal.createNewTransaction(new Transaction());
         
         
         
