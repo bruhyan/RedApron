@@ -25,7 +25,8 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
-    private String name; 
+    private String name;
+    private Double price;
     private Boolean isAvailable;
     
     @ManyToMany
@@ -37,8 +38,9 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(String name, Boolean isAvailable) {
+    public Category(String name, Double price, Boolean isAvailable) {
         this.name = name;
+        this.price = price;
         this.isAvailable = isAvailable;
     }
 
@@ -105,6 +107,14 @@ public class Category implements Serializable {
 
     public void setSubscriptionPlans(List<SubscriptionPlan> subscriptionPlans) {
         this.subscriptionPlans = subscriptionPlans;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
     
 }

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="resources/css/custom.css"/>
+
+        <title>Create Subscription Plan</title>
+    </h:head>
+    <h:body>
+
+        <div class="container">
+            <h:form id="createSubscriptionPlan">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Create a new subscription plan</h2>
+                    </div>
+
+                    <div class="card-body">
+
+                        <p:panelGrid columns="2">
+
+
+                            <p:outputLabel for="startDate" value="Start Date">&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
+                            <p:calendar id="startDate" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.startDate}"/>
+
+                            <p:outputLabel for="endDate" value="End Date" >&nbsp;&nbsp;<i class="fa fa-calendar-alt"></i></p:outputLabel>
+                            <p:calendar id="endDate" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.endDate}"/>
+
+                            <p:outputLabel for="preferences"  value="Preferences">&nbsp;&nbsp;<i class="fa fa-question"></i></p:outputLabel>
+                            <p:inputText id="preferences" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.preferences}" />
+
+                            <p:outputLabel for="numOfWeeks"  value="Number of Weeks">&nbsp;&nbsp;<i class="fa fa-calendar-week"></i></p:outputLabel>
+                            <p:inputNumber id="numOfWeeks" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.numOfWeeks}" decimalPlaces="0"/>
+
+                            <p:outputLabel for="numOfRecipes"  value="Number of Recipes">&nbsp;&nbsp;<i class="fa fa-utensils"></i></p:outputLabel>
+                            <p:inputNumber id="numOfRecipes" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.numOfRecipes}" decimalPlaces="0"/>
+
+
+                            <p:outputLabel for="status"  value="Status">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
+                            <p:selectOneRadio id="status" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.status}">
+                                <f:selectItems value="#{createNewSubscriptionPlanManagedBean.subscriptionPlanStatus()}" var="status" itemValue="#{status}" itemLabel="#{status.label}"/>
+
+                            </p:selectOneRadio>
+
+                            <p:outputLabel value="Delivery Day" for="deliveryDay">&nbsp;&nbsp;<i class="fa fa-truck"></i></p:outputLabel>
+                            <p:selectOneRadio id="deliveryDay" value="#{createNewSubscriptionPlanManagedBean.subscriptionPlan.deliveryDay}">
+
+                                <f:selectItems value="#{createNewSubscriptionPlanManagedBean.deliveryDays()}" var="days" itemValue="#{days}" itemLabel="#{days.label}"/>
+
+                            </p:selectOneRadio>
+                        </p:panelGrid>
+                        
+                        <p:messages id="message" showDetail="true" closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
+
+                    </div>
+
+
+
+
+                    <div class="card-footer">
+
+                        <p:commandButton value="Submit" action="#{createNewSubscriptionPlanManagedBean.createNewSubscriptionPlan()}" iconPos="right" icon="fa fa-check-circle"/>
+                    </div>
+                </div>
+
+            </h:form>
+        </div>
+
+    </h:body>
+</html>
+
