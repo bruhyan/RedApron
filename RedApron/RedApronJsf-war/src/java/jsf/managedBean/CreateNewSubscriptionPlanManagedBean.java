@@ -36,7 +36,8 @@ public class CreateNewSubscriptionPlanManagedBean {
     }
     
     public void createNewSubscriptionPlan(){
-        Long subscriptionPlanId = subscriptionPlanControllerLocal.createSubscriptionPlan(subscriptionPlan);
+        subscriptionPlan = subscriptionPlanControllerLocal.createSubscriptionPlan(subscriptionPlan);
+        Long subscriptionPlanId = subscriptionPlan.getSubscriptionPlanId();
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New subscription plan made with ID " + subscriptionPlanId));
         
