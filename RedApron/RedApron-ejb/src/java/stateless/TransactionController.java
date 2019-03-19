@@ -7,10 +7,12 @@ package stateless;
 
 import entity.Transaction;
 import exceptions.TransactionNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -40,6 +42,19 @@ public class TransactionController implements TransactionControllerLocal {
         } else {
             throw new TransactionNotFoundException("Answer ID " + transactionId + " does not exist");
         }
+    }
+    
+    @Override
+    public List<Transaction> retrieveAllTransactions() {
+       Query query = em.createQuery("SELECT t FROM Transaction t ORDER BY t.transactionId ASC");
+        List<Transaction> transactionEntities = query.getResultList();
+        
+        for(Transaction transactionEntity:transactionEntities)
+        {
+            transactionEntity.getSubscriptionPlan();
+        }
+        
+        return transactionEntities;
     }
     
 }
