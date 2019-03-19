@@ -24,9 +24,7 @@ import stateless.TransactionControllerLocal;
 @Named(value = "transactionManagedBean")
 @RequestScoped
 public class TransactionManagedBean {
-
-    @EJB
-    private SubscriptionPlanControllerLocal subscriptionPlanController;
+    
     @EJB
     private TransactionControllerLocal transactionController;
 
