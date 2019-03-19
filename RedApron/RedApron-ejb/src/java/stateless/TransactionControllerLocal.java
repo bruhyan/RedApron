@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Transaction;
 import exceptions.TransactionNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -17,6 +18,8 @@ public interface TransactionControllerLocal {
     
      public Transaction createNewTransaction(Transaction transaction);
     public Transaction retrieveAnswerById(Long transactionId) throws TransactionNotFoundException;
+
+    public List<Transaction> retrieveAllTransactions();
 
     
 }
