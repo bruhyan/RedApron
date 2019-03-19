@@ -26,7 +26,9 @@
 
                     <h:column>    				
                         <f:facet name = "header">Price</f:facet>
-                        <h:outputText value="#{category.price}" />
+                        <h:outputText value="#{category.price}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
                     </h:column>
 
                     <h:column>    				
@@ -34,30 +36,12 @@
                         <h:outputText value="#{category.isAvailable}" />
                     </h:column>
 
-                    <h:column>    				
-                        <f:facet name = "header">Num Of Weeks</f:facet>
-                        <h:outputText value="#{subscriptionPlans.numOfWeeks}" />
-                    </h:column>
 
-                    <h:column>    				
-                        <f:facet name = "header">Num Of Recipes</f:facet>
-                        <div style="text-align: right;">
-                            <h:outputText value="#{subscriptionPlans.numOfRecipes}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
-                            </h:outputText>
-                        </div>
-                    </h:column>
-
-                    <h:column>    				
-                        <f:facet name = "header">Delivery Day</f:facet>
-                        <h:outputText value="#{subscriptionPlans.deliveryDay.label}" />
-                    </h:column>
 
                     <h:column>    				
                         <f:facet name = "header">Action</f:facet>
-                        <!--Hi oppa, pepe here, the managed bean for view subscription plan details isn't done yet!-->
-                        <h:commandLink value="View" actionListener="#{viewAllSubscriptionPlanManagedBean}"> 
-                            <f:attribute name="subscriptionPlanId" value="#{subscriptionPlans.subscriptionPlanId}" />
+                        <h:commandLink value="View" actionListener="#{viewAllCategoriesManagedbean.viewDetails()}"> 
+                            <f:attribute name="subscriptionPlanId" value="#{category.categoryId}" />
                         </h:commandLink>
                     </h:column>
 
