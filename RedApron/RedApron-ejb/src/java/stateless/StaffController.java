@@ -76,7 +76,7 @@ public class StaffController implements StaffControllerLocal {
       @Override
     public List<Staff> retrieveAllStaffs()
     {
-        Query query = em.createQuery("SELECT s FROM StaffEntity s");
+        Query query = em.createQuery("SELECT s FROM Staff s");
         
         return query.getResultList();
     }
