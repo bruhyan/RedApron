@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>All Products</h3>
+
+            <h:form>
+                <h:dataTable styleClass="table table-hover" value="#{viewAllSubscriptionPlanManagedBean.subscriptionPlans}" var="subscriptionPlans" style="width: 100%;">
+
+                    <h:column>			
+                        <f:facet name = "header">ID</f:facet>
+                        <h:outputText value="#{subscriptionPlans.subscriptionPlanId}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Category</f:facet>
+                        <h:outputText value="#{subscriptionPlans.catergory.name}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Validity Start</f:facet>
+                        <h:outputText value="#{subscriptionPlans.startDate}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Validity End</f:facet>
+                        <h:outputText value="#{subscriptionPlans.endDate}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Num Of Weeks</f:facet>
+                        <h:outputText value="#{subscriptionPlans.numOfWeeks}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Num Of Recipes</f:facet>
+                        <div style="text-align: right;">
+                            <h:outputText value="#{subscriptionPlans.numOfRecipes}"/>
+                        </div>
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Delivery Day</f:facet>
+                        <h:outputText value="#{subscriptionPlans.deliveryDay.label}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Action</f:facet>
+                        <!--Hi oppa, pepe here, the managed bean for view subscription plan details isn't done yet!-->
+                        <h:commandLink value="View" actionListener="#{viewAllSubscriptionPlanManagedBean}"> 
+                            <f:attribute name="subscriptionPlanId" value="#{subscriptionPlans.subscriptionPlanId}" />
+                        </h:commandLink>
+                    </h:column>
+
+                </h:dataTable>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

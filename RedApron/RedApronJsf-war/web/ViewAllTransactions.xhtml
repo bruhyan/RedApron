@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml">
+
+
+    <ui:define name="content">
+        <div>
+            <h3>Transaction Management</h3>
+            <h:form id="formAllTransactions">
+                <p:dataTable id="dataTableAllTransactions" value="#{transactionManagedBean.transactionEntities}" var="transactionEntity" rowKey="#{transactionEntity.transactionId}" rowIndexVar="row"
+                             filteredValue="#{transactionManagedBean.filteredTransactionEntities}"
+                             rows="10" paginator="true" paginatorTemplate="" rowsPerPageTemplate="">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllTransactions').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    
+                    <p:column headerText="Transaction ID" sortBy="#{transactionEntity.transactionId}" filterBy="#{transactionEntity.transactionId}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.transactionId}" />
+                    </p:column>
+
+                    <p:column headerText="Plan ID" sortBy="#{transactionEntity.subscriptionPlan.subscriptionPlanId}" filterBy="#{transactionEntity.subscriptionPlan.subscriptionPlanId}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.subscriptionPlan.subscriptionPlanId}" />
+                    </p:column>                            
+
+                    <p:column headerText="Subscriber ID" sortBy="#{transactionEntity.subscriptionPlan.subscriber.subscriberId}" filterBy="#{transactionEntity.subscriptionPlan.subscriber.subscriberId}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.subscriptionPlan.subscriber.subscriberId}" />
+                    </p:column>
+                    
+                    <p:column headerText="First Name" sortBy="#{transactionEntity.subscriptionPlan.subscriber.firstName}" filterBy="#{transactionEntity.subscriptionPlan.subscriber.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.subscriptionPlan.subscriber.firstName}" />
+                    </p:column>
+
+                    <p:column headerText="Last Name" sortBy="#{transactionEntity.subscriptionPlan.subscriber.lastName}" filterBy="#{transactionEntity.subscriptionPlan.subscriber.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.subscriptionPlan.subscriber.lastName}" />
+                    </p:column>
+
+                    <p:column headerText="Amount" sortBy="#{transactionEntity.amount}" filterBy="#{transactionEntity.amount}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{transactionEntity.amount}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Payment Date" sortBy="#{transactionEntity.paymentDate}" filterBy="#{transactionEntity.paymentDate}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.paymentDate}" />
+                    </p:column>
+                    
+                    <p:column headerText="Payment Type" sortBy="#{transactionEntity.paymentType}" filterBy="#{transactionEntity.paymentType}" filterMatchMode="contains">
+                        <h:outputText value="#{transactionEntity.paymentType}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>  
+    </ui:define>
+
+</ui:composition>
+

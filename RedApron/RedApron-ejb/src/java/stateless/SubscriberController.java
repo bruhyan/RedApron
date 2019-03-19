@@ -6,6 +6,7 @@
 package stateless;
 
 import entity.Subscriber;
+import entity.SubscriptionPlan;
 import exceptions.SubscriberNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -27,18 +28,18 @@ public class SubscriberController implements SubscriberControllerLocal {
     }
 
     @Override
-    public Long createNewSubscriber(Subscriber newSubscriber) {
+    public Subscriber createNewSubscriber(Subscriber newSubscriber) {
         //check if subscriber already exist
         //if not then persist
         
         em.persist(newSubscriber);
         em.flush();
-        return newSubscriber.getSubscriberId();
+        return newSubscriber;
     }
     
     @Override
     public List<Subscriber> retrieveAllSubscribers() {
-        Query query = em.createQuery("SELECT s FROM Subscriber s ORDER BY s.subscriberId ");
+        Query query = em.createQuery("SELECT s FROM Subscriber s ORDER BY s.subscriberId");
         List<Subscriber> subscribers = query.getResultList();
         
         for(Subscriber subs:subscribers) {
@@ -87,6 +88,10 @@ public class SubscriberController implements SubscriberControllerLocal {
         //not complete
         
         em.remove(subscriberToDelete);
+        
+    }
+    
+    public void addPlanToSubscriber(Subscriber sub, SubscriptionPlan plan) {
         
     }
     

@@ -33,8 +33,8 @@ public class CreateNewSubscriberManagedBean {
     }
     
     public void createNewSubscriber() {
-        Long newSubscriberId = subscriberControllerLocal.createNewSubscriber(newSubscriber);
-        //Long newSubscriberId = newSubscriber.getSubscriberId();
+        newSubscriber = subscriberControllerLocal.createNewSubscriber(newSubscriber);
+        Long newSubscriberId = newSubscriber.getSubscriberId();
     
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New subscriber created successfully: " + newSubscriberId,"New subscriber created successfully: " + newSubscriberId ));
     }
