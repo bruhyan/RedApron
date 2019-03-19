@@ -12,6 +12,7 @@ import entity.Subscriber;
 import entity.SubscriptionPlan;
 import entity.Transaction;
 import enumeration.DeliveryDay;
+import enumeration.PaymentType;
 import enumeration.Role;
 import enumeration.SubscriptionPlanStatus;
 import exceptions.StaffNotFoundException;
@@ -111,39 +112,60 @@ public class DataInitialisation {
         Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "", "with Kombu & Peanuts", "", true)); //440 cal, 35 mins, vegeterian
         Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "", "with Carrot & Currant Rice", "", true)); // 590 cal, 25 mins
         
+        Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00,new Date(2019,3,10), PaymentType.MASTER));
+        Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00,new Date(2019,3,10), PaymentType.VISA));
+        Transaction transaction3 = transactionControllerLocal.createNewTransaction(new Transaction(35.00,new Date(2019,3,10), PaymentType.PAYPAL));
+
+
         //setting relation
         //test if object is managed here
         
+        //Plan -> Recipe (Subscriber chooses recipes in subscription plan)
         plan1.getRecipes().add(recipe1);
         plan2.getRecipes().add(recipe2);
         plan3.getRecipes().add(recipe7);
+        
+        //Plan -> Category (Subscriber creates a plan from categories)
         plan1.setCatergory(cat1);
         plan2.setCatergory(cat3);
         plan3.setCatergory(cat5);
+        
+        //Plan <- Category (Subscriber creates a plan from categories)
         cat1.getSubscriptionPlans().add(plan1);
-        cat2.getSubscriptionPlans().add(plan2);
-        cat3.getSubscriptionPlans().add(plan3);
+        cat3.getSubscriptionPlans().add(plan2);
+        cat5.getSubscriptionPlans().add(plan3);
+        
+        //Category -> Recipe (Categories have several recipes)
         cat1.getRecipes().add(recipe1);
         cat3.getRecipes().add(recipe2);
         cat5.getRecipes().add(recipe7);
+        
+        //Category <- Recipe (Categories have several recipes)
         recipe1.getCategories().add(cat1);
         recipe2.getCategories().add(cat3);
-        recipe3.getCategories().add(cat5);
+        recipe7.getCategories().add(cat5);
+        
+        //Subscriber -> Plan (Subscribers make plans)
         sub1.getSubscriptionPlans().add(plan1);
         sub1.getSubscriptionPlans().add(plan2);
         sub1.getSubscriptionPlans().add(plan3);
+        
+        //Subscriber <- Plan (Subscribers make plans)
         plan1.setSubscriber(sub1);
         plan2.setSubscriber(sub1);
         plan3.setSubscriber(sub1);
-        //transaction not created and set
         
-        
-        
-        //transactionControllerLocal.createNewTransaction(new Transaction());
-        
-        
-        
-        
+        //Transaction -> Plan 
+        transaction1.setSubscriptionPlan(plan1);
+        transaction2.setSubscriptionPlan(plan2);
+        transaction3.setSubscriptionPlan(plan3);
+
+        //Transaction <- Plan 
+        plan1.setTransaction(transaction1);
+        plan2.setTransaction(transaction2);
+        plan3.setTransaction(transaction3);
+
+  
     }
 
     public void persist(Object object) {

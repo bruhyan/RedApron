@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml">
+
+
+    <ui:define name="content">
+        <div>
+            <h3>View All Subscribers</h3>
+            <h:form id="formAllSubscribers">
+                <p:dataTable id="dataTableAllSubscribers" value="#{subscriberManagedBean.subscriberEntities}" var="subscriberEntity" rowKey="#{subscriberEntity.subscriberId}" rowIndexVar="row"
+                             filteredValue="#{subscriberManagedBean.filteredSubscriberEntities}"
+                             rows="10" paginator="true" paginatorTemplate="" rowsPerPageTemplate="">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllSubscribers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Subscriber ID" sortBy="#{subscriberEntity.subscriberId}" filterBy="#{subscriberEntity.subscriberId}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.subscriberId}" />
+                    </p:column>
+
+                    <p:column headerText="First Name" sortBy="#{subscriberEntity.firstName}" filterBy="#{subscriberEntity.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.firstName}" />
+                    </p:column>
+
+                    <p:column headerText="Last Name" sortBy="#{subscriberEntity.lastName}" filterBy="#{subscriberEntity.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.lastName}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{subscriberEntity.email}" filterBy="#{subscriberEntity.email}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.email}" />
+                    </p:column>
+
+                    <p:column headerText="Phone Number" sortBy="#{subscriberEntity.phoneNumber}" filterBy="#{subscriberEntity.phoneNumber}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.phoneNumber}" />
+                    </p:column>
+
+                    <p:column headerText="Addr 1" sortBy="#{subscriberEntity.addressLine1}" filterBy="#{subscriberEntity.addressLine1}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.addressLine1}" />
+                    </p:column>
+
+                    <p:column headerText="Addr 2" sortBy="#{subscriberEntity.addressLine2}" filterBy="#{subscriberEntity.addressLine2}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.addressLine2}" />
+                    </p:column>
+
+                    <p:column headerText="Postal Code" sortBy="#{subscriberEntity.postalCode}" filterBy="#{subscriberEntity.postalCode}" filterMatchMode="contains">
+                        <h:outputText value="#{subscriberEntity.postalCode}" />
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>  
+    </ui:define>
+
+</ui:composition>
+
