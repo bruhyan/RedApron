@@ -12,26 +12,26 @@
             <h3>All Categories</h3>
 
             <h:form>
-                <h:dataTable value="#{viewAllSubscriptionPlanManagedBean}" var="subscriptionPlans" style="width: 100%;">
+                <h:dataTable value="#{viewAllCategoriesManagedbean.categories}" var="category" style="width: 100%;">
 
                     <h:column>			
                         <f:facet name = "header">ID</f:facet>
-                        <h:outputText value="#{subscriptionPlans.subscriptionPlanId}" />
+                        <h:outputText value="#{category.categoryId}" />
                     </h:column>
 
                     <h:column>    				
-                        <f:facet name = "header">Category</f:facet>
-                        <h:outputText value="#{subscriptionPlans.catergory.name}" />
+                        <f:facet name = "header">Name</f:facet>
+                        <h:outputText value="#{catergory.name}" />
                     </h:column>
 
                     <h:column>    				
-                        <f:facet name = "header">Validity Start</f:facet>
-                        <h:outputText value="#{subscriptionPlans.startDate}" />
+                        <f:facet name = "header">Price</f:facet>
+                        <h:outputText value="#{category.price}" />
                     </h:column>
 
                     <h:column>    				
-                        <f:facet name = "header">Validity End</f:facet>
-                        <h:outputText value="#{subscriptionPlans.endDate}" />
+                        <f:facet name = "header">Availability</f:facet>
+                        <h:outputText value="#{category.isAvailable}" />
                     </h:column>
 
                     <h:column>    				
