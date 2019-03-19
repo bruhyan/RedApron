@@ -9,7 +9,7 @@
     <property name="User" value="root"/>
 
 
-    <property name="Password" value="B_koh2196"/>
+    <property name="Password" value="password"/>
 
     <property name="autoConnect" value="true"/>
     <property name="useSSL" value="false"/>

@@ -38,11 +38,11 @@
                                                     <h:outputText value="Login as an Admin" /> 
 
                                                     <div class="ui-g-6 input-field">
-                                                        <h:inputText id="username" value = "#{staffLoginManagedBean.email}" required="true" requiredMessage="Username is required!"/>
-                                                        <h:outputLabel for="username" value="Username"/>
+                                                        <h:inputText id="email" value = "#{staffLoginManagedBean.email}" required="true" requiredMessage="Email is required!"/>
+                                                        <h:outputLabel for="email" value="Email"/>
                                                     </div>
                                                     <div class="ui-g-6 input-field">
-                                                        <h:inputText id="password" value = "#{staffLoginManagedBean.password}" required="true" requiredMessage="Password is required!"/>
+                                                        <h:inputSecret id="password" value = "#{staffLoginManagedBean.password}" required="true" requiredMessage="Password is required!"/>
                                                         <h:outputLabel for="password" value="Password"/>
                                                     </div>
                                                     <div class="col s12 input-field">
