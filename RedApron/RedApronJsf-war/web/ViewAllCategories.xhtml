@@ -1,51 +1,50 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                template="./template/defaultTemplate.xhtml">
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
         <div>
             <h3>All Categories</h3>
 
             <h:form>
-                <h:dataTable value="#{viewAllCategoriesManagedbean.categories}" var="category" style="width: 100%;">
+                <p:dataTable value="#{viewAllCategoriesManagedbean.categories}" var="category" style="width: 100%;">
 
-                    <h:column>			
+                    <p:column>			
                         <f:facet name = "header">ID</f:facet>
                         <h:outputText value="#{category.categoryId}" />
-                    </h:column>
+                    </p:column>
 
-                    <h:column>    				
+                    <p:column>    				
                         <f:facet name = "header">Name</f:facet>
-                        <h:outputText value="#{catergory.name}" />
-                    </h:column>
+                        <h:outputText value="#{category.name}" />
+                    </p:column>
 
-                    <h:column>    				
+                    <p:column>    				
                         <f:facet name = "header">Price</f:facet>
                         <h:outputText value="#{category.price}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
-                    </h:column>
+                    </p:column>
 
-                    <h:column>    				
+                    <p:column>    				
                         <f:facet name = "header">Availability</f:facet>
                         <h:outputText value="#{category.isAvailable}" />
-                    </h:column>
+                    </p:column>
 
 
 
-                    <h:column>    				
+                    <p:column>    				
                         <f:facet name = "header">Action</f:facet>
                         <h:commandLink value="View" actionListener="#{viewAllCategoriesManagedbean.viewDetails()}"> 
                             <f:attribute name="subscriptionPlanId" value="#{category.categoryId}" />
                         </h:commandLink>
-                    </h:column>
+                    </p:column>
 
-                </h:dataTable>
+                </p:dataTable>
             </h:form>
         </div>
 
