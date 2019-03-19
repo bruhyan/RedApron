@@ -11,40 +11,285 @@
             <h3>All Categories</h3>
 
             <h:form>
-                <p:dataTable value="#{viewAllCategoriesManagedbean.categories}" var="category" style="width: 100%;">
 
-                    <p:column>			
-                        <f:facet name = "header">ID</f:facet>
+                
+
+                   
+                <p:button value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="fa fa-plus" />
+                                                        
+
+                
+                <br/>
+
+            </h:form>
+            <h:form id="categoryForm">
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="categoriesDataTable" widgetVar="dataTableAllCategories" value="#{categoryManagementManagedBean.categories}" var="category" rowKey="#{category.categoryId}" 
+                             emptyMessage="Sorry, no categories were found with given criteria!" rowIndexVar="row" style="width: 100%;" filteredValue="#{categoryManagementManagedBean.filteredCategoryEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllCategories').filter(), console.log('${categoryManagementManagedBean.filteredCategoryEntities}')" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{category.categoryId}" filterBy="#{category.categoryId}" filterMatchMode="contains">			
+
                         <h:outputText value="#{category.categoryId}" />
                     </p:column>
 
-                    <p:column>    				
-                        <f:facet name = "header">Name</f:facet>
+                    <p:column headerText="Name" sortBy="#{category.name}" filterBy="#{category.name}" filterMatchMode="contains">    				
+
                         <h:outputText value="#{category.name}" />
                     </p:column>
 
-                    <p:column>    				
-                        <f:facet name = "header">Price</f:facet>
+                    <p:column headerText="Price" sortBy="#{category.price}" filterBy="#{category.price}" filterMatchMode="contains">    				
+
                         <h:outputText value="#{category.price}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column>    				
-                        <f:facet name = "header">Availability</f:facet>
-                        <h:outputText value="#{category.isAvailable}" />
+                    <p:column headerText="Availability" sortBy="#{category.isAvailable}" filterBy="#{category.isAvailable}" filterMatchMode="equals">    				
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('dataTableAllCategories').filter()" styleClass="custom-filter">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="All" itemValue="" />
+                                <f:selectItem itemLabel="Available" itemValue="true" />
+                                <f:selectItem itemLabel="Unvailable" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{category.isAvailable ? 'Available' : 'Unavailable'}" />
                     </p:column>
 
 
 
-                    <p:column>    				
-                        <f:facet name = "header">Action</f:facet>
-                        <h:commandLink value="View" actionListener="#{viewAllCategoriesManagedbean.viewDetails()}"> 
-                            <f:attribute name="subscriptionPlanId" value="#{category.categoryId}" />
-                        </h:commandLink>
+                    <p:column headerText="Action" >
+                        <p:commandButton update="viewCategoryForm" oncomplete="PF('dialogViewCategory').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{category}" target="#{categoryManagementManagedBean.selectedCategoryToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{categoryManagementManagedBean.doUpdateCategory}" update="updateCategoryForm" oncomplete="PF('dialogUpdateCategory').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="categoryToUpdate" value="#{category}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{categoryManagementManagedBean.deleteCategory}" update="categoryForm:messages">
+                            <f:attribute name="categoryToDelete" value="#{category}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{category.name} (Category ID: #{category.categoryId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
+            </h:form>
+
+
+            <h:form id="addCategoryForm">
+
+                <p:dialog id="dialogCreateNewCategory" widgetVar="dialogCreateNewCategory" header="Create New Category" closable="true">
+
+                    <p:messages id="messagesCreateNewCategory" redisplay="false" />
+
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Create a new Category</h2>
+                            </div>
+
+                            <div class="card-body">
+
+                                <p:panelGrid columns="2">
+
+
+                                    <p:outputLabel for="name" value="Name">&nbsp;&nbsp;<i class="fa fa-lightbulb"></i></p:outputLabel>
+                                    <p:inputText id="name" value="#{categoryManagementManagedBean.newCategory.name}"/>
+
+                                    <p:outputLabel for="price" value="price" >&nbsp;&nbsp;<i class="fa fa-money-bill-alt"></i></p:outputLabel>
+                                    <p:inputNumber id="price" value="#{categoryManagementManagedBean.newCategory.price}" decimalPlaces="2"/>
+
+                                    <p:outputLabel for="available"  value="Preferences">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
+                                    <p:selectOneRadio id="available" value="#{categoryManagementManagedBean.newCategory.isAvailable}">
+                                        <f:selectItem itemValue="True" itemLabel="True"></f:selectItem>
+                                        <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
+                                    </p:selectOneRadio>
+
+
+                                </p:panelGrid>
+
+                                <p:messages id="message" showDetail="true" closable="true">
+                                    <p:autoUpdate />
+                                </p:messages>
+
+                            </div>
+
+
+
+
+                            <div class="card-footer">
+
+                                <p:commandButton value="Submit" action="#{createNewSubscriptionPlanManagedBean.createNewSubscriptionPlan()}" iconPos="right" icon="fa fa-check-circle"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="viewCategoryForm">
+
+                <p:dialog id="dialogViewCategory" widgetVar="dialogViewCategory" header="View Category" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Category ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.categoryId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.name}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Price: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.price}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Availability: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.isAvailable}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Recipes:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.recipes}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Subscription Plans: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans}" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="updateCategoryForm">
+
+                <p:dialog id="dialogUpdateCategory" widgetVar="dialogUpdateCategory" header="Update Category" closable="true">
+
+                    <p:messages id="messagesUpdateCategory" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Category ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToUpdate.categoryId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{categoryManagementManagedBean.selectedCategoryToUpdate.name}" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="price" value="Price: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="price" value="#{categoryManagementManagedBean.selectedCategoryToUpdate.price}" required="true" requiredMessage="Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="price" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="setAvailability" value="Availability:" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneRadio id="setAvailability" value="#{categoryManagementManagedBean.newCategory.isAvailable}">
+                                    <f:selectItem itemValue="True" itemLabel="True"></f:selectItem>
+                                    <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
+                                </p:selectOneRadio>
+
+                            </p:column>
+                            <p:column>
+                                <p:message for="setAvailability" />
+                            </p:column>
+                        </p:row>
+
+                        <!--                        <p:row>
+                                                    <p:column>
+                                                        <p:outputLabel for="recipes" value="Recipes: " />
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:selectManyMenu id="recipes" value="#{productManagementManagedBean.tagIdsStringUpdate}" showCheckbox="true">
+                                                            <f:selectItems value="#{categoryManagementManagedBean.recipes}" var="recipes" itemValue="#{recipes.recipeId}" itemLabel="#{tagEntity.name}" />
+                                                        </p:selectManyMenu>                            
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="recipes" />
+                                                    </p:column>-->
+                        <!--</p:row>-->
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Product" update="" actionListener="#{categoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
             </h:form>
         </div>
 
