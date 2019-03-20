@@ -12,6 +12,7 @@
             <h3>Staff Management</h3>
             
                 <h:form id="formAllStaffs">
+                    <p:messages id="messages" redisplay="false" closable="true" />
                     <p:dataTable id="dataTableAllStaffs" value="#{staffManagementManagedBean.staffEntities}" var="staffEntity" rowKey="#{staffEntity.staffId}" rowIndexVar="row"
                                  filteredValue="#{staffManagementManagedBean.filteredStaffEntities}"
                                  rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
@@ -55,9 +56,21 @@
                             <p:commandButton actionListener="#{staffManagementManagedBean.doUpdateStaff}" update="formUpdateStaff" oncomplete="PF('dialogUpdateStaff').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="staffEntityToUpdate" value="#{staffEntity}" />
                             </p:commandButton>
+                            
+                            <p:commandButton icon="ui-icon-trash" actionListener="#{staffManagementManagedBean.deleteStaff}" update="formAllStaffs:dataTableAllStaffs formAllStaffs:messages">
+                                <f:attribute name="staffEntityToDelete" value="#{staffEntity}" />
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{staffEntity.firstName} #{staffEntity.lastName} (Staff Id: #{staffEntity.staffId})?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            
                         </p:column>
 
                     </p:dataTable>
+                    
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
                 </h:form>
                 
                 <h:form id="formViewStaff">

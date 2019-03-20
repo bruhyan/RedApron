@@ -74,6 +74,27 @@ public class StaffManagementManagedBean implements Serializable{
         }
     }
     
+    public void deleteStaff(ActionEvent event)
+    {
+        try
+        {
+            Staff staffEntityToDelete = (Staff)event.getComponent().getAttributes().get("staffEntityToDelete");
+            staffControllerLocal.deleteStaff(staffEntityToDelete.getStaffId());
+            
+            staffEntities.remove(staffEntityToDelete);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff deleted successfully", null));
+        }
+        catch(StaffNotFoundException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting staff: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
     public Staff getStaff() {
         return newStaff;
     }
