@@ -35,5 +35,7 @@ public interface StaffControllerLocal {
     public Staff staffLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public Staff createNewStaff(Staff staff);
+
+    public void updateStaff(Staff staff) throws StaffNotFoundException;
     
 }

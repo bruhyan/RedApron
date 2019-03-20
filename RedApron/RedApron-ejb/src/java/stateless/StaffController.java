@@ -109,6 +109,21 @@ public class StaffController implements StaffControllerLocal {
         em.remove(staff);
     }
     
+    @Override
+    public void updateStaff(Staff staff) throws StaffNotFoundException{
+        Staff staffToUpdate = retrieveStaffById(staff.getStaffId());
+        if (staffToUpdate != null)
+        {
+            staffToUpdate.setFirstName(staff.getFirstName());
+            staffToUpdate.setLastName(staff.getLastName());
+            staffToUpdate.setRole(staff.getRole());
+            staffToUpdate.setEmail(staff.getEmail());
+            staffToUpdate.setPassword(staff.getPassword());
+            
+            em.merge(staffToUpdate);
+        }
+    }
+    
      @Override
     public Staff staffLogin(String email, String password) throws InvalidLoginCredentialException
     {

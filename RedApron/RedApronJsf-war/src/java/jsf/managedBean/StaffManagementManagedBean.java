@@ -6,14 +6,17 @@
 package jsf.managedBean;
 
 import entity.Staff;
+import exceptions.StaffNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import stateless.StaffControllerLocal;
 
 /**
@@ -21,8 +24,8 @@ import stateless.StaffControllerLocal;
  * @author MX
  */
 @Named(value = "staffManagementManagedBean")
-@RequestScoped
-public class StaffManagementManagedBean {
+@ViewScoped
+public class StaffManagementManagedBean implements Serializable{
 
     @EJB
     private StaffControllerLocal staffControllerLocal;
@@ -30,6 +33,8 @@ public class StaffManagementManagedBean {
     private Staff newStaff;
     private List <Staff> staffEntities;
     private List <Staff> filteredStaffEntities;
+    private Staff selectedStaffEntityToView;
+    private Staff selectedStaffEntityToUpdate;
     
     public StaffManagementManagedBean() {
         newStaff = new Staff();
@@ -44,6 +49,29 @@ public class StaffManagementManagedBean {
         Long staffIdToView = (Long) event.getComponent().getAttributes().get("staffId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("staffIdToView", staffIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllStaffs.xhtml");
+    }
+    
+    public void doUpdateStaff(ActionEvent event)
+    {
+        selectedStaffEntityToUpdate = (Staff)event.getComponent().getAttributes().get("staffEntityToUpdate");
+    }
+    
+    public void updateStaff(ActionEvent event)
+    {
+        try
+        {
+            staffControllerLocal.updateStaff(selectedStaffEntityToUpdate);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff updated successfully", null));
+        }
+        catch(StaffNotFoundException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating staff: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
     }
     
     public Staff getStaff() {
@@ -70,6 +98,22 @@ public class StaffManagementManagedBean {
 
     public void setFilteredStaffEntities(List <Staff> filteredStaffEntities) {
         this.filteredStaffEntities = filteredStaffEntities;
+    }
+
+    public Staff getSelectedStaffEntityToView() {
+        return selectedStaffEntityToView;
+    }
+
+    public void setSelectedStaffEntityToView(Staff selectedStaffEntityToView) {
+        this.selectedStaffEntityToView = selectedStaffEntityToView;
+    }
+
+    public Staff getSelectedStaffEntityToUpdate() {
+        return selectedStaffEntityToUpdate;
+    }
+
+    public void setSelectedStaffEntityToUpdate(Staff selectedStaffEntityToUpdate) {
+        this.selectedStaffEntityToUpdate = selectedStaffEntityToUpdate;
     }
     
 }
