@@ -67,7 +67,16 @@ public class CategoryController implements CategoryControllerLocal {
     {
         Query query = em.createQuery("SELECT c FROM Category c");
         
-        return query.getResultList();
+        List<Category> categories = query.getResultList();
+        
+          for(Category category:categories)
+        {
+            category.getRecipes().size();
+            category.getSubscriptionPlans().size();
+            
+        }
+        
+        return categories;
     }
     
     @Override

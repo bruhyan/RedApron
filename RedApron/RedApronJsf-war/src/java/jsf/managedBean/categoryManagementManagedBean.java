@@ -7,16 +7,16 @@ package jsf.managedBean;
 
 import entity.Category;
 import entity.Recipe;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import stateless.CategoryControllerLocal;
 import stateless.RecipeControllerLocal;
 
@@ -25,8 +25,8 @@ import stateless.RecipeControllerLocal;
  * @author mdk12
  */
 @Named(value = "categoryManagementManagedBean")
-@RequestScoped
-public class categoryManagementManagedBean {
+@ViewScoped
+public class categoryManagementManagedBean implements Serializable {
 
     @EJB(name = "CategoryControllerLocal")
     private CategoryControllerLocal categoryControllerLocal;
@@ -54,6 +54,7 @@ public class categoryManagementManagedBean {
     @PostConstruct
     public void postConstruct() {
         this.categories = categoryControllerLocal.retrieveAllCategories();
+        
         this.recipes = recipeControllerLocal.retrieveAllRecipes();
     }
 

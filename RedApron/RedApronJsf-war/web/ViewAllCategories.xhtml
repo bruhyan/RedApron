@@ -12,13 +12,13 @@
 
             <h:form>
 
-                
 
-                   
-                <p:button value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="fa fa-plus" />
-                                                        
 
-                
+
+                <p:commandButton value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="fa fa-plus" />
+
+
+
                 <br/>
 
             </h:form>
@@ -186,16 +186,22 @@
                                 <h:outputLabel value="Recipes:" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.recipes}"/>
+                                <p:dataList styleClass="borderless" value="#{categoryManagementManagedBean.selectedCategoryToView.recipes}" var="recipe" type="unordered">
+                                    #{recipe.name}
+                                </p:dataList>
                             </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Subscription Plans: " />
+                                <br/>
+                                <h:outputLabel value="Total: #{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans.size()}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans}" />
+                                <p:dataList styleClass="borderless" value="#{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans}" var="subscriptionplans" type="unordered">
+                                    Plan Id: #{subscriptionplans.subscriptionPlanId} Customer's Email: #{subscriptionplans.subscriber.email}
+                                </p:dataList>
                             </p:column>
                         </p:row>
 
