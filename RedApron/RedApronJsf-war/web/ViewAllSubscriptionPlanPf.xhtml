@@ -8,8 +8,18 @@
     
         <ui:define name="content">
             <div>
+                <h3>Subscription Plans</h3>
+                
+                <h:form>
+                    <p:menu>
+                        <p:submenu label="File" icon="ui-icon-document">
+                            <p:menuitem value="Create New Plan" onclick="PF('dialogCreateNewPlan').show()" icon="fa fa-plus"/>
+                        </p:submenu>
+                    </p:menu>
+                    <br/>
+                </h:form>
                 <h:form id="allSubscriptionPlans">
-                    <p:dataTable id="dataTableAllSubscriptions" value="#{viewAllSubscriptionPlanManagedBean.subscriptionPlans}" var="subscriptionPlan" rowKey="#{subscriptionPlan.subscriptionPlanId}" rowIndexVar="row"
+                    <p:dataTable id="dataTableAllSubscriptions" value="#{subscriptionPlanManagedBean.subscriptionPlans}" var="subscriptionPlan" rowKey="#{subscriptionPlan.subscriptionPlanId}" rowIndexVar="row"
                                  filteredValue=""
                                  rows="10" paginator="true" paginatorTemplate="">
                         
@@ -76,6 +86,146 @@
                         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                     </p:confirmDialog>
+                </h:form>
+                
+                <!--Form to capture new plan inputs-->
+                <h:form id="formCreateNewPlan">
+                    <p:dialog id="dialogCreateNewPlan" widgetVar="dialogCreateNewPlan" header="Create New Plan" closable="true">
+                        <p:messages id="messagesCreateNewPlan" redisplay="false"/>
+                        <p:panelGrid>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="startDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.startDate}" required="true" requiredMessage="Start Date is Required"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="startDate"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="endDate" value="End Date: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="endDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.endDate}" required="true" requiredMessage="End Date is Required"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="endDate"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="preferences" value="Preferneces: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="preferences" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.preferences}" required="true" requiredMessage="Preference is Required"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="preferences"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <!--<p:row>
+                                <p:column>
+                                    <p:outputLabel for="numOfWeeks" value="No. of Weeks: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="numOfWeeks" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.numOfWeeks}" required="true" requiredMessage="Number of Weeks is Required"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="numOfWeeks"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="numOfRecipes" value="No. of Recipes: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="numOfRecipes" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.numOfRecipes}" required="true" requiredMessage="Number of Recipes is Required"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="numOfRecipes"/>
+                                </p:column>
+                            </p:row>-->
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="status" value="Status: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="status" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.status}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true"/>
+                                        <f:selectItems value="#{subscriptionPlanManagedBean.statusValues}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="status"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="deliveryDay" value="Delivery Day: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="deliveryDay" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.deliveryDay}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true"/>
+                                        <f:selectItems value="#{subscriptionPlanManagedBean.deliveryDayValues}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="deliveryDay"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="selSubscriber" value="Subscriber: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selSubscriber" value="#{subscriptionPlanManagedBean.newSubscriberId}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true"/>
+                                        <f:selectItems value="#{subscriptionPlanManagedBean.subscribers}" var="subscriber" itemValue="#{subscriber.subscriberId}" itemLabel="#{subscriber.email}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="selSubscriber"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selCategory" value="#{subscriptionPlanManagedBean.newCategoryId}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true"/>
+                                        <f:selectItems value="#{subscriptionPlanManagedBean.categoryList}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="selCategory"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton type="reset" value="Clear"/>
+                                    <p:commandButton value="Create New Plan" update="@form allSubscriptionPlans:dataTableAllSubscriptions" actionListener="#{subscriptionPlanManagedBean.createNewPlan}" oncomplete="PF('dialogCreateNewPlan').show();"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            
+                            
+                        </p:panelGrid>
+                    </p:dialog>
                 </h:form>
             </div>
         </ui:define>
