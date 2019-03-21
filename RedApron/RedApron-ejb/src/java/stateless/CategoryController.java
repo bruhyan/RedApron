@@ -116,18 +116,14 @@ public class CategoryController implements CategoryControllerLocal {
     }
 
     @Override
-    public void updateCategory(Category category) {
+    public void updateCategory(Category category) throws CategoryNotFoundException {
 
-        try {
+        Category categoryToUpdate = retrieveCategoryById(category.getCategoryId());
 
-            Category categoryToUpdate = retrieveCategoryById(category.getCategoryId());
+        categoryToUpdate.setIsAvailable(category.getIsAvailable());
+        categoryToUpdate.setName(category.getName());
+        categoryToUpdate.setPrice(category.getPrice());
 
-            categoryToUpdate.setIsAvailable(category.getIsAvailable());
-            categoryToUpdate.setName(category.getName());
-            categoryToUpdate.setPrice(category.getPrice());
-        } catch (CategoryNotFoundException ex) {
-            System.out.println("Category does not exist!");
-        }
     }
 
 }

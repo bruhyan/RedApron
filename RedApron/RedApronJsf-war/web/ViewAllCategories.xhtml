@@ -283,23 +283,9 @@
                             </p:column>
                         </p:row>
 
-                        <!--                        <p:row>
-                                                    <p:column>
-                                                        <p:outputLabel for="recipes" value="Recipes: " />
-                                                    </p:column>
-                                                    <p:column>
-                                                        <p:selectManyMenu id="recipes" value="#{productManagementManagedBean.tagIdsStringUpdate}" showCheckbox="true">
-                                                            <f:selectItems value="#{categoryManagementManagedBean.recipes}" var="recipes" itemValue="#{recipes.recipeId}" itemLabel="#{tagEntity.name}" />
-                                                        </p:selectManyMenu>                            
-                                                    </p:column>
-                                                    <p:column>
-                                                        <p:message for="recipes" />
-                                                    </p:column>-->
-                        <!--</p:row>-->
-
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Product" update="@form categoryForm:categoriesDataTable" actionListener="#{categoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
+                                <p:commandButton value="Update Category" update="@form categoryForm:categoriesDataTable" actionListener="#{categoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
                             </p:column>
                         </p:row>
 

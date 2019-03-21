@@ -16,9 +16,17 @@ import javax.ejb.Local;
  */
 @Local
 public interface EnquiryControllerLocal {
-    
-     public Enquiry persist(Enquiry enquiry);
-     public Enquiry retrieveEnquiryById(Long enquiryId) throws EnquiryNotFoundException;
+
+    public Enquiry createNewEnquiry(Enquiry enquiry);
+
+    public Enquiry retrieveEnquiryById(Long enquiryId) throws EnquiryNotFoundException;
+
     public List<Enquiry> retrieveEnquiryBySubscriber(Long subscriberId);
-    
+
+    public List<Enquiry> retrieveAllEnquiries();
+
+    public void deleteEnquiry(Long enquiryId) throws EnquiryNotFoundException;
+
+    public void updateEnquiry(Enquiry enquiry) throws EnquiryNotFoundException;
+
 }

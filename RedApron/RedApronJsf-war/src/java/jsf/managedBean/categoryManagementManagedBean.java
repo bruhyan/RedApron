@@ -54,7 +54,6 @@ public class categoryManagementManagedBean implements Serializable {
 
     public categoryManagementManagedBean() {
         this.newCategory = new Category();
-        this.categories = new ArrayList<>();
     }
 
     @PostConstruct
@@ -75,13 +74,9 @@ public class categoryManagementManagedBean implements Serializable {
     public void createNewCategory(ActionEvent event) {
 
         try {
-
-            System.out.println(newRecipeChoices.getTarget());
-
             Category category = categoryControllerLocal.createNewCategory(newCategory);
 
             for (Recipe recipe : newRecipeChoices.getTarget()) {
-                System.out.println(recipe);
                 Recipe temp = recipeControllerLocal.retrieveRecipeById(recipe.getRecipeId());
                 temp.getCategories().add(category);
                 category.getRecipes().add(temp);
@@ -103,12 +98,11 @@ public class categoryManagementManagedBean implements Serializable {
 
         try {
             Category categoryToDelete = (Category) event.getComponent().getAttributes().get("categoryToDelete");
-            System.out.println(categoryToDelete + " deleting");
             categoryControllerLocal.deleteCategory(categoryToDelete.getCategoryId());
 
             categories.remove(categoryToDelete);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category deleted successfully", null));
         } catch (CategoryNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
@@ -116,15 +110,17 @@ public class categoryManagementManagedBean implements Serializable {
 
     public void doUpdateCategory(ActionEvent event) {
         selectedCategoryToUpdate = (Category) event.getComponent().getAttributes().get("categoryToUpdate");
-
-        //fix later
     }
 
     public void updateCategory(ActionEvent event) {
 
-        categoryControllerLocal.updateCategory(selectedCategoryToUpdate);
+        try {
+            categoryControllerLocal.updateCategory(selectedCategoryToUpdate);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category updated successfully", null));
+        } catch (CategoryNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
     }
 
     public List<Recipe> getRecipes() {

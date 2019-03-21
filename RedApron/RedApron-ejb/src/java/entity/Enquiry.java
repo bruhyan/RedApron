@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
  *
@@ -25,6 +28,9 @@ public class Enquiry implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long enquiryId;
     private String text;
+    private Date created;
+    private Date updated;
+    
     
     @ManyToOne
     private Subscriber subscriber;
@@ -40,7 +46,21 @@ public class Enquiry implements Serializable {
         this.text = text;
         this.subscriber = subscriber;
     }
-
+    
+    @PrePersist
+    protected void onCreate(){
+        this.created = new Date();
+    }
+    
+    @PreUpdate
+    protected void onUpdate(){
+        this.updated = new Date();
+    }
+    
+    
+    
+    
+    
     public Answer getAnswer() {
         return answer;
     }
@@ -97,6 +117,22 @@ public class Enquiry implements Serializable {
     @Override
     public String toString() {
         return "entity.Enquiry[ id=" + enquiryId + " ]";
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
     
 }

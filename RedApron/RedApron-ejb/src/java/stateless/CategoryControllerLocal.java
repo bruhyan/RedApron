@@ -36,6 +36,6 @@ public interface CategoryControllerLocal {
 
     public void deleteCategory(Long id) throws CategoryNotFoundException;
 
-    public void updateCategory(Category category);
+    public void updateCategory(Category category) throws CategoryNotFoundException;
     
 }

@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+        <div>
+            <h3>All Enquiries</h3>
+
+            <h:form>
+
+
+
+
+                <p:commandButton value="Create New Enquiry" onclick="PF('dialogCreateNewEnquiry').show()" icon="fa fa-plus" />
+
+
+
+                <br/>
+
+            </h:form>
+            <h:form id="enquiryForm">
+                <p:messages id="mainMessages" redisplay="false" closable="true" />
+
+                <p:dataTable id="enquiriesDataTable" widgetVar="dataTableAllEnquiries" value="#{enquiryManagementManagedBean.enquiries}" var="enquiry" rowKey="#{enquiry.enquiryId}" 
+                             emptyMessage="Sorry, no enquiries were found with given criteria!" rowIndexVar="row" style="width: 100%;" filteredValue="#{enquiryManagementManagedBean.filteredEnquiriesEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllEnquiries').filter(), console.log('${enquiryManagementManagedBean.filteredEnquiriesEntities}')" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{enquiry.enquiryId}" filterBy="#{enquiry.enquiryId}" filterMatchMode="contains">			
+
+                        <h:outputText value="#{enquiry.enquiryId}" />
+                    </p:column>
+
+                    <p:column headerText="Subscriber" sortBy="#{enquiry.subscriber.email}" filterBy="#{enquiry.subscriber.email}" filterMatchMode="contains">    				
+
+                        <h:outputText value="#{enquiry.subscriber.email}" />
+                    </p:column>
+
+                    <p:column headerText="Answered By Staff" sortBy="#{enquiry.answer.staff.email}" filterBy="#{enquiry.answer.staff.email}" filterMatchMode="contains">    				
+
+                        <h:outputText value="#{enquiry.answer.staff == null ? 'Not answered yet' : enquiry.answer.staff.email}" />
+
+                    </p:column>
+
+                    <p:column headerText="Created" sortBy="#{enquiry.created}" filterBy="#{enquiry.created}" filterMatchMode="equals">    				
+                        <h:outputText value="#{enquiry.created}" />
+                    </p:column>
+
+
+                    <p:column headerText="Updated" sortBy="#{enquiry.updated}" filterBy="#{enquiry.updated}" filterMatchMode="contains">    				
+
+                        <h:outputText value="#{enquiry.updated == null ? 'Not updated yet' : enquiry.updated}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="viewEnquiryForm" oncomplete="PF('dialogViewEnquiry').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{enquiry}" target="#{enquiryManagementManagedBean.selectedEnquiryToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{enquiryManagementManagedBean.doUpdateEnquiry}" update="updateEnquiryForm" oncomplete="PF('dialogUpdateEnquiry').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="enquiryToUpdate" value="#{enquiry}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash"  actionListener="#{enquiryManagementManagedBean.deleteEnquiry}" update="enquiryForm:enquiriesDataTable enquiryForm:mainMessages">
+                            <f:attribute name="enquiryToDelete" value="#{enquiry}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete this enquiry? (Enquiry ID: #{enquiry.enquiryId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+
+            <h:form id="addEnquiryForm">
+
+                <p:dialog id="dialogCreateNewEnquiry" widgetVar="dialogCreateNewEnquiry" header="Create New Enquiry" closable="true">
+
+                    <p:messages id="messagesCreateNewEnquiry" redisplay="false" />
+
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Create a new Enquiry</h2>
+                            </div>
+
+                            <div class="card-body">
+
+                                <p:panelGrid columns="2">
+
+
+                                    <p:outputLabel for="text" value="Enquiry">&nbsp;&nbsp;<i class="fa fa-lightbulb"></i></p:outputLabel>
+                                    <p:inputText id="text" value="#{enquiryManagementManagedBean.newEnquiry.text}"/>
+
+                                    <p:outputLabel for="answer" value="Answer" >&nbsp;&nbsp;<i class="fa fa-money-bill-alt"></i></p:outputLabel>
+                                    <p:inputNumber id="answer" value="#{enquiryManagementManagedBean.newEnquiry.answer}" decimalPlaces="2"/>
+
+
+                                </p:panelGrid>
+
+                                <p:messages id="message" showDetail="true" closable="true">
+                                    <p:autoUpdate />
+                                </p:messages>
+
+                            </div>
+
+
+
+
+                            <div class="card-footer">
+
+                                <p:commandButton value="Submit"  update="@form :enquiryForm:enquiriesDataTable" actionListener="#{enquiryManagementManagedBean.createNewEnquiry}" iconPos="right" icon="fa fa-check-circle"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="viewEnquiryForm">
+
+                <p:dialog id="dialogViewEnquiry" widgetVar="dialogViewEnquiry" header="View Enquiry" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Enquiry " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{enquiryManagementManagedBean.selectedEnquiryToView.text}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Answer" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{enquiryManagementManagedBean.selectedEnquiryToView.answer.text}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Answered By Staff ID :" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{enquiryManagementManagedBean.selectedEnquiryToView.answer.staff.email}" />
+                            </p:column>
+                        </p:row>
+
+
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="updateEnquiryForm">
+
+                <p:dialog id="dialogUpdateEnquiry" widgetVar="dialogUpdateEnquiry" header="Update Enquiry" closable="true">
+
+                    <p:messages id="messagesUpdateEnquiry" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Enquiry ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{enquiryManagementManagedBean.enquiryToUpdate.enquiryId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="textUpdate" value="Enquiry " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="textUpdate" value="#{enquiryManagementManagedBean.enquiryToUpdate.text}" required="true" requiredMessage="Text is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="textUpdate" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="answerUpdate" value="Answer" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="answerUpdate" value="#{enquiryManagementManagedBean.enquiryToUpdate.answer.text}" required="true" requiredMessage="Answer is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="answerUpdate" />
+                            </p:column>
+                        </p:row>
+
+
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Enquiry" update="@form enquiryForm:enquiriesDataTable" actionListener="#{enquiryManagementManagedBean.updateEnquiry}" oncomplete="PF('dialogUpdateEnquiry').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
