@@ -12,13 +12,13 @@
 
             <h:form>
 
-                
 
-                   
-                <p:button value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="fa fa-plus" />
-                                                        
 
-                
+
+                <p:commandButton value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="fa fa-plus" />
+
+
+
                 <br/>
 
             </h:form>
@@ -66,6 +66,10 @@
                     </p:column>
 
 
+                    <p:column headerText="Subscription Count:" sortBy="#{category.subscriptionPlans.size()}" filterBy="#{category.subscriptionPlans.size()}" filterMatchMode="contains">    				
+                  
+                        <h:outputText value="#{category.subscriptionPlans.size()}" />
+                    </p:column>
 
                     <p:column headerText="Action" >
                         <p:commandButton update="viewCategoryForm" oncomplete="PF('dialogViewCategory').show()" icon="ui-icon-document" title="View">
@@ -107,7 +111,7 @@
                                     <p:outputLabel for="price" value="price" >&nbsp;&nbsp;<i class="fa fa-money-bill-alt"></i></p:outputLabel>
                                     <p:inputNumber id="price" value="#{categoryManagementManagedBean.newCategory.price}" decimalPlaces="2"/>
 
-                                    <p:outputLabel for="available"  value="Preferences">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
+                                    <p:outputLabel for="available"  value="Availability">&nbsp;&nbsp;<i class="fa fa-flag"></i></p:outputLabel>
                                     <p:selectOneRadio id="available" value="#{categoryManagementManagedBean.newCategory.isAvailable}">
                                         <f:selectItem itemValue="True" itemLabel="True"></f:selectItem>
                                         <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
@@ -127,7 +131,7 @@
 
                             <div class="card-footer">
 
-                                <p:commandButton value="Submit" action="#{createNewSubscriptionPlanManagedBean.createNewSubscriptionPlan()}" iconPos="right" icon="fa fa-check-circle"/>
+                                <p:commandButton value="Submit"  update="@form :categoryForm:categoriesDataTable" actionListener="#{categoryManagementManagedBean.createNewCategory}" iconPos="right" icon="fa fa-check-circle"/>
                             </div>
                         </div>
 
@@ -186,16 +190,22 @@
                                 <h:outputLabel value="Recipes:" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.recipes}"/>
+                                <p:dataList styleClass="borderless" value="#{categoryManagementManagedBean.selectedCategoryToView.recipes}" var="recipe" type="unordered">
+                                    #{recipe.name}
+                                </p:dataList>
                             </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Subscription Plans: " />
+                                <br/>
+                                <h:outputLabel value="Total: #{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans.size()}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans}" />
+                                <p:dataList styleClass="borderless" value="#{categoryManagementManagedBean.selectedCategoryToView.subscriptionPlans}" var="subscriptionplans" type="unordered">
+                                    Plan Id: #{subscriptionplans.subscriptionPlanId} Customer's Email: #{subscriptionplans.subscriber.email}
+                                </p:dataList>
                             </p:column>
                         </p:row>
 
