@@ -23,7 +23,7 @@
 
             </h:form>
             <h:form id="categoryForm">
-                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:messages id="mainMessages" redisplay="false" closable="true" />
 
                 <p:dataTable id="categoriesDataTable" widgetVar="dataTableAllCategories" value="#{categoryManagementManagedBean.categories}" var="category" rowKey="#{category.categoryId}" 
                              emptyMessage="Sorry, no categories were found with given criteria!" rowIndexVar="row" style="width: 100%;" filteredValue="#{categoryManagementManagedBean.filteredCategoryEntities}"
@@ -67,7 +67,7 @@
 
 
                     <p:column headerText="Subscription Count:" sortBy="#{category.subscriptionPlans.size()}" filterBy="#{category.subscriptionPlans.size()}" filterMatchMode="contains">    				
-                  
+
                         <h:outputText value="#{category.subscriptionPlans.size()}" />
                     </p:column>
 
@@ -78,13 +78,18 @@
                         <p:commandButton actionListener="#{categoryManagementManagedBean.doUpdateCategory}" update="updateCategoryForm" oncomplete="PF('dialogUpdateCategory').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="categoryToUpdate" value="#{category}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" oncomplete="console.log('test')" actionListener="#{categoryManagementManagedBean.deleteCategory}" update="categoryForm:categoriesDataTable categoryForm:messages">
+                        <p:commandButton icon="ui-icon-trash"  actionListener="#{categoryManagementManagedBean.deleteCategory}" update="categoryForm:categoriesDataTable categoryForm:mainMessages">
                             <f:attribute name="categoryToDelete" value="#{category}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{category.name} (Category ID: #{category.categoryId})?" icon="ui-icon-alert" />
                         </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
             </h:form>
 
 
@@ -292,7 +297,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Product" update="" actionListener="#{categoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
+                                <p:commandButton value="Update Product" update="@form categoryForm:categoriesDataTable" actionListener="#{categoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
                             </p:column>
                         </p:row>
 
