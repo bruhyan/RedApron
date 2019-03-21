@@ -7,6 +7,7 @@ package jsf.managedBean;
 
 import entity.Category;
 import entity.Recipe;
+import exceptions.CategoryNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,6 @@ public class categoryManagementManagedBean implements Serializable {
     private List<Recipe> recipesToUpdate;
     private List<Recipe> recipes;
     private Long categoryIdNew;
-   
 
     public categoryManagementManagedBean() {
         this.newCategory = new Category();
@@ -55,7 +55,7 @@ public class categoryManagementManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         this.categories = categoryControllerLocal.retrieveAllCategories();
-        
+
         this.recipes = recipeControllerLocal.retrieveAllRecipes();
     }
 
@@ -64,17 +64,29 @@ public class categoryManagementManagedBean implements Serializable {
     }
 
     public void createNewCategory(ActionEvent event) {
-        
-
 
         Category category = categoryControllerLocal.createNewCategory(newCategory);
         categories.add(category);
 
         newCategory = new Category();
 
-
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Category created successfully (Product ID: " + category.getCategoryId() + ")", null));
 
+    }
+
+    public void deleteCategory(ActionEvent event) {
+
+        try {
+            Category categoryToDelete = (Category) event.getComponent().getAttributes().get("categoryToDelete");
+            System.out.println(categoryToDelete + " deleting" );
+            categoryControllerLocal.deleteCategory(categoryToDelete.getCategoryId());
+
+            categories.remove(categoryToDelete);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        } catch (CategoryNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
     }
 
     public void updateCategory(ActionEvent event) {
@@ -87,8 +99,6 @@ public class categoryManagementManagedBean implements Serializable {
         selectedCategoryToUpdate = (Category) event.getComponent().getAttributes().get("categoryToUpdate");
         //fix later
     }
-
-
 
     public List<Recipe> getRecipes() {
         return recipes;

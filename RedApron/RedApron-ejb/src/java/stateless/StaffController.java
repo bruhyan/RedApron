@@ -76,7 +76,7 @@ public class StaffController implements StaffControllerLocal {
       @Override
     public List<Staff> retrieveAllStaffs()
     {
-        Query query = em.createQuery("SELECT s FROM StaffEntity s");
+        Query query = em.createQuery("SELECT s FROM Staff s");
         
         return query.getResultList();
     }
@@ -107,6 +107,21 @@ public class StaffController implements StaffControllerLocal {
     public void deleteStaff(Long staffId) throws StaffNotFoundException{
         Staff staff = retrieveStaffById(staffId);
         em.remove(staff);
+    }
+    
+    @Override
+    public void updateStaff(Staff staff) throws StaffNotFoundException{
+        Staff staffToUpdate = retrieveStaffById(staff.getStaffId());
+        if (staffToUpdate != null)
+        {
+            staffToUpdate.setFirstName(staff.getFirstName());
+            staffToUpdate.setLastName(staff.getLastName());
+            staffToUpdate.setRole(staff.getRole());
+            staffToUpdate.setEmail(staff.getEmail());
+            staffToUpdate.setPassword(staff.getPassword());
+            
+            em.merge(staffToUpdate);
+        }
     }
     
      @Override

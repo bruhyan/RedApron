@@ -78,7 +78,7 @@
                         <p:commandButton actionListener="#{categoryManagementManagedBean.doUpdateCategory}" update="updateCategoryForm" oncomplete="PF('dialogUpdateCategory').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="categoryToUpdate" value="#{category}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{categoryManagementManagedBean.deleteCategory}" update="categoryForm:messages">
+                        <p:commandButton icon="ui-icon-trash" oncomplete="console.log('test')" actionListener="#{categoryManagementManagedBean.deleteCategory}" update="categoryForm:categoriesDataTable categoryForm:messages">
                             <f:attribute name="categoryToDelete" value="#{category}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{category.name} (Category ID: #{category.categoryId})?" icon="ui-icon-alert" />
                         </p:commandButton>
