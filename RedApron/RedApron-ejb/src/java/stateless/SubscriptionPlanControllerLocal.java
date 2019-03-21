@@ -6,6 +6,7 @@
 package stateless;
 
 import entity.SubscriptionPlan;
+import exceptions.SubscriptionPlanNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -21,5 +22,9 @@ public interface SubscriptionPlanControllerLocal {
     public List<SubscriptionPlan> retrieveAllSubscriptionPlans();
 
     public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId);
+
+    public void updatePlan(SubscriptionPlan planToUpdate, Long categoryIdUpdate, Long subscriberIdUpdate);
+
+    public void deleteSubscriptionPlan(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException;
     
 }

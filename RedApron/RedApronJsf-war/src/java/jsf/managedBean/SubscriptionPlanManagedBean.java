@@ -11,12 +11,15 @@ import entity.Subscriber;
 import entity.SubscriptionPlan;
 import enumeration.DeliveryDay;
 import enumeration.SubscriptionPlanStatus;
+import exceptions.SubscriptionPlanNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -62,12 +65,14 @@ public class SubscriptionPlanManagedBean implements Serializable{
     
     private List<Subscriber> subscribers;
     private Long newSubscriberId;
+    private Long subscriberIdUpdate;
     
     private List<Recipe> recipeList;
     private List<String> recipeIdsStringNew;
     
     private List<Category> categoryList;
     private Long newCategoryId;
+    private Long categoryIdUpdate;
 
     /**
      * Creates a new instance of SubscriptionPlanManagedBean
@@ -125,7 +130,44 @@ public class SubscriptionPlanManagedBean implements Serializable{
         subscriptionPlans.add(pl);
         setNewSubscriptionPlan(new SubscriptionPlan());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New plan created successfully (Plan ID: "+ pl.getSubscriptionPlanId()+")", null));
-    } 
+    }
+    
+    public void doUpdateSubscriptionPlan(ActionEvent event) {
+        selectedSubscriptionPlanToUpdate = (SubscriptionPlan)event.getComponent().getAttributes().get("subscriptionPlanToUpdate");
+        
+        categoryIdUpdate = selectedSubscriptionPlanToUpdate.getCatergory().getCategoryId();
+        subscriberIdUpdate = selectedSubscriptionPlanToUpdate.getSubscriber().getSubscriberId();
+    }
+    
+    public void updateSubscriptionPlan(ActionEvent event) {
+        LocalDate start = LocalDate.of(selectedSubscriptionPlanToUpdate.getStartDate().getYear(), selectedSubscriptionPlanToUpdate.getStartDate().getMonth(), selectedSubscriptionPlanToUpdate.getStartDate().getDate());
+        LocalDate end = LocalDate.of(selectedSubscriptionPlanToUpdate.getEndDate().getYear(), selectedSubscriptionPlanToUpdate.getEndDate().getMonth(), selectedSubscriptionPlanToUpdate.getEndDate().getDate());
+        int numWeeks = (int)ChronoUnit.WEEKS.between(start, end);
+        int numRecipes = recipeIdsStringNew.size();
+        selectedSubscriptionPlanToUpdate.setNumOfWeeks(numWeeks);
+        selectedSubscriptionPlanToUpdate.setNumOfRecipes(numRecipes);
+        if(categoryIdUpdate == 0) {
+            categoryIdUpdate = null;
+        }
+        if(subscriberIdUpdate == 0) {
+            subscriberIdUpdate = null;
+        }
+        
+        subscriptionPlanControllerLocal.updatePlan(selectedSubscriptionPlanToUpdate, categoryIdUpdate, subscriberIdUpdate);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plan updated successfully", null));
+    }
+    
+    public void deleteSubscriptionPlan(ActionEvent event) {
+        SubscriptionPlan planToDelete = (SubscriptionPlan)event.getComponent().getAttributes().get("subscriptionPlanToDelete");
+        try {
+            subscriptionPlanControllerLocal.deleteSubscriptionPlan(planToDelete.getSubscriptionPlanId());
+            subscriptionPlans.remove(planToDelete);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        } catch (SubscriptionPlanNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting product: " + ex.getMessage(), null));
+        }
+        
+    }
 
     public SubscriptionPlan getNewSubscriptionPlan() {
         return newSubscriptionPlan;
@@ -199,6 +241,38 @@ public class SubscriptionPlanManagedBean implements Serializable{
 
     public void setNewCategoryId(Long newCategoryId) {
         this.newCategoryId = newCategoryId;
+    }
+
+    public SubscriptionPlan getSelectedSubscriptionPlanToView() {
+        return selectedSubscriptionPlanToView;
+    }
+
+    public void setSelectedSubscriptionPlanToView(SubscriptionPlan selectedSubscriptionPlanToView) {
+        this.selectedSubscriptionPlanToView = selectedSubscriptionPlanToView;
+    }
+
+    public SubscriptionPlan getSelectedSubscriptionPlanToUpdate() {
+        return selectedSubscriptionPlanToUpdate;
+    }
+
+    public void setSelectedSubscriptionPlanToUpdate(SubscriptionPlan selectedSubscriptionPlanToUpdate) {
+        this.selectedSubscriptionPlanToUpdate = selectedSubscriptionPlanToUpdate;
+    }
+
+    public Long getSubscriberIdUpdate() {
+        return subscriberIdUpdate;
+    }
+
+    public void setSubscriberIdUpdate(Long subscriberIdUpdate) {
+        this.subscriberIdUpdate = subscriberIdUpdate;
+    }
+
+    public Long getCategoryIdUpdate() {
+        return categoryIdUpdate;
+    }
+
+    public void setCategoryIdUpdate(Long categoryIdUpdate) {
+        this.categoryIdUpdate = categoryIdUpdate;
     }
     
     
