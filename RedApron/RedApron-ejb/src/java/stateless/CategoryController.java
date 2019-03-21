@@ -29,14 +29,14 @@ public class CategoryController implements CategoryControllerLocal {
     private EntityManager em;
 
     @Override
-    public Category createNewCategory(Category category){
+    public Category createNewCategory(Category category) {
         em.persist(category);
         em.flush();
         return category;
     }
-    
+
     @Override
-    public Category retrieveCategoryById(long id) throws CategoryNotFoundException{
+    public Category retrieveCategoryById(long id) throws CategoryNotFoundException {
         Category category = em.find(Category.class, id);
 
         if (category != null) {
@@ -45,80 +45,89 @@ public class CategoryController implements CategoryControllerLocal {
             throw new CategoryNotFoundException("Category does not exist!");
         }
     }
-    
+
     @Override
-    public Category retrieveCategoryByName(String name) throws CategoryNotFoundException
-    {
+    public Category retrieveCategoryByName(String name) throws CategoryNotFoundException {
         Query query = em.createQuery("SELECT c FROM Category c WHERE c.name = :inName");
         query.setParameter("inName", name);
-        
-        try
-        {
+
+        try {
             return (Category) query.getSingleResult();
-        }
-        catch (NoResultException | NonUniqueResultException ex)
-        {
-            throw new CategoryNotFoundException("Category with name "+ name + " does not exist!");
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new CategoryNotFoundException("Category with name " + name + " does not exist!");
         }
     }
-    
+
     @Override
-    public List<Category> retrieveAllCategories()
-    {
+    public List<Category> retrieveAllCategories() {
         Query query = em.createQuery("SELECT c FROM Category c");
-        
+
         List<Category> categories = query.getResultList();
-        
-          for(Category category:categories)
-        {
+
+        for (Category category : categories) {
             category.getRecipes().size();
             category.getSubscriptionPlans().size();
-            
+
         }
-        
+
         return categories;
     }
-    
+
     @Override
-    public List<Recipe> retrieveRecipesByCategoryId(Long id) throws CategoryNotFoundException{
+    public List<Recipe> retrieveRecipesByCategoryId(Long id) throws CategoryNotFoundException {
         Category category = retrieveCategoryById(id);
         Query query = em.createQuery("SELECT c FROM Recipe c WHERE c.categories.categoryId=:id");
         query.setParameter("id", id);
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public List<Recipe> retrieveRecipesByCategoryName(String name) throws CategoryNotFoundException{
+    public List<Recipe> retrieveRecipesByCategoryName(String name) throws CategoryNotFoundException {
         Category category = retrieveCategoryByName(name);
         Query query = em.createQuery("SELECT c FROM Recipe c WHERE c.categories.name=:name");
         query.setParameter("name", name);
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public List<Recipe> retrieveSubscPlansByCategoryId(Long id) throws CategoryNotFoundException{
+    public List<Recipe> retrieveSubscPlansByCategoryId(Long id) throws CategoryNotFoundException {
         Category category = retrieveCategoryById(id);
         Query query = em.createQuery("SELECT c FROM SubscriptionPlan c WHERE c.catergory.categoryId=:id");
         query.setParameter("id", id);
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public List<Recipe> retrieveSubscPlansByCategoryName(String name) throws CategoryNotFoundException{
+    public List<Recipe> retrieveSubscPlansByCategoryName(String name) throws CategoryNotFoundException {
         Category category = retrieveCategoryByName(name);
         Query query = em.createQuery("SELECT c FROM SubscriptionPlan c WHERE c.catergory.name=:name");
         query.setParameter("name", name);
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public void deleteCategory(Long id) throws CategoryNotFoundException{
+    public void deleteCategory(Long id) throws CategoryNotFoundException {
         Category category = retrieveCategoryById(id);
         em.remove(category);
     }
-    
+
+    @Override
+    public void updateCategory(Category category) {
+
+        try {
+
+            Category categoryToUpdate = retrieveCategoryById(category.getCategoryId());
+
+            categoryToUpdate.setIsAvailable(category.getIsAvailable());
+            categoryToUpdate.setName(category.getName());
+            categoryToUpdate.setPrice(category.getPrice());
+        } catch (CategoryNotFoundException ex) {
+            System.out.println("Category does not exist!");
+        }
+    }
+
 }

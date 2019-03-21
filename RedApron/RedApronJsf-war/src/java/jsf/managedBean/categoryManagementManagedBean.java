@@ -78,7 +78,7 @@ public class categoryManagementManagedBean implements Serializable {
 
         try {
             Category categoryToDelete = (Category) event.getComponent().getAttributes().get("categoryToDelete");
-            System.out.println(categoryToDelete + " deleting" );
+            System.out.println(categoryToDelete + " deleting");
             categoryControllerLocal.deleteCategory(categoryToDelete.getCategoryId());
 
             categories.remove(categoryToDelete);
@@ -89,15 +89,17 @@ public class categoryManagementManagedBean implements Serializable {
         }
     }
 
-    public void updateCategory(ActionEvent event) {
-        List<Long> recipeIdToUpdate = null;
+
+    public void doUpdateCategory(ActionEvent event) {
+        selectedCategoryToUpdate = (Category) event.getComponent().getAttributes().get("categoryToUpdate");
 
         //fix later
     }
 
-    public void doUpdateCategory(ActionEvent event) {
-        selectedCategoryToUpdate = (Category) event.getComponent().getAttributes().get("categoryToUpdate");
-        //fix later
+    public void updateCategory(ActionEvent event) {
+        categoryControllerLocal.updateCategory(selectedCategoryToUpdate);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully", null));
     }
 
     public List<Recipe> getRecipes() {
