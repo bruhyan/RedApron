@@ -21,5 +21,7 @@ public interface SubscriptionPlanControllerLocal {
     public List<SubscriptionPlan> retrieveAllSubscriptionPlans();
 
     public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId);
+
+    public void updatePlan(SubscriptionPlan planToUpdate, Long categoryIdUpdate, Long subscriberIdUpdate);
     
 }

@@ -80,6 +80,45 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
     }
     
     @Override
+    public void updatePlan(SubscriptionPlan plan, Long categoryIdUpdate, Long subscriberIdUpdate) {
+        SubscriptionPlan planToUpdate;
+        try {
+            planToUpdate = retrieveSubscriptionPlanById(plan.getSubscriptionPlanId());
+            if(categoryIdUpdate != null) {
+                try {
+                    Category cat = categoryControllerLocal.retrieveCategoryById(categoryIdUpdate);
+                    Category prev = planToUpdate.getCatergory();
+                    prev.getSubscriptionPlans().remove(planToUpdate);
+                    planToUpdate.setCatergory(cat);
+                    cat.getSubscriptionPlans().add(planToUpdate);
+                } catch (CategoryNotFoundException ex) {
+                    Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(subscriberIdUpdate != null) {
+                try {
+                    Subscriber newSub = subscriberControllerLocal.retrieveSubscriberById(subscriberIdUpdate);
+                    Subscriber prevSub = planToUpdate.getSubscriber();
+                    prevSub.getSubscriptionPlans().remove(planToUpdate);
+                    planToUpdate.setSubscriber(newSub);
+                } catch (SubscriberNotFoundException ex) {
+                    Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            planToUpdate.setStartDate(plan.getStartDate());
+            planToUpdate.setEndDate(plan.getEndDate());
+            planToUpdate.setPreferences(plan.getPreferences());
+            planToUpdate.setNumOfWeeks(plan.getNumOfWeeks());
+            planToUpdate.setNumOfRecipes(plan.getNumOfRecipes());
+        }catch (SubscriptionPlanNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }
+    
+    @Override
     public List<SubscriptionPlan> retrieveAllSubscriptionPlans () {
         Query query = em.createQuery("SELECT s FROM SubscriptionPlan s");
         List<SubscriptionPlan> plans = query.getResultList();
