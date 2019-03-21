@@ -159,10 +159,27 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         return plans;
     }
     
+    @Override
     public void deleteSubscriptionPlan(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException {
         //dissociate all 2 ways first
         //incomplete
         SubscriptionPlan plan = retrieveSubscriptionPlanById(subscriptionPlanId);
+        Long planSubscriberId = plan.getSubscriber().getSubscriberId();
+        Subscriber planSubscriber;
+        try {
+            planSubscriber = subscriberControllerLocal.retrieveSubscriberById(planSubscriberId);
+            planSubscriber.getSubscriptionPlans().remove(plan);
+        } catch (SubscriberNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Long categoryId = plan.getCatergory().getCategoryId();
+        Category cat;
+        try {
+            cat = categoryControllerLocal.retrieveCategoryById(categoryId);
+            cat.getSubscriptionPlans().remove(plan);
+        } catch (CategoryNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         em.remove(plan);
     }
     

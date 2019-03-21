@@ -11,12 +11,15 @@ import entity.Subscriber;
 import entity.SubscriptionPlan;
 import enumeration.DeliveryDay;
 import enumeration.SubscriptionPlanStatus;
+import exceptions.SubscriptionPlanNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -152,6 +155,18 @@ public class SubscriptionPlanManagedBean implements Serializable{
         
         subscriptionPlanControllerLocal.updatePlan(selectedSubscriptionPlanToUpdate, categoryIdUpdate, subscriberIdUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plan updated successfully", null));
+    }
+    
+    public void deleteSubscriptionPlan(ActionEvent event) {
+        SubscriptionPlan planToDelete = (SubscriptionPlan)event.getComponent().getAttributes().get("subscriptionPlanToDelete");
+        try {
+            subscriptionPlanControllerLocal.deleteSubscriptionPlan(planToDelete.getSubscriptionPlanId());
+            subscriptionPlans.remove(planToDelete);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        } catch (SubscriptionPlanNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting product: " + ex.getMessage(), null));
+        }
+        
     }
 
     public SubscriptionPlan getNewSubscriptionPlan() {
