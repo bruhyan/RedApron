@@ -122,6 +122,8 @@
                                         <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
                                     </p:selectOneRadio>
 
+                                    <p:outputLabel value="Recipes">&nbsp;&nbsp;<i class="fa fa-burger"></i></p:outputLabel>
+                                    <p:pickList id="pickList" converter="pickListConverter" value="#{categoryManagementManagedBean.newRecipeChoices}" var="recipes" itemLabel="#{recipes.name}" itemValue="#{recipes.recipeId}" />
 
                                 </p:panelGrid>
 

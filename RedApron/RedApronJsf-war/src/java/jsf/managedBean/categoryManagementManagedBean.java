@@ -8,6 +8,7 @@ package jsf.managedBean;
 import entity.Category;
 import entity.Recipe;
 import exceptions.CategoryNotFoundException;
+import exceptions.RecipeNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import org.primefaces.model.DualListModel;
 import stateless.CategoryControllerLocal;
 import stateless.RecipeControllerLocal;
 
@@ -44,6 +46,9 @@ public class categoryManagementManagedBean implements Serializable {
     private Category newCategory;
     private Category selectedCategoryToUpdate;
     private List<Recipe> recipesToUpdate;
+    private List<Recipe> newRecipes;
+    private DualListModel<Recipe> newRecipeChoices;
+    private DualListModel<Recipe> updateRecipeChoices;
     private List<Recipe> recipes;
     private Long categoryIdNew;
 
@@ -57,6 +62,10 @@ public class categoryManagementManagedBean implements Serializable {
         this.categories = categoryControllerLocal.retrieveAllCategories();
 
         this.recipes = recipeControllerLocal.retrieveAllRecipes();
+        this.newRecipes = new ArrayList<>();
+
+        newRecipeChoices = new DualListModel<Recipe>(recipes, newRecipes);
+
     }
 
     public List<Category> getCategories() {
@@ -65,13 +74,29 @@ public class categoryManagementManagedBean implements Serializable {
 
     public void createNewCategory(ActionEvent event) {
 
-        Category category = categoryControllerLocal.createNewCategory(newCategory);
-        categories.add(category);
+        try {
 
-        newCategory = new Category();
+            System.out.println(newRecipeChoices.getTarget());
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Category created successfully (Product ID: " + category.getCategoryId() + ")", null));
+            Category category = categoryControllerLocal.createNewCategory(newCategory);
 
+            for (Recipe recipe : newRecipeChoices.getTarget()) {
+                System.out.println(recipe);
+                Recipe temp = recipeControllerLocal.retrieveRecipeById(recipe.getRecipeId());
+                temp.getCategories().add(category);
+                category.getRecipes().add(temp);
+            }
+
+            categories.add(category);
+            this.newRecipes = new ArrayList<>();
+
+            newRecipeChoices = new DualListModel<Recipe>(recipes, newRecipes);
+            newCategory = new Category();
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Category created successfully (Product ID: " + category.getCategoryId() + ")", null));
+        } catch (RecipeNotFoundException ex) {
+            System.out.println("Recipe not found!");
+        }
     }
 
     public void deleteCategory(ActionEvent event) {
@@ -89,7 +114,6 @@ public class categoryManagementManagedBean implements Serializable {
         }
     }
 
-
     public void doUpdateCategory(ActionEvent event) {
         selectedCategoryToUpdate = (Category) event.getComponent().getAttributes().get("categoryToUpdate");
 
@@ -97,8 +121,9 @@ public class categoryManagementManagedBean implements Serializable {
     }
 
     public void updateCategory(ActionEvent event) {
+
         categoryControllerLocal.updateCategory(selectedCategoryToUpdate);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully", null));
     }
 
@@ -160,6 +185,30 @@ public class categoryManagementManagedBean implements Serializable {
 
     public void setRecipesToUpdate(List<Recipe> recipesToUpdate) {
         this.recipesToUpdate = recipesToUpdate;
+    }
+
+    public RecipeControllerLocal getRecipeControllerLocal() {
+        return recipeControllerLocal;
+    }
+
+    public void setRecipeControllerLocal(RecipeControllerLocal recipeControllerLocal) {
+        this.recipeControllerLocal = recipeControllerLocal;
+    }
+
+    public List<Recipe> getNewRecipes() {
+        return newRecipes;
+    }
+
+    public void setNewRecipes(List<Recipe> newRecipes) {
+        this.newRecipes = newRecipes;
+    }
+
+    public DualListModel<Recipe> getNewRecipeChoices() {
+        return newRecipeChoices;
+    }
+
+    public void setNewRecipeChoices(DualListModel<Recipe> newRecipeChoices) {
+        this.newRecipeChoices = newRecipeChoices;
     }
 
 }
