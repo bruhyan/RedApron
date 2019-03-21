@@ -19,5 +19,7 @@ public interface SubscriptionPlanControllerLocal {
     public SubscriptionPlan createSubscriptionPlan(SubscriptionPlan subscriptionPlan);
 
     public List<SubscriptionPlan> retrieveAllSubscriptionPlans();
+
+    public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId);
     
 }
