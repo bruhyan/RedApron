@@ -48,6 +48,7 @@ public class categoryManagementManagedBean implements Serializable {
    
 
     public categoryManagementManagedBean() {
+        this.newCategory = new Category();
         this.categories = new ArrayList<>();
     }
 
@@ -63,16 +64,14 @@ public class categoryManagementManagedBean implements Serializable {
     }
 
     public void createNewCategory(ActionEvent event) {
+        
 
-        if (categoryIdNew == 0) {
-            categoryIdNew = null;
-        }
 
         Category category = categoryControllerLocal.createNewCategory(newCategory);
         categories.add(category);
 
         newCategory = new Category();
-        categoryIdNew = null;
+
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Category created successfully (Product ID: " + category.getCategoryId() + ")", null));
 
