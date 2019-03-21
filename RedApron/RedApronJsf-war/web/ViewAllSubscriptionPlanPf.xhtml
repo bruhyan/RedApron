@@ -99,7 +99,7 @@
                                     <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText id="startDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.startDate}" required="true" requiredMessage="Start Date is Required"/>
+                                    <p:calendar id="startDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.startDate}" required="true" requiredMessage="Start Date is Required" />
                                 </p:column>
                                 <p:column>
                                     <p:message for="startDate"/>
@@ -111,7 +111,7 @@
                                     <p:outputLabel for="endDate" value="End Date: " style="font-weight: bold;"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText id="endDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.endDate}" required="true" requiredMessage="End Date is Required"/>
+                                    <p:calendar id="endDate" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.endDate}" required="true" requiredMessage="End Date is Required"/>
                                 </p:column>
                                 <p:column>
                                     <p:message for="endDate"/>
@@ -120,7 +120,7 @@
                             
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="preferences" value="Preferneces: " style="font-weight: bold;"/>
+                                    <p:outputLabel for="preferences" value="Preferences: " style="font-weight: bold;"/>
                                 </p:column>
                                 <p:column>
                                     <p:inputText id="preferences" value="#{subscriptionPlanManagedBean.newSubscriptionPlan.preferences}" required="true" requiredMessage="Preference is Required"/>

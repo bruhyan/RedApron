@@ -13,6 +13,8 @@ import enumeration.DeliveryDay;
 import enumeration.SubscriptionPlanStatus;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -102,7 +104,24 @@ public class SubscriptionPlanManagedBean implements Serializable{
     }
     
     public void createNewPlan(ActionEvent event){
-        SubscriptionPlan pl = subscriptionPlanControllerLocal.createSubscriptionPlan(getNewSubscriptionPlan());
+        SubscriptionPlan pl = getNewSubscriptionPlan();
+        LocalDate start = LocalDate.of(pl.getStartDate().getYear(), pl.getStartDate().getMonth(), pl.getStartDate().getDate());
+        LocalDate end = LocalDate.of(pl.getEndDate().getYear(), pl.getEndDate().getMonth(), pl.getEndDate().getDate());
+        int numWeeks = (int)ChronoUnit.WEEKS.between(start, end);
+        int numRecipes = recipeIdsStringNew.size();
+        pl.setNumOfWeeks(numWeeks);
+        pl.setNumOfRecipes(numRecipes);
+        
+        List<Long> recipeIdsNew = null;
+        if(recipeIdsStringNew != null && (!recipeIdsStringNew.isEmpty())) {
+            recipeIdsNew = new ArrayList();
+            for(String recipeIdString : recipeIdsStringNew) {
+                recipeIdsNew.add(Long.valueOf(recipeIdString));
+            }
+        }
+        
+        pl = subscriptionPlanControllerLocal.createSubscriptionPlan2(getNewSubscriptionPlan(), newSubscriberId, newCategoryId);
+        
         subscriptionPlans.add(pl);
         setNewSubscriptionPlan(new SubscriptionPlan());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New plan created successfully (Plan ID: "+ pl.getSubscriptionPlanId()+")", null));
