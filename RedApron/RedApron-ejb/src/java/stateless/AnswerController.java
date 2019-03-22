@@ -9,6 +9,7 @@ import entity.Answer;
 import entity.Enquiry;
 import entity.Staff;
 import exceptions.AnswerNotFoundException;
+import exceptions.EnquiryNotFoundException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -50,20 +51,42 @@ public class AnswerController implements AnswerControllerLocal {
         em.remove(answer);
 
     }
-    
+
     public Enquiry getEnquiryFromAnswerId(Long answerId) throws AnswerNotFoundException {
         Answer answer = retrieveAnswerById(answerId);
-        
+
         Query query = em.createQuery("SELECT e FROM Enquiry e WHERE e.answer = :answer");
+        query.setParameter("answer", answer);
         return (Enquiry) query.getSingleResult();
-        
+
     }
-    
+
+    @Override
+    public Answer getAnswerFromEnquiryId(Long enquiryId) throws EnquiryNotFoundException {
+        Query query = em.createQuery("SELECT a FROM Answer a WHERE a.enquiry.enquiryId = :enquiry");
+        query.setParameter("enquiry", enquiryId);
+
+        Answer answer = (Answer) query.getSingleResult();
+
+        answer.getStaff();
+
+        return answer;
+
+    }
+
     public Staff getStaffFromAnswerId(Long answerId) throws AnswerNotFoundException {
         Answer answer = retrieveAnswerById(answerId);
-        
+
         Query query = em.createQuery("SELECT s FROM Staff s WHERE s.answers = :answer");
-        return (Staff)query.getSingleResult();
+        return (Staff) query.getSingleResult();
+    }
+    
+    @Override
+    public void updateAnswer(Answer answer) throws AnswerNotFoundException{
+        Answer answerToUpdate = retrieveAnswerById(answer.getAnswerId());
+        answerToUpdate.setText(answer.getText());
+        answerToUpdate.setStaff(answer.getStaff());
+        answerToUpdate.setEnquiry(answer.getEnquiry());
     }
 
 }

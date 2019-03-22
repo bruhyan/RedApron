@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Answer;
 import exceptions.AnswerNotFoundException;
+import exceptions.EnquiryNotFoundException;
 import javax.ejb.Local;
 
 /**
@@ -14,7 +15,13 @@ import javax.ejb.Local;
  * @author matthealoo
  */
 public interface AnswerControllerLocal {
-        public Answer createNewAnswer(Answer answer);
-        public Answer retrieveAnswerById(Long answerId) throws AnswerNotFoundException;
-    
+
+    public Answer createNewAnswer(Answer answer);
+
+    public Answer retrieveAnswerById(Long answerId) throws AnswerNotFoundException;
+
+    public Answer getAnswerFromEnquiryId(Long enquiryId) throws EnquiryNotFoundException;
+
+    public void updateAnswer(Answer answer) throws AnswerNotFoundException;
+
 }

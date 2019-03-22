@@ -5,6 +5,9 @@
         <group>
             <file>file:/C:/Users/MX/Documents/GitHub/RedApron/RedApron/RedApron-ejb/src/java/stateless/StaffController.java</file>
             <file>file:/C:/Users/MX/Documents/GitHub/RedApron/RedApron/RedApron-ejb/src/java/stateless/StaffControllerLocal.java</file>
+            <file>file:/C:/Users/mdk12/Desktop/redapron/RedApron/RedApron/RedApron-ejb/src/java/stateless/EnquiryControllerLocal.java</file>
+            <file>file:/C:/Users/mdk12/Desktop/redapron/RedApron/RedApron/RedApron-ejb/src/java/stateless/CategoryController.java</file>
+            <file>file:/C:/Users/mdk12/Desktop/redapron/RedApron/RedApron/RedApron-ejb/src/java/stateless/EnquiryController.java</file>
         </group>
     </open-files>
 </project-private>

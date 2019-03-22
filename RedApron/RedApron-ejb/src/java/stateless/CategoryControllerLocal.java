@@ -35,5 +35,7 @@ public interface CategoryControllerLocal {
     public List<Recipe> retrieveSubscPlansByCategoryName(String name) throws CategoryNotFoundException;
 
     public void deleteCategory(Long id) throws CategoryNotFoundException;
+
+    public void updateCategory(Category category) throws CategoryNotFoundException;
     
 }

@@ -7,7 +7,6 @@ package stateless;
 
 import entity.Answer;
 import entity.Enquiry;
-import exceptions.AnswerNotFoundException;
 import exceptions.EnquiryNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,13 +27,14 @@ public class EnquiryController implements EnquiryControllerLocal {
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
 
-    public Enquiry persist(Enquiry enquiry) {
+    @Override
+    public Enquiry createNewEnquiry(Enquiry enquiry) {
         em.persist(enquiry);
         em.flush();
-        
+
         return enquiry;
     }
-    
+
     @Override
     public Enquiry retrieveEnquiryById(Long enquiryId) throws EnquiryNotFoundException {
         Enquiry enquiry = em.find(Enquiry.class, enquiryId);
@@ -45,13 +45,48 @@ public class EnquiryController implements EnquiryControllerLocal {
             throw new EnquiryNotFoundException("Enquiry ID " + enquiryId + " does not exist");
         }
     }
-    
+
+    @Override
+    public List<Enquiry> retrieveAllEnquiries() {
+
+        Query query = em.createQuery("SELECT e FROM Enquiry e");
+
+        List<Enquiry> enquiries = query.getResultList();
+
+        for (Enquiry enquiry : enquiries) {
+            enquiry.getSubscriber();
+            enquiry.getAnswer();
+        }
+
+        return enquiries;
+
+    }
+
     @Override
     public List<Enquiry> retrieveEnquiryBySubscriber(Long subscriberId) {
         Query query = em.createQuery("SELECT e FROM Enquiry e WHERE e.subscriber.subscriberId := subscriberId");
         query.setParameter("subscriberId", subscriberId);
         List<Enquiry> enquiryEntities = query.getResultList();
         return enquiryEntities;
-    } 
-    
+    }
+
+    @Override
+    public void deleteEnquiry(Long enquiryId) throws EnquiryNotFoundException {
+
+        Enquiry enquiry = retrieveEnquiryById(enquiryId);
+        em.remove(enquiry);
+
+    }
+
+    @Override
+    public void updateEnquiry(Enquiry enquiry) throws EnquiryNotFoundException {
+        
+        Enquiry enquiryToUpdate = retrieveEnquiryById(enquiry.getEnquiryId());
+        
+        
+
+        enquiryToUpdate.setAnswer(enquiry.getAnswer());
+        enquiryToUpdate.setText(enquiry.getText());
+
+    }
 }

@@ -5,9 +5,18 @@
  */
 package stateless;
 
+import entity.Category;
+import entity.Recipe;
+import entity.Subscriber;
 import entity.SubscriptionPlan;
+import exceptions.CategoryNotFoundException;
+import exceptions.RecipeNotFoundException;
+import exceptions.SubscriberNotFoundException;
 import exceptions.SubscriptionPlanNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,8 +29,18 @@ import javax.persistence.Query;
 @Stateless
 public class SubscriptionPlanController implements SubscriptionPlanControllerLocal {
 
+    @EJB(name = "CategoryControllerLocal")
+    private CategoryControllerLocal categoryControllerLocal;
+
+    @EJB(name = "SubscriberControllerLocal")
+    private SubscriberControllerLocal subscriberControllerLocal;
+    
+    @EJB(name = "RecipeControllerLocal")
+    private RecipeControllerLocal recipeControllerLocal;
+    
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
+    
 
     public SubscriptionPlanController() {
     }
@@ -31,6 +50,72 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         em.persist(subscriptionPlan);
         em.flush();
         return subscriptionPlan;
+    }
+    
+    @Override
+    public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId) {
+        /*for(Long recipeId : recipeIds) {
+            try {
+                Recipe recipe = recipeControllerLocal.retrieveRecipeById(recipeId);
+                subscriptionPlan.getRecipes().add(recipe);
+            } catch (RecipeNotFoundException ex) {
+                Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }*/
+        try {
+            Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(subscriberId);
+            subscriptionPlan.setSubscriber(subscriber);
+        } catch (SubscriberNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Category category = categoryControllerLocal.retrieveCategoryById(categoryId);
+            subscriptionPlan.setCatergory(category);
+        } catch (CategoryNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        em.persist(subscriptionPlan);
+        em.flush();
+        return subscriptionPlan;
+    }
+    
+    @Override
+    public void updatePlan(SubscriptionPlan plan, Long categoryIdUpdate, Long subscriberIdUpdate) {
+        SubscriptionPlan planToUpdate;
+        try {
+            planToUpdate = retrieveSubscriptionPlanById(plan.getSubscriptionPlanId());
+            if(categoryIdUpdate != null) {
+                try {
+                    Category cat = categoryControllerLocal.retrieveCategoryById(categoryIdUpdate);
+                    Category prev = planToUpdate.getCatergory();
+                    prev.getSubscriptionPlans().remove(planToUpdate);
+                    planToUpdate.setCatergory(cat);
+                    cat.getSubscriptionPlans().add(planToUpdate);
+                } catch (CategoryNotFoundException ex) {
+                    Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(subscriberIdUpdate != null) {
+                try {
+                    Subscriber newSub = subscriberControllerLocal.retrieveSubscriberById(subscriberIdUpdate);
+                    Subscriber prevSub = planToUpdate.getSubscriber();
+                    prevSub.getSubscriptionPlans().remove(planToUpdate);
+                    planToUpdate.setSubscriber(newSub);
+                } catch (SubscriberNotFoundException ex) {
+                    Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            planToUpdate.setStartDate(plan.getStartDate());
+            planToUpdate.setEndDate(plan.getEndDate());
+            planToUpdate.setPreferences(plan.getPreferences());
+            planToUpdate.setNumOfWeeks(plan.getNumOfWeeks());
+            planToUpdate.setNumOfRecipes(plan.getNumOfRecipes());
+        }catch (SubscriptionPlanNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
     }
     
     @Override
@@ -74,10 +159,27 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         return plans;
     }
     
+    @Override
     public void deleteSubscriptionPlan(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException {
         //dissociate all 2 ways first
         //incomplete
         SubscriptionPlan plan = retrieveSubscriptionPlanById(subscriptionPlanId);
+        Long planSubscriberId = plan.getSubscriber().getSubscriberId();
+        Subscriber planSubscriber;
+        try {
+            planSubscriber = subscriberControllerLocal.retrieveSubscriberById(planSubscriberId);
+            planSubscriber.getSubscriptionPlans().remove(plan);
+        } catch (SubscriberNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Long categoryId = plan.getCatergory().getCategoryId();
+        Category cat;
+        try {
+            cat = categoryControllerLocal.retrieveCategoryById(categoryId);
+            cat.getSubscriptionPlans().remove(plan);
+        } catch (CategoryNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         em.remove(plan);
     }
     
