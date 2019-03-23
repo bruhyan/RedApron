@@ -10,7 +10,9 @@
     <ui:define name="content">
         <div>
             <h3>Staff Management</h3>
-            
+
+            <p:commandButton value="Create New Staff" onclick="PF('dialogCreateNewStaff').show()" icon="fa fa-plus" />
+
                 <h:form id="formAllStaffs">
                     <p:messages id="messages" redisplay="false" closable="true" />
                     <p:dataTable id="dataTableAllStaffs" value="#{staffManagementManagedBean.staffEntities}" var="staffEntity" rowKey="#{staffEntity.staffId}" rowIndexVar="row"
@@ -72,6 +74,83 @@
                     </p:confirmDialog>
                     
                 </h:form>
+            
+                <h:form id="formCreateNewProduct">
+            
+            <p:dialog id="dialogCreateNewStaff" widgetVar="dialogCreateNewStaff" header="Create New Staff" closable="true">
+                <p:messages id="messagesCreateNewStaff" redisplay="false" />
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="firstName" value="First Name: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="firstName" value="#{staffManagementManagedBean.newStaff.firstName}" required="true" requiredMessage="First Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="firstName" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="lastName" value="Last Name: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="lastName" value="#{staffManagementManagedBean.newStaff.lastName}" required="true" requiredMessage="Last Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="lastName" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="role" value="Role: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="role" value="#{staffManagementManagedBean.newStaff.role}" style="width:150px">
+                                <f:selectItem itemLabel="[Select Role]" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{staffManagementManagedBean.roleValues}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="email" value="#{staffManagementManagedBean.newStaff.email}" required="true" requiredMessage="Email is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="email" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="password" value="Password: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>                            
+                            <p:inputText id="password" value="#{staffManagementManagedBean.newStaff.password}" required="true" requiredMessage="Password is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="password" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton  value="Create New Staff" update="@form formAllStaffs:dataTableAllStaffs" actionListener="#{staffManagementManagedBean.createNewStaff}" oncomplete="PF('dialogCreateNewStaff').show();" />
+                        </p:column>
+                    </p:row>                   
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+                
                 
                 <h:form id="formViewStaff">
                     <p:dialog id="dialogViewStaff" widgetVar="dialogViewStaff" header="View Staff" closable="true">
