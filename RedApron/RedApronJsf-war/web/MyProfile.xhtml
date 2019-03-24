@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml">
+
+
+    <ui:define name="content">
+        <div>
+            <h3>My Profile</h3>
+            <h:form id="formMyProfile">
+                <p:graphicImage library="images" name="surprisedpika.png" height="300" width="320"/>
+
+                <p:messages id="messagesUpdateStaff" redisplay="false" />
+
+                <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="firstName" value="First Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="firstName" value="#{MyProfileManagedBean.staff.firstName}" required="true" requiredMessage="First Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="firstName" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="lastName" value="Last Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="lastName" value="#{MyProfileManagedBean.staff.lastName}" required="true" requiredMessage="Last Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="lastName" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="email" value="#{MyProfileManagedBean.staff.email}" required="true" requiredMessage="Email is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="email" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton id="updateStaff" value="Save" icon="ui-icon-disk" actionListener="#{MyProfileManagedBean.saveStaff}" oncomplete="PF('dialogUpdateStaff').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+        </h:form>
+        </div>  
+    </ui:define>
+
+</ui:composition>
+
+

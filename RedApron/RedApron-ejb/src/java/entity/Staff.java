@@ -30,6 +30,7 @@ public class Staff implements Serializable {
     private String email;
     private String password;
     private Role role;
+    private String picURL;
 
     @OneToMany
     private List<Answer> answers;
@@ -45,8 +46,14 @@ public class Staff implements Serializable {
         this.password = password;
         this.role = role;
     }
-    
-    
+
+    public String getPicURL() {
+        return picURL;
+    }
+
+    public void setPicURL(String picURL) {
+        this.picURL = picURL;
+    }
     
 
     public Long getStaffId() {
