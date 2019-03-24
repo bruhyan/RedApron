@@ -7,8 +7,11 @@ package jsf.managedBean;
 
 import entity.Staff;
 import exceptions.StaffNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -16,6 +19,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.FileUploadEvent;
 import stateless.StaffControllerLocal;
 
 /**
@@ -42,13 +46,24 @@ public class MyProfileManagedBean {
     public void postConstruct()
     {
         try {
-        staff = staffController.retrieveStaffById(1); //Need to pass in the current staff that logged in
+        staff = staffController.retrieveStaffByEmail("systemadmin@redapron.com"); //Need to pass in the current staff that logged in
         } catch (StaffNotFoundException ex) {
             System.out.println(ex);
         }
     }
     
     public void saveStaff(ActionEvent event)
+    {
+        try {
+            staffController.updateStaff(staff);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff profile " + staff.getStaffId() + " updated successfully", null));
+        } catch (StaffNotFoundException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+      public void saveStaff(Staff staff)
     {
         try {
             staffController.updateStaff(staff);
@@ -67,5 +82,45 @@ public class MyProfileManagedBean {
         this.staff = staff;
     }
     
+    public void handleFileUpload(FileUploadEvent event)
+    {
+        try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+            staff.setPicURL(newFilePath);
+            saveStaff(staff);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+        }
+        catch(IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+        }
+    }
+
     
 }

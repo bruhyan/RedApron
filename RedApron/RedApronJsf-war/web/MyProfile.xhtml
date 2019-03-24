@@ -11,19 +11,67 @@
     <ui:define name="content">
         <div>
             <h3>My Profile</h3>
-            <h:form id="formMyProfile">
-                <p:graphicImage library="images" name="surprisedpika.png" height="300" width="320"/>
+            <h:form id="formViewMyProfile">
+                <p:graphicImage value="#{myProfileManagedBean.staff.picURL}"/>
+                <p:panelGrid>               
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="firstName" value="First Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="firstName" value="#{myProfileManagedBean.staff.firstName}"/>
+                        </p:column>                       
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="lastName" value="Last Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="lastName" value="#{myProfileManagedBean.staff.lastName}" />
+                        </p:column>                        
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="email" value="#{myProfileManagedBean.staff.email}"/>
+                        </p:column>                       
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton id="editStaff" update="formUpdateMyProfile" value="Edit Profile" icon="ui-icon-pencil" oncomplete="PF('dialogUpdateStaff').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+        </h:form>
+            <h:form id="formUpdateMyProfile">
+                <p:dialog id="dialogUpdateStaff" widgetVar="dialogUpdateStaff" header="Edit My Profile" closable="true">
 
                 <p:messages id="messagesUpdateStaff" redisplay="false" />
 
                 <p:panelGrid>
+                    <p:row>
+                        <p:panel header="File Upload">
+                
+                            <p:messages autoUpdate="true" redisplay="false" />
+                
+                            <p:fileUpload fileUploadListener="#{myProfileManagedBean.handleFileUpload}" />
+                
+                         </p:panel>
+                    </p:row>
                     
                     <p:row>
                         <p:column>
                             <p:outputLabel for="firstName" value="First Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="firstName" value="#{MyProfileManagedBean.staff.firstName}" required="true" requiredMessage="First Name is required" />
+                            <p:inputText id="firstName" value="#{myProfileManagedBean.staff.firstName}" required="true" requiredMessage="First Name is required" />
                         </p:column>
                         <p:column>
                             <p:message for="firstName" />
@@ -35,7 +83,7 @@
                             <p:outputLabel for="lastName" value="Last Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="lastName" value="#{MyProfileManagedBean.staff.lastName}" required="true" requiredMessage="Last Name is required" />
+                            <p:inputText id="lastName" value="#{myProfileManagedBean.staff.lastName}" required="true" requiredMessage="Last Name is required" />
                         </p:column>
                         <p:column>
                             <p:message for="lastName" />
@@ -47,20 +95,38 @@
                             <p:outputLabel for="email" value="Email: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="email" value="#{MyProfileManagedBean.staff.email}" required="true" requiredMessage="Email is required" />
+                            <p:inputText id="email" value="#{myProfileManagedBean.staff.email}" required="true" requiredMessage="Email is required" />
                         </p:column>
                         <p:column>
                             <p:message for="email" />
                         </p:column>
                     </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="pwd1" value="New Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:password id="pwd1" value="#{myProfileManagedBean.staff.password}" match="pwd2" required="true" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                           <h:outputLabel for="pwd2" value="Re-enter New Password: " />
+                        </p:column>
+                        <p:column>
+                           <p:password id="pwd2" value="#{myProfileManagedBean.staff.password}" required="true" />
+                        </p:column>                            
+                    </p:row>
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton id="updateStaff" value="Save" icon="ui-icon-disk" actionListener="#{MyProfileManagedBean.saveStaff}" oncomplete="PF('dialogUpdateStaff').show();" />
+                            <p:commandButton id="updateStaff" value="Save" icon="ui-icon-disk" update="@form formViewMyProfile" actionListener="#{myProfileManagedBean.saveStaff}" oncomplete="PF('dialogUpdateStaff').show();" />
                         </p:column>
                     </p:row>
 
                 </p:panelGrid>
+            </p:dialog>
 
         </h:form>
         </div>  
