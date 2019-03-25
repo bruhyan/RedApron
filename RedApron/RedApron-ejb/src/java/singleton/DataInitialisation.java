@@ -7,6 +7,7 @@ package singleton;
 
 import entity.Category;
 import entity.Enquiry;
+import entity.Event;
 import entity.Recipe;
 import entity.Staff;
 import entity.Subscriber;
@@ -27,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import stateless.CategoryControllerLocal;
 import stateless.EnquiryControllerLocal;
+import stateless.EventControllerLocal;
 import stateless.RecipeControllerLocal;
 import stateless.StaffControllerLocal;
 import stateless.SubscriberControllerLocal;
@@ -42,7 +44,10 @@ import stateless.TransactionControllerLocal;
 @Startup
 public class DataInitialisation {
 
-    @EJB(name = "EnquiryControllerLocal")
+    @EJB
+    private EventControllerLocal eventController;
+
+    @EJB(name = "EnquiryControllerLocal") 
     private EnquiryControllerLocal enquiryControllerLocal;
 
     @EJB
@@ -62,6 +67,8 @@ public class DataInitialisation {
 
     @EJB
     private StaffControllerLocal staffController;
+    
+    
 
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
@@ -81,10 +88,14 @@ public class DataInitialisation {
     }
 
     private void initializeData() {
-
-        staffController.createNewStaff(new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN));
-        staffController.createNewStaff(new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT));
-        staffController.createNewStaff(new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER));
+        
+        Staff staff1 = new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN);
+        Staff staff2 = new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT);
+        Staff staff3 = new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER);
+        
+        staffController.createNewStaff(staff1);
+        staffController.createNewStaff(staff2);
+        staffController.createNewStaff(staff3);
 
         Subscriber sub1 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Alpha", "Tan", "alpha@gmail.com", "90000001", "kent ridge", "corner1", 000001, "password"));
         Subscriber sub2 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Kenny", "Tan", "kenny@gmail.com", "90000002", "kent ridge", "corner2", 000002, "password"));
@@ -166,6 +177,17 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
+        
+        
+        Event event1 = new Event("Test 1", new Date(2019-1900, 2, 1, 8, 0), new Date(2019-1900, 2, 1, 9, 0));
+        Event event2 = new Event("Test 2", new Date(2019-1900, 2, 2, 8, 0), new Date(2019-1900, 2, 2, 9, 0));
+        Event event3 = new Event("Test 3", new Date(2019-1900, 2, 3, 8, 0), new Date(2019-1900, 2, 3, 9, 0));
+        eventController.createNewEvent(event1);
+        eventController.createNewEvent(event2);
+        eventController.createNewEvent(event3);
+        staff1.addEvent(event1);
+        staff1.addEvent(event2);
+        staff1.addEvent(event3);
 
     }
 

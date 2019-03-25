@@ -120,7 +120,8 @@ public class StaffController implements StaffControllerLocal {
             staffToUpdate.setEmail(staff.getEmail());
             staffToUpdate.setPassword(staff.getPassword());
             staffToUpdate.setPicURL(staff.getPicURL());
-            
+            staffToUpdate.setEvents(staff.getEvents());
+
             em.merge(staffToUpdate);
         }
     }
