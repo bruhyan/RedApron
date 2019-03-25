@@ -11,12 +11,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
@@ -45,11 +47,9 @@ public class MyProfileManagedBean {
     @PostConstruct
     public void postConstruct()
     {
-        try {
-        staff = staffController.retrieveStaffByEmail("systemadmin@redapron.com"); //Need to pass in the current staff that logged in
-        } catch (StaffNotFoundException ex) {
-            System.out.println(ex);
-        }
+        
+            Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        staff = (Staff) sessionMap.get("currentStaff"); //Need to pass in the current staff that logged in
     }
     
     public void saveStaff(ActionEvent event)
