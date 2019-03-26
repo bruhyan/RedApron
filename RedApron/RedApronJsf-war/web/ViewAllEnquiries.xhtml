@@ -100,6 +100,8 @@
 
                                 <p:panelGrid columns="2">
 
+                                    <p:outputLabel for="subscriberId" value="subscriberId" >&nbsp;&nbsp;<i class="fa fa-user"></i></p:outputLabel>
+                                    <p:inputNumber id="subscriberId" value="#{enquiryManagementManagedBean.newEnquiry.subscriber.subscriberId}" decimalPlaces="0"/>
 
                                     <p:outputLabel for="text" value="Enquiry">&nbsp;&nbsp;<i class="fa fa-lightbulb"></i></p:outputLabel>
                                     <p:inputText id="text" value="#{enquiryManagementManagedBean.newEnquiry.text}"/>

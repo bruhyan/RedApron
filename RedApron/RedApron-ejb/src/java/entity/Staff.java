@@ -30,6 +30,10 @@ public class Staff implements Serializable {
     private String email;
     private String password;
     private Role role;
+    private String picURL;
+    
+    @OneToMany 
+    private List<Event> events;
 
     @OneToMany
     private List<Answer> answers;
@@ -45,8 +49,30 @@ public class Staff implements Serializable {
         this.password = password;
         this.role = role;
     }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
     
+    public void removeEvent(Event event){
+        this.events.remove(event);
+    }
     
+    public void addEvent(Event event){
+        this.events.add(event);
+    }
+
+    public String getPicURL() {
+        return picURL;
+    }
+
+    public void setPicURL(String picURL) {
+        this.picURL = picURL;
+    }
     
 
     public Long getStaffId() {

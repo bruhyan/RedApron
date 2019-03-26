@@ -59,4 +59,8 @@
         <local>stateless.RecipeControllerLocal</local>
         <ejb-link>RedApron-ejb.jar#RecipeController</ejb-link>
     </ejb-local-ref>
+    <context-param>
+    <param-name>alternatedocroot_1</param-name>
+    <param-value>/Users/matthealoo/Desktop/RedApron/glassfish-4.1.1-uploadedfiles/uploadedFiles</param-value>
+    </context-param>
 </web-app>

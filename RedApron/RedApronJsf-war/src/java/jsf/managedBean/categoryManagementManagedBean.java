@@ -139,7 +139,7 @@ public class categoryManagementManagedBean implements Serializable {
         return filteredCategoryEntities;
     }
 
-    public void setFilteredCategorytEntities(List<Category> filteredCategoryEntities) {
+    public void setFilteredCategoryEntities(List<Category> filteredCategoryEntities) {
         this.filteredCategoryEntities = filteredCategoryEntities;
     }
 
