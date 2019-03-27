@@ -27,8 +27,8 @@
                         <p:menuitem value="Analytics" outcome="/analytics.xhtml" icon="pi pi-save" />
                         <p:menuitem value="Messages"  icon="pi pi-refresh" />
                         <p:menuitem value="Tasks"  icon="pi pi-refresh" />
-                        <p:menuitem value="Calendar"   icon="pi pi-refresh" />
-                        <p:menuitem value="Team"  icon="pi pi-refresh" />
+                        <p:menuitem value="Calendar" outcome="/MyCalendar.xhtml"  icon="pi pi-refresh" />
+                        <p:menuitem value="My Profile" outcome="/MyProfile.xhtml"  icon="pi pi-refresh" />
 
                     </p:submenu>
                     <p:submenu label="Product Management">
@@ -39,7 +39,7 @@
                     </p:submenu>
                     <p:submenu label="Customer Management">
                         <p:menuitem value="View Subscribers" outcome="/ViewAllSubscribers.xhtml" icon="pi pi-refresh" />
-                        <p:menuitem value="View Reviews"  icon="pi pi-save" />
+                        <p:menuitem value="View Reviews"  outcome="/ViewAllReviews.xhtml" icon="pi pi-save" />
                         <p:menuitem value="View Enquiries" outcome="/ViewAllEnquiries.xhtml" icon="pi pi-refresh" />
 
                     </p:submenu>
@@ -48,7 +48,7 @@
                     </p:submenu>
                     <p:submenu label="More">
                         <p:menuitem value="Help"  icon="pi pi-refresh"/>
-                        <p:menuitem value="Logout" icon="pi pi-times"/>
+                        <p:menuitem value="Logout" actionListener="#{staffLoginManagedBean.logout}"/>
                     </p:submenu>
                     <p:separator/>
  

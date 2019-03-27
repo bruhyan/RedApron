@@ -14,6 +14,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import stateless.StaffControllerLocal;
 
@@ -73,5 +74,11 @@ public class StaffLoginManagedBean {
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
         }
+    }
+    
+    public void logout(ActionEvent event) throws IOException
+    {
+        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 }

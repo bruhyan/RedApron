@@ -7,7 +7,9 @@ package singleton;
 
 import entity.Category;
 import entity.Enquiry;
+import entity.Event;
 import entity.Recipe;
+import entity.Review;
 import entity.Staff;
 import entity.Subscriber;
 import entity.SubscriptionPlan;
@@ -27,7 +29,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import stateless.CategoryControllerLocal;
 import stateless.EnquiryControllerLocal;
+import stateless.EventControllerLocal;
 import stateless.RecipeControllerLocal;
+import stateless.ReviewControllerLocal;
 import stateless.StaffControllerLocal;
 import stateless.SubscriberControllerLocal;
 import stateless.SubscriptionPlanControllerLocal;
@@ -42,7 +46,13 @@ import stateless.TransactionControllerLocal;
 @Startup
 public class DataInitialisation {
 
-    @EJB(name = "EnquiryControllerLocal")
+    @EJB(name = "ReviewControllerLocal")
+    private ReviewControllerLocal reviewControllerLocal;
+
+    @EJB
+    private EventControllerLocal eventController;
+
+    @EJB(name = "EnquiryControllerLocal") 
     private EnquiryControllerLocal enquiryControllerLocal;
 
     @EJB
@@ -62,6 +72,8 @@ public class DataInitialisation {
 
     @EJB
     private StaffControllerLocal staffController;
+    
+    
 
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
@@ -81,10 +93,17 @@ public class DataInitialisation {
     }
 
     private void initializeData() {
+        
+        Staff staff1 = new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN);
+        Staff staff2 = new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT);
+        Staff staff3 = new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER);
+        staff1.setPicURL("defaultImage.jpeg");
+        staff2.setPicURL("defaultImage.jpeg");
+        staff3.setPicURL("defaultImage.jpeg");
 
-        staffController.createNewStaff(new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN));
-        staffController.createNewStaff(new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT));
-        staffController.createNewStaff(new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER));
+        staffController.createNewStaff(staff1);
+        staffController.createNewStaff(staff2);
+        staffController.createNewStaff(staff3);
 
         Subscriber sub1 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Alpha", "Tan", "alpha@gmail.com", "90000001", "kent ridge", "corner1", 000001, "password"));
         Subscriber sub2 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Kenny", "Tan", "kenny@gmail.com", "90000002", "kent ridge", "corner2", 000002, "password"));
@@ -119,9 +138,26 @@ public class DataInitialisation {
         Enquiry enquiry1 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Hello, I would like to ask where is my meal?", sub1));
         Enquiry enquiry2 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Give me free food pl0x", sub2));
         Enquiry enquiry3 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Where is the toilet?", sub3));
+        
+        Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019-1900, 3, 10), sub1, recipe1));
+        Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019-1900, 3, 11), sub1, recipe2));
+        Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019-1900, 3, 15), sub3, recipe1));
+        
+        
 
         //setting relation
         //test if object is managed here
+        
+        //subscriber -> review
+        sub1.getReviews().add(review1);
+        sub2.getReviews().add(review2);
+        sub3.getReviews().add(review3);
+        
+        //recipe -> review
+        recipe1.getReviews().add(review1);
+        recipe2.getReviews().add(review2);
+        recipe1.getReviews().add(review3);
+        
         //Plan -> Recipe (Subscriber chooses recipes in subscription plan)
         plan1.getRecipes().add(recipe1);
         plan2.getRecipes().add(recipe2);
@@ -166,6 +202,17 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
+        
+        
+        Event event1 = new Event("Test 1", new Date(2019-1900, 2, 1, 8, 0), new Date(2019-1900, 2, 1, 9, 0));
+        Event event2 = new Event("Test 2", new Date(2019-1900, 2, 2, 8, 0), new Date(2019-1900, 2, 2, 9, 0));
+        Event event3 = new Event("Test 3", new Date(2019-1900, 2, 3, 8, 0), new Date(2019-1900, 2, 3, 9, 0));
+        eventController.createNewEvent(event1);
+        eventController.createNewEvent(event2);
+        eventController.createNewEvent(event3);
+        staff1.addEvent(event1);
+        staff1.addEvent(event2);
+        staff1.addEvent(event3);
 
     }
 

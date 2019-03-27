@@ -6,7 +6,7 @@
       template="/template/defaultTemplate.xhtml">
 
     <ui:define name="content">
-        <h:panelGroup>
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <article>
                 <h3>Welcome to Red Apron's Staff Site</h3>
                 <p>

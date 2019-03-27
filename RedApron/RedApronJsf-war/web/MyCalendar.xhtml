@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml">
+    
+    
+    <ui:define name="content">
+        <div>
+            <h3>My Calendar</h3>
+            <p:commandButton value="Create New Event" onclick="PF('dialogCreateNewEvent').show()" icon="fa fa-plus" />
+            <h:form id="eventForm">
+                <p:growl id="messages" showDetail="true" />
+                
+                <h:panelGrid columnClasses="value">
+                    <p:schedule id="schedule" value="#{myCalendarManagedBean.scheduleModel}" widgetVar="myschedule" timeZone="GMT+8">
+                        <p:ajax event="eventSelect" listener="#{myCalendarManagedBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <p:ajax event="eventMove" listener="#{myCalendarManagedBean.onEventMove}" update="messages" />
+                    </p:schedule>
+                    
+                </h:panelGrid>
+                
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <h:panelGrid id="eventDetails" columns="2">
+                        <p:outputLabel for="description" value="Description:" />
+                        <p:inputText id="description" value="#{myCalendarManagedBean.selectedScheduleEvent.title}" required="true" requiredMessage="Description is required" />
+                        <p:outputLabel for="startDate" value="Start Date:" />
+                        <p:calendar id="startDate" value="#{myCalendarManagedBean.selectedScheduleEvent.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
+                        <p:outputLabel for="endDate" value="End Date:" />
+                        <p:calendar id="endDate" value="#{myCalendarManagedBean.selectedScheduleEvent.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm"/>
+                        <div class="card-footer">
+                            <p:commandButton id="saveButton" value="Save Edits" actionListener="#{myCalendarManagedBean.updateEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                            <p:commandButton value="Delete Event"  actionListener="#{myCalendarManagedBean.deleteEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();">
+<!--                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{myCalendarManagedBean.selectedScheduleEvent.title} ?" icon="ui-icon-alert" />-->
+                            </p:commandButton>
+                        </div>
+                    </h:panelGrid>
+                </p:dialog>   
+            </h:form>
+            
+            <h:form id="addEventForm">
+                <p:dialog id="dialogCreateNewEvent" widgetVar="dialogCreateNewEvent" header="Create New Event" closable="true">
+                    <p:messages id="messagesCreateNewEvent" redisplay="false" />
+                    <div class="container">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel for="description" value="Description:"/>
+                                     <p:inputText id="description" value="#{myCalendarManagedBean.newScheduleEvent.title}" required="true"/>                                    
+                                    
+                                    <p:outputLabel for="startDate"  value="Start Date:" />
+                                    <p:calendar id="startDate" value="#{myCalendarManagedBean.newScheduleEvent.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true"/>   
+                                    <p:outputLabel for="endDate"  value="End Date:"/>
+                                    <p:calendar id="endDate" value="#{myCalendarManagedBean.newScheduleEvent.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true"/>   
+                                    
+                                </p:panelGrid>
+                                <p:messages id="message" showDetail="true" closable="true">
+                                    <p:autoUpdate/>
+                                </p:messages>
+                            </div>
+                            <div class="card-footer">
+                                <p:commandButton id="addButton" value="Create Event" action="#{myCalendarManagedBean.addNewEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                                <p:commandButton type="reset" value="Reset" />
+                            </div>
+                        </div>                                              
+                    </div>                   
+                </p:dialog>            
+            </h:form>
+        </div>  
+    </ui:define>
+</ui:composition>
+
+
