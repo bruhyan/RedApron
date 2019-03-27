@@ -18,6 +18,6 @@ public interface ReviewControllerLocal {
     
      public Review createNewReview(Review review);
     public Review retrieveReviewById(Long reviewId) throws ReviewNotFoundException;
-    public List<Review> retrieveAllReviews(Long recipeId);
+    public List<Review> retrieveAllReviews();
     
 }

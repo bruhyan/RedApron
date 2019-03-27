@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml">
+    <ui:define name="content">
+        <div>
+            <h3>View All Reviews</h3>
+            <h:form id ="formAllReviews">
+                <p:dataTable id="dataTableAllReviews" value="#{reviewManagedBean.reviewList}" var="review" rowKey="#{review.reviewId}" rowIndexVar="row"
+                             rows="10" paginator="true" paginatorTemplate="" rowsPerPageTemplate="">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllReviews').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    
+                    <p:column headerText="Review ID" sortBy="#{review.reviewId}" filterBy="#{review.reviewId}" filterMatchMode="contains">
+                        <h:outputText value="#{review.reviewId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Comment" sortBy="#{review.text}" filterBy="#{review.text}" filterMatchMode="contains">
+                        <h:outputText value="#{review.text}" />
+                    </p:column>
+                    
+                    <p:column headerText="Rating" sortBy="#{review.rating}" filterBy="#{review.rating}" >
+                        <p:rating value="#{review.rating}" stars="5"/>
+                    </p:column>
+                    
+                    <p:column headerText="Date" sortBy="#{review.date}" filterBy="#{review.date}" filterMatchMode="contains">
+                        <h:outputText value="#{review.date}" />
+                    </p:column>
+                    
+                    <p:column headerText="Reviewer ID" sortBy="#{review.subscriber.subscriberId}" filterBy="#{review.subscriber.subscriberId}" filterMatchMode="contains">
+                        <h:outputText value="#{review.subscriber.subscriberId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Recipe ID" sortBy="#{review.recipe.recipeId}" filterBy="#{review.recipe.recipeId}" filterMatchMode="contains">
+                        <h:outputText value="#{review.recipe.recipeId}" />
+                    </p:column>
+                    
+                    
+                </p:dataTable>
+            </h:form>
+        </div>
+        
+    </ui:define>
+    
+</ui:composition>
+
+
