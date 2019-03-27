@@ -21,5 +21,7 @@ public interface TransactionControllerLocal {
 
     public List<Transaction> retrieveAllTransactions();
 
+    public List<Transaction> retrieveThisMonthTransaction();
+
     
 }
