@@ -34,7 +34,7 @@
                         <div class="card-footer">
                             <p:commandButton id="saveButton" value="Save Edits" actionListener="#{myCalendarManagedBean.updateEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
                             <p:commandButton value="Delete Event"  actionListener="#{myCalendarManagedBean.deleteEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();">
-                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{myCalendarManagedBean.selectedScheduleEvent.title} ?" icon="ui-icon-alert" />
+<!--                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{myCalendarManagedBean.selectedScheduleEvent.title} ?" icon="ui-icon-alert" />-->
                             </p:commandButton>
                         </div>
                     </h:panelGrid>

@@ -12,8 +12,10 @@
         <div>
             <h3>My Profile</h3>
             <h:form id="formViewMyProfile">
-                <p:graphicImage value="#{myProfileManagedBean.staff.picURL}"/>
-                <p:panelGrid>               
+
+                <p:graphicImage id="profilePic" value="#{'/uploadedFiles/'.concat(myProfileManagedBean.staff.picURL)}" style="max-width: 200px; max-height: 200px"/>
+                
+                <p:panelGrid>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="firstName" value="First Name: " />
@@ -61,7 +63,7 @@
                 
                             <p:messages autoUpdate="true" redisplay="false" />
                 
-                            <p:fileUpload fileUploadListener="#{myProfileManagedBean.handleFileUpload}" />
+                            <p:fileUpload fileUploadListener="#{myProfileManagedBean.handleFileUpload}" update="formViewMyProfile:profilePic" />
                 
                          </p:panel>
                     </p:row>

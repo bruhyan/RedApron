@@ -50,6 +50,8 @@ public class MyProfileManagedBean {
         
             Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         staff = (Staff) sessionMap.get("currentStaff"); //Need to pass in the current staff that logged in
+        
+        System.err.println("********* staff: " + staff.getPicURL());
     }
     
     public void saveStaff(ActionEvent event)
@@ -86,7 +88,11 @@ public class MyProfileManagedBean {
     {
         try
         {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+            String[] arr = event.getFile().getFileName().split("\\.");
+            String storedpath = staff.getStaffId().toString() + "." + arr[arr.length-1];
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + storedpath;
+
+
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -112,7 +118,7 @@ public class MyProfileManagedBean {
 
             fileOutputStream.close();
             inputStream.close();
-            staff.setPicURL(newFilePath);
+            staff.setPicURL(storedpath);
             saveStaff(staff);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }

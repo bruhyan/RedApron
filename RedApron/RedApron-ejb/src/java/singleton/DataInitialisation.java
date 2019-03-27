@@ -92,7 +92,10 @@ public class DataInitialisation {
         Staff staff1 = new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN);
         Staff staff2 = new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT);
         Staff staff3 = new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER);
-        
+        staff1.setPicURL("defaultImage.jpeg");
+        staff2.setPicURL("defaultImage.jpeg");
+        staff3.setPicURL("defaultImage.jpeg");
+
         staffController.createNewStaff(staff1);
         staffController.createNewStaff(staff2);
         staffController.createNewStaff(staff3);
