@@ -7,12 +7,14 @@ package jsf.managedBean;
 
 import entity.Answer;
 import entity.Enquiry;
+import entity.Staff;
 import entity.Subscriber;
 import exceptions.AnswerNotFoundException;
 import exceptions.EnquiryNotFoundException;
 import exceptions.SubscriberNotFoundException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -53,10 +55,13 @@ public class EnquiryManagementManagedBean implements Serializable {
     private Enquiry enquiryToDelete;
     private Answer answer;
     private Long askingSubscriberId;
+    private Staff currentStaff;
 
     public EnquiryManagementManagedBean() {
+        Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         this.newEnquiry = new Enquiry();
         this.answer = new Answer();
+        this.currentStaff = (Staff) sessionMap.get("currentStaff");
     }
 
     @PostConstruct
@@ -94,15 +99,17 @@ public class EnquiryManagementManagedBean implements Serializable {
     }
 
     public void doUpdateEnquiry(ActionEvent event) {
+        System.out.println(currentStaff);
         setEnquiryToUpdate((Enquiry) event.getComponent().getAttributes().get("enquiryToUpdate"));
         Answer answer = answerControllerLocal.createNewAnswer(getAnswer());
-
+        answer.setStaff(currentStaff);
         enquiryToUpdate.setAnswer(answer);
     }
 
     public void updateEnquiry(ActionEvent event) {
 
         try {
+            
             answerControllerLocal.updateAnswer(getEnquiryToUpdate().getAnswer());
             System.out.println(getEnquiryToUpdate().getAnswer().getText());
             enquiryControllerLocal.updateEnquiry(getEnquiryToUpdate());
@@ -114,6 +121,7 @@ public class EnquiryManagementManagedBean implements Serializable {
 
     }
 
+    
     /**
      * @return the enquiries
      */
@@ -243,6 +251,20 @@ public class EnquiryManagementManagedBean implements Serializable {
      */
     public void setAnswer(Answer answer) {
         this.answer = answer;
+    }
+
+    /**
+     * @return the currentStaff
+     */
+    public Staff getCurrentStaff() {
+        return currentStaff;
+    }
+
+    /**
+     * @param currentStaff the currentStaff to set
+     */
+    public void setCurrentStaff(Staff currentStaff) {
+        this.currentStaff = currentStaff;
     }
 
 }

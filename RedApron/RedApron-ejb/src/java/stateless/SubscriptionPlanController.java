@@ -13,6 +13,7 @@ import exceptions.CategoryNotFoundException;
 import exceptions.RecipeNotFoundException;
 import exceptions.SubscriberNotFoundException;
 import exceptions.SubscriptionPlanNotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -183,9 +184,38 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         em.remove(plan);
     }
     
+    //Analytic 1 Number of subscriptionplan
+    //SELECT * FROM SubscriptionPlan WHERE startDate >= '3919-04-30 16:00:00.000' and startDate <= '3919-04-30 16:00:00.000';
+    @Override
+    public List<SubscriptionPlan> retrieveSubscriptionPlanByDateRange(Date date1, Date date2){
+        Query query = em.createQuery("SELECT s FROM SubscriptionPlan s WHERE startDate >= :inDate1 and startDate <= :inDate2");
+        query.setParameter("inDate1", date1);
+        query.setParameter("inDate2", date2);
+        
+        List<SubscriptionPlan> plans = query.getResultList();
+        for (SubscriptionPlan plan : plans) {
+            plan.getSubscriber();
+            plan.getCatergory();
+            plan.getTransaction();
+            plan.getRecipes().size();
+        }
+        return plans;
+    }
     
-    
-    
-    
-    
+    //Analytic 1 Number of subscriptionplan
+    //SELECT * FROM SubscriptionPlan WHERE startDate <= '2019-04-30 00:00:00';
+    @Override
+    public List<SubscriptionPlan> retrieveSubscriptionPlanByDate(Date date1){
+        Query query = em.createQuery("SELECT s FROM SubscriptionPlan s WHERE s.startDate <= :inDate1");     
+        query.setParameter("inDate1", date1);
+        
+        List<SubscriptionPlan> plans = query.getResultList();
+        for (SubscriptionPlan plan : plans) {
+            plan.getSubscriber();
+            plan.getCatergory();
+            plan.getTransaction();
+            plan.getRecipes().size();
+        }
+        return plans;
+    }
 }
