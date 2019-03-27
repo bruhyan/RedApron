@@ -9,6 +9,7 @@ import entity.Category;
 import entity.Enquiry;
 import entity.Event;
 import entity.Recipe;
+import entity.Review;
 import entity.Staff;
 import entity.Subscriber;
 import entity.SubscriptionPlan;
@@ -30,6 +31,7 @@ import stateless.CategoryControllerLocal;
 import stateless.EnquiryControllerLocal;
 import stateless.EventControllerLocal;
 import stateless.RecipeControllerLocal;
+import stateless.ReviewControllerLocal;
 import stateless.StaffControllerLocal;
 import stateless.SubscriberControllerLocal;
 import stateless.SubscriptionPlanControllerLocal;
@@ -43,6 +45,9 @@ import stateless.TransactionControllerLocal;
 @LocalBean
 @Startup
 public class DataInitialisation {
+
+    @EJB(name = "ReviewControllerLocal")
+    private ReviewControllerLocal reviewControllerLocal;
 
     @EJB
     private EventControllerLocal eventController;
@@ -92,7 +97,10 @@ public class DataInitialisation {
         Staff staff1 = new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN);
         Staff staff2 = new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT);
         Staff staff3 = new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER);
-        
+        staff1.setPicURL("defaultImage.jpeg");
+        staff2.setPicURL("defaultImage.jpeg");
+        staff3.setPicURL("defaultImage.jpeg");
+
         staffController.createNewStaff(staff1);
         staffController.createNewStaff(staff2);
         staffController.createNewStaff(staff3);
@@ -130,9 +138,26 @@ public class DataInitialisation {
         Enquiry enquiry1 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Hello, I would like to ask where is my meal?", sub1));
         Enquiry enquiry2 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Give me free food pl0x", sub2));
         Enquiry enquiry3 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Where is the toilet?", sub3));
+        
+        Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019-1900, 3, 10), sub1, recipe1));
+        Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019-1900, 3, 11), sub1, recipe2));
+        Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019-1900, 3, 15), sub3, recipe1));
+        
+        
 
         //setting relation
         //test if object is managed here
+        
+        //subscriber -> review
+        sub1.getReviews().add(review1);
+        sub2.getReviews().add(review2);
+        sub3.getReviews().add(review3);
+        
+        //recipe -> review
+        recipe1.getReviews().add(review1);
+        recipe2.getReviews().add(review2);
+        recipe1.getReviews().add(review3);
+        
         //Plan -> Recipe (Subscriber chooses recipes in subscription plan)
         plan1.getRecipes().add(recipe1);
         plan2.getRecipes().add(recipe2);

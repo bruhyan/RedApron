@@ -45,12 +45,9 @@ public class MyCalendarManagedBean implements Serializable
     private ScheduleModel scheduleModel; 
     private ScheduleEvent selectedScheduleEvent; //selected event
     private ScheduleEvent newScheduleEvent; //new event
-    private Map<Object,Object> calendarMap;
-    private Long databaseEventId;
 
     private Staff staff;
 
-    
     public MyCalendarManagedBean() 
     {
         scheduleModel = new DefaultScheduleModel();
@@ -64,15 +61,13 @@ public class MyCalendarManagedBean implements Serializable
     {
          Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         staff = (Staff) sessionMap.get("currentStaff"); //Need to pass in the current staff that logged in
-        calendarMap = new HashMap<>();
             System.out.println("LOOK HERE");
             for (Event event : staff.getEvents()) {
                 System.out.println(event.getEventId());
                 System.out.println(event.getDescription());
                 System.out.println(event.getStartDate());
-                ScheduleEvent existing = new DefaultScheduleEvent(event.getDescription(), event.getStartDate(), event.getEndDate());
+                ScheduleEvent existing = new DefaultScheduleEvent(event.getDescription(), event.getStartDate(), event.getEndDate(), event.getEventId());
                 scheduleModel.addEvent(existing);
-                calendarMap.put(existing,event); 
             }
     }
 
@@ -97,18 +92,6 @@ public class MyCalendarManagedBean implements Serializable
         return selectedScheduleEvent;
     }
 
-    public Long getDatabaseEventId() {
-        return databaseEventId;
-    }
-
-    public void setDatabaseEventId(Long databaseEventId) {
-        Event databaseEvent = (Event) calendarMap.get(selectedScheduleEvent);
-       databaseEventId = databaseEvent.getEventId();
-        this.databaseEventId = databaseEventId;
-    }
-    
-    
-
     public void setSelectedScheduleEvent(ScheduleEvent selectedScheduleEvent) {
         this.selectedScheduleEvent = selectedScheduleEvent;
     }
@@ -120,41 +103,48 @@ public class MyCalendarManagedBean implements Serializable
            newEvent = eventController.createNewEvent(newEvent);
             staff.addEvent(newEvent);
             staffController.updateStaff(staff);
-            calendarMap.put(newScheduleEvent,newEvent); 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event created successfully", null));
         newScheduleEvent = new DefaultScheduleEvent();
     }
     
     public void updateEvent() throws StaffNotFoundException, EventNotFoundException 
     {
   
+        System.err.println("********** HERE 1");
+        
         scheduleModel.updateEvent(selectedScheduleEvent);
-        System.out.println(databaseEventId);
-        Event eventToUpdate = eventController.retrieveEventById(databaseEventId);
+        
+        Long eventIdToUpdate = (Long) selectedScheduleEvent.getData();
+        Event eventToUpdate = eventController.retrieveEventById(eventIdToUpdate);
         eventToUpdate.setDescription(selectedScheduleEvent.getTitle());
         eventToUpdate.setStartDate(selectedScheduleEvent.getStartDate());
         eventToUpdate.setEndDate(selectedScheduleEvent.getEndDate());
+        
+        System.err.println("********** title" + eventToUpdate.getDescription());
+        
         eventController.updateEvent(eventToUpdate);
-        calendarMap.put(selectedScheduleEvent, eventToUpdate);
         selectedScheduleEvent = new DefaultScheduleEvent();  
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event updated successfully", null));
+
     }
     
      public void deleteEvent() throws StaffNotFoundException, EventNotFoundException {
-           
-            Event eventToDelete = (Event) calendarMap.get(selectedScheduleEvent);
-            eventController.deleteEvent(eventToDelete.getEventId());
+            Long eventIdToDelete = (Long) selectedScheduleEvent.getData();
+            Event eventToDelete = eventController.retrieveEventById(eventIdToDelete);
             staff.getEvents().remove(eventToDelete);
             staffController.updateStaff(staff);
-            calendarMap.remove(selectedScheduleEvent);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category deleted successfully", null));
-       
-        
+
+            eventController.deleteEvent(eventIdToDelete);
+            scheduleModel.deleteEvent(selectedScheduleEvent);
+            selectedScheduleEvent = new DefaultScheduleEvent();  
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event deleted successfully", null));
+
     }
-    
-    
-    
+
     public void onEventSelect(SelectEvent selectEvent) 
     {
         selectedScheduleEvent = (ScheduleEvent) selectEvent.getObject();
+        System.err.println("********* select: " + selectedScheduleEvent.getData().toString());
     }
     
 
