@@ -90,7 +90,7 @@ public class SubscriberController implements SubscriberControllerLocal {
         em.remove(subscriberToDelete);
         
     }
-    
+       
     public void addPlanToSubscriber(Subscriber sub, SubscriptionPlan plan) {
         
     }
