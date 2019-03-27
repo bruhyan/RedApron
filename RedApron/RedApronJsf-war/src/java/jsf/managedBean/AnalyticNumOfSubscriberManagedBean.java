@@ -42,8 +42,9 @@ public class AnalyticNumOfSubscriberManagedBean implements Serializable{
     @PostConstruct
     public void init(){
         lineModel = new LineChartModel();        
+        lineModel.setAnimate(true);
         LineChartSeries s = new LineChartSeries();
-        s.setLabel("Total Number of Subscribers (Cumulative)");
+        lineModel.setTitle("Total Number of Subscribers (Cumulative)");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date currDate = new Date();
