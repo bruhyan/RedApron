@@ -274,6 +274,14 @@ public class SubscriptionPlanManagedBean implements Serializable{
     public void setCategoryIdUpdate(Long categoryIdUpdate) {
         this.categoryIdUpdate = categoryIdUpdate;
     }
+
+    public List<SubscriptionPlan> getFilteredSubscriptionPlans() {
+        return filteredSubscriptionPlans;
+    }
+
+    public void setFilteredSubscriptionPlans(List<SubscriptionPlan> filteredSubscriptionPlans) {
+        this.filteredSubscriptionPlans = filteredSubscriptionPlans;
+    }
     
     
 }

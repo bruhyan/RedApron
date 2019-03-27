@@ -32,7 +32,7 @@
                     <f:facet name="header">
                         <p:outputPanel style="text-align: right;">
                             <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllEnquiries').filter(), console.log('${enquiryManagementManagedBean.filteredEnquiriesEntities}')" style="width:300px" placeholder="Enter keyword"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllEnquiries').filter()" style="width:300px" placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>
 
@@ -52,7 +52,7 @@
 
                     </p:column>
 
-                    <p:column headerText="Created" sortBy="#{enquiry.created}" filterBy="#{enquiry.created}" filterMatchMode="equals">    				
+                    <p:column headerText="Created" sortBy="#{enquiry.created}" filterBy="#{enquiry.created}" filterMatchMode="contains">    				
                         <h:outputText value="#{enquiry.created}" />
                     </p:column>
 
@@ -106,7 +106,7 @@
                                     <p:outputLabel for="text" value="Enquiry">&nbsp;&nbsp;<i class="fa fa-lightbulb"></i></p:outputLabel>
                                     <p:inputText id="text" value="#{enquiryManagementManagedBean.newEnquiry.text}"/>
 
-                                    <p:outputLabel for="answer" value="Answer" >&nbsp;&nbsp;<i class="fa fa-money-bill-alt"></i></p:outputLabel>
+                                    <p:outputLabel for="answer" value="Answer" >&nbsp;&nbsp;<i class="fa fa-reply"></i></p:outputLabel>
                                     <p:inputNumber id="answer" value="#{enquiryManagementManagedBean.newEnquiry.answer}" decimalPlaces="2"/>
 
 
@@ -161,7 +161,7 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Answered By Staff ID :" />
+                                <h:outputLabel value="Answered By Staff:" />
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{enquiryManagementManagedBean.selectedEnquiryToView.answer.staff.email}" />
@@ -197,6 +197,7 @@
                         </p:row>
 
 
+
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="textUpdate" value="Enquiry " />
@@ -206,6 +207,18 @@
                             </p:column>
                             <p:column>
                                 <p:message for="textUpdate" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="staffId" value="Staff ID " />
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="staffId" value="#{enquiryManagementManagedBean.enquiryToUpdate.answer.staff.staffId}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="staffId" />
                             </p:column>
                         </p:row>
 

@@ -88,7 +88,7 @@ public class MyProfileManagedBean {
     {
         try
         {
-            String[] arr = event.getFile().getFileName().split("\\.");
+             String[] arr = event.getFile().getFileName().split("\\.");
             String storedpath = staff.getStaffId().toString() + "." + arr[arr.length-1];
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + storedpath;
 
