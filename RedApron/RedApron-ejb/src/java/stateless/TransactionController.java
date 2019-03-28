@@ -7,6 +7,8 @@ package stateless;
 
 import entity.Transaction;
 import exceptions.TransactionNotFoundException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -29,10 +31,10 @@ public class TransactionController implements TransactionControllerLocal {
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
         em.flush();
-        
+
         return transaction;
     }
-    
+
     @Override
     public Transaction retrieveAnswerById(Long transactionId) throws TransactionNotFoundException {
         Transaction transaction = em.find(Transaction.class, transactionId);
@@ -43,19 +45,39 @@ public class TransactionController implements TransactionControllerLocal {
             throw new TransactionNotFoundException("Answer ID " + transactionId + " does not exist");
         }
     }
-    
+
+    @Override
+    public List<Transaction> retrieveThisMonthTransaction() {
+
+        Calendar dCal = Calendar.getInstance();
+        dCal.set(Calendar.DAY_OF_MONTH, 1);
+        dCal.set(Calendar.HOUR_OF_DAY, 0);
+        dCal.set(Calendar.MINUTE, 0);
+        dCal.set(Calendar.SECOND, 0);
+        dCal.set(Calendar.MILLISECOND, 0);
+     
+
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.paymentDate BETWEEN :start AND :end");
+        System.out.println(dCal.getTime());
+        query.setParameter("start", dCal.getTime());
+
+        int endDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+        dCal.set(Calendar.DAY_OF_MONTH, endDate);
+        System.out.println(dCal.getTime());
+        query.setParameter("end", dCal.getTime());
+        return query.getResultList();
+    }
+
     @Override
     public List<Transaction> retrieveAllTransactions() {
-       Query query = em.createQuery("SELECT t FROM Transaction t ORDER BY t.transactionId ASC");
+        Query query = em.createQuery("SELECT t FROM Transaction t ORDER BY t.transactionId ASC");
         List<Transaction> transactionEntities = query.getResultList();
-        
-        for(Transaction transactionEntity:transactionEntities)
-        {
+
+        for (Transaction transactionEntity : transactionEntities) {
             transactionEntity.getSubscriptionPlan();
         }
-        
+
         return transactionEntities;
     }
-    
-}
 
+}

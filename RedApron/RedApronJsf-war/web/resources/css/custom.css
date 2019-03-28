@@ -125,3 +125,67 @@ and open the template in the editor.
     color: #fff;
     background-color: #5bc0de;
 }
+
+.numSubscribers {
+    background-color: #b51a62 !important;
+}
+.numDeliveries {
+    background-color: #3d065a !important;
+}
+
+.numProfit {
+    background-color: #70d4b4 !important;
+}
+
+
+.analyticsHeader {
+    font-size:20px;
+    color: #fff;
+    margin-bottom:8px;
+
+}
+.analyticsTitle {
+    font-size:16px;
+    color: #fff;
+    margin-bottom:8px;
+}
+
+.analyticsStats{
+    font-size:28px;
+    margin-bottom:8px;
+    color: #fff;
+    font-weight:bold;
+}
+.dashboardBg{
+    background-color: #f9f9f9;
+}
+
+.analyticsWrapper{
+    color: #fff !important;
+}
+
+.analytics{
+    overflow:hidden;
+    position: relative;
+    margin: 0 10px;
+    border-radius:10px;
+
+}
+
+.analyticsIcon{
+    position: absolute;
+    z-index: 0;
+    top: -1.25rem;
+    right: -1rem;
+    opacity: 0.4;
+    font-size: 8rem;
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
+}
+.analytics > .ui-widget-header{
+    background-color: rgba(0,0,0,0);
+
+    color: #fff !important;
+    border: 0;
+
+}

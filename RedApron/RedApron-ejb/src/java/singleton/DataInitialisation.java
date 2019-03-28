@@ -52,7 +52,7 @@ public class DataInitialisation {
     @EJB
     private EventControllerLocal eventController;
 
-    @EJB(name = "EnquiryControllerLocal") 
+    @EJB(name = "EnquiryControllerLocal")
     private EnquiryControllerLocal enquiryControllerLocal;
 
     @EJB
@@ -72,8 +72,6 @@ public class DataInitialisation {
 
     @EJB
     private StaffControllerLocal staffController;
-    
-    
 
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
@@ -93,7 +91,7 @@ public class DataInitialisation {
     }
 
     private void initializeData() {
-        
+
         Staff staff1 = new Staff("test1", "one", "systemadmin@redapron.com", "password", Role.SYSTEM_ADMIN);
         Staff staff2 = new Staff("test2", "two", "custsupp@redapron.com", "password", Role.CUSTOMER_SUPPORT);
         Staff staff3 = new Staff("test3", "three", "prodman@redapron.com", "password", Role.PRODUCT_MANAGER);
@@ -131,33 +129,33 @@ public class DataInitialisation {
         Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "", "with Kombu & Peanuts", "", true)); //440 cal, 35 mins, vegeterian
         Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "", "with Carrot & Currant Rice", "", true)); // 590 cal, 25 mins
 
-        Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019, 3, 10), PaymentType.MASTER));
-        Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019, 3, 10), PaymentType.VISA));
-        Transaction transaction3 = transactionControllerLocal.createNewTransaction(new Transaction(35.00, new Date(2019, 3, 10), PaymentType.PAYPAL));
+        Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.MASTER));
+        Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.VISA));
+        Transaction transaction3 = transactionControllerLocal.createNewTransaction(new Transaction(35.00, new Date(2019 - 1900, 2, 10), PaymentType.PAYPAL));
+        Transaction transaction4 = transactionControllerLocal.createNewTransaction(new Transaction(50.00, new Date(2019 - 1900, 2, 29), PaymentType.MASTER));
+        Transaction transaction5 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 3, 1), PaymentType.VISA));
+        Transaction transaction6 = transactionControllerLocal.createNewTransaction(new Transaction(35.00, new Date(2019 - 1900, 3, 5), PaymentType.PAYPAL));
 
         Enquiry enquiry1 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Hello, I would like to ask where is my meal?", sub1));
         Enquiry enquiry2 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Give me free food pl0x", sub2));
         Enquiry enquiry3 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Where is the toilet?", sub3));
-        
-        Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019-1900, 3, 10), sub1, recipe1));
-        Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019-1900, 3, 11), sub1, recipe2));
-        Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019-1900, 3, 15), sub3, recipe1));
-        
-        
+
+        Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019 - 1900, 2, 10), sub1, recipe1));
+        Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019 - 1900, 2, 11), sub1, recipe2));
+        Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019 - 1900, 2, 15), sub3, recipe1));
 
         //setting relation
         //test if object is managed here
-        
         //subscriber -> review
         sub1.getReviews().add(review1);
         sub2.getReviews().add(review2);
         sub3.getReviews().add(review3);
-        
+
         //recipe -> review
         recipe1.getReviews().add(review1);
         recipe2.getReviews().add(review2);
         recipe1.getReviews().add(review3);
-        
+
         //Plan -> Recipe (Subscriber chooses recipes in subscription plan)
         plan1.getRecipes().add(recipe1);
         plan2.getRecipes().add(recipe2);
@@ -202,11 +200,10 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
-        
-        
-        Event event1 = new Event("Test 1", new Date(2019-1900, 2, 1, 8, 0), new Date(2019-1900, 2, 1, 9, 0));
-        Event event2 = new Event("Test 2", new Date(2019-1900, 2, 2, 8, 0), new Date(2019-1900, 2, 2, 9, 0));
-        Event event3 = new Event("Test 3", new Date(2019-1900, 2, 3, 8, 0), new Date(2019-1900, 2, 3, 9, 0));
+
+        Event event1 = new Event("Test 1", new Date(2019 - 1900, 2, 1, 8, 0), new Date(2019 - 1900, 2, 1, 9, 0));
+        Event event2 = new Event("Test 2", new Date(2019 - 1900, 2, 2, 8, 0), new Date(2019 - 1900, 2, 2, 9, 0));
+        Event event3 = new Event("Test 3", new Date(2019 - 1900, 2, 3, 8, 0), new Date(2019 - 1900, 2, 3, 9, 0));
         eventController.createNewEvent(event1);
         eventController.createNewEvent(event2);
         eventController.createNewEvent(event3);
