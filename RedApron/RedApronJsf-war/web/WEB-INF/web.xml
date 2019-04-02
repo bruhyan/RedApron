@@ -75,4 +75,28 @@
         <local>stateless.SubscriberControllerLocal</local>
         <ejb-link>RedApron-ejb.jar#SubscriberController</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CategoryController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.CategoryControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#CategoryController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>AnswerController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.AnswerControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#AnswerController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>RecipeController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.RecipeControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#RecipeController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>EnquiryController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.EnquiryControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#EnquiryController</ejb-link>
+    </ejb-local-ref>
 </web-app>

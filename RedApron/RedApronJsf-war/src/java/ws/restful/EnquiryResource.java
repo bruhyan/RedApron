@@ -5,9 +5,8 @@
  */
 package ws.restful;
 
-import entity.Subscriber;
-import exceptions.CreateSubscriberException;
-import exceptions.SubscriberNotFoundException;
+import entity.Enquiry;
+import exceptions.EnquiryNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,72 +26,73 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import stateless.SubscriberControllerLocal;
-import ws.restful.datamodel.CreateSubscriberReq;
-import ws.restful.datamodel.CreateSubscriberRsp;
+import stateless.EnquiryControllerLocal;
+import ws.restful.datamodel.CreateEnquiryReq;
+import ws.restful.datamodel.CreateEnquiryRsp;
 import ws.restful.datamodel.ErrorRsp;
-import ws.restful.datamodel.RetrieveAllSubscribersRsp;
-import ws.restful.datamodel.RetrieveSubscriberRsp;
-import ws.restful.datamodel.UpdateSubscriberReq;
+import ws.restful.datamodel.RetrieveAllEnquiriesRsp;
+import ws.restful.datamodel.RetrieveEnquiryRsp;
+import ws.restful.datamodel.UpdateEnquiryReq;
 
 /**
  * REST Web Service
  *
  * @author MX
  */
-@Path("Subscriber")
-public class SubscriberResource {
+@Path("Enquiry")
+public class EnquiryResource {
+
+    private EnquiryControllerLocal enquiryControllerLocal;
 
     @Context
     private UriInfo context;
-    
-    private SubscriberControllerLocal subscriberControllerLocal;
 
-    public SubscriberResource() {
-        subscriberControllerLocal = lookupSubscriberControllerLocal();
+    public EnquiryResource() {
+        enquiryControllerLocal = lookupEnquiryControllerLocal();
     }
 
-    @Path("retrieveSubscriberById/{id}")
+    @Path("retrieveEnquiryById/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveSubscriberById(@PathParam("id") Long id) {
+    public Response retrieveEnquiryById(@PathParam("id") Long id) {
         try
         {
-            Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(id);
+            Enquiry enquiry = enquiryControllerLocal.retrieveEnquiryById(id);
             
+            System.out.println("enquiry: " + enquiry);
             //detach the two way bidirectional relationship
-            subscriber.getEnquiries().clear();
-            subscriber.getSubscriptionPlans().clear();
-            subscriber.getReviews().clear();
+            enquiry.setAnswer(null);
+            enquiry.setSubscriber(null);
             
-            RetrieveSubscriberRsp retrieveSubscriberRsp = new RetrieveSubscriberRsp(subscriber);
-            return Response.status(Status.OK).entity(retrieveSubscriberRsp).build();
+            RetrieveEnquiryRsp retrieveEnquiryRsp = new RetrieveEnquiryRsp(enquiry);
+            return Response.status(Status.OK).entity(retrieveEnquiryRsp).build();
         }
-        catch(SubscriberNotFoundException ex){
+        catch(EnquiryNotFoundException ex){
+            ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
         }
         catch (Exception ex){
+            ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    @Path("retrieveAllSubscribers")
+
+    @Path("retrieveAllEnquiries")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllSubscribers(){
+    public Response retrieveAllEnquiries(){
         try{
-            List <Subscriber> subscriberEntities = subscriberControllerLocal.retrieveAllSubscribers();
+            List <Enquiry> enquiryEntities = enquiryControllerLocal.retrieveAllEnquiries();
             
-            for(Subscriber subscriber:subscriberEntities)
+            for(Enquiry e: enquiryEntities)
             {
-                subscriber.getEnquiries().clear();
-                subscriber.getReviews().clear();
-                subscriber.getSubscriptionPlans().clear();
+               e.setAnswer(null);
+               e.setSubscriber(null);
             }
             
-            RetrieveAllSubscribersRsp retrieveAllSubscribersRsp = new RetrieveAllSubscribersRsp(subscriberEntities);
+            RetrieveAllEnquiriesRsp retrieveAllSubscribersRsp = new RetrieveAllEnquiriesRsp(enquiryEntities);
             return Response.status(Status.OK).entity(retrieveAllSubscribersRsp).build();
         }
         catch(Exception ex){
@@ -105,19 +105,19 @@ public class SubscriberResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSubscriber(CreateSubscriberReq createSubscriberReq){
-        if(createSubscriberReq != null){
+    public Response createEnquiry(CreateEnquiryReq createEnquiryReq){
+        if(createEnquiryReq != null){
             try{
-                Subscriber subscriber = subscriberControllerLocal.createNewSubscriber(createSubscriberReq.getSubscriber());
-                CreateSubscriberRsp createSubscriberRsp = new CreateSubscriberRsp(subscriber);
-                return Response.status(Status.OK).entity(createSubscriberRsp).build();
+                Enquiry enquiry = enquiryControllerLocal.createNewEnquiry(createEnquiryReq.getEnquiry());
+                CreateEnquiryRsp createEnquiryRsp = new CreateEnquiryRsp(enquiry);
+                return Response.status(Status.OK).entity(createEnquiryRsp).build();
             }
             catch(Exception ex){
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
         }else {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid create subscriber request");
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create enquiry request");
             
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
@@ -126,13 +126,13 @@ public class SubscriberResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSubscriber(UpdateSubscriberReq updateSubscriberReq){
-        if (updateSubscriberReq != null){
+    public Response updateEnquiry(UpdateEnquiryReq updateEnquiryReq){
+        if (updateEnquiryReq != null){
             try{
-                subscriberControllerLocal.updateSubscriber(updateSubscriberReq.getSubscriber());
+                enquiryControllerLocal.updateEnquiry(updateEnquiryReq.getEnquiry());
                 return Response.status(Status.OK).build();
             }
-            catch(SubscriberNotFoundException ex){
+            catch(EnquiryNotFoundException ex){
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();  
             }
@@ -143,7 +143,7 @@ public class SubscriberResource {
         }
         else
         {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid update subscriber request");
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update enquiry request");
             
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
@@ -151,12 +151,12 @@ public class SubscriberResource {
     
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteSubscriber(@QueryParam("id") Long id){
+    public Response deleteEnquiry(@QueryParam("id") Long id){
         try{
-            subscriberControllerLocal.deleteSubscriber(id);
+            enquiryControllerLocal.deleteEnquiry(id);
             return Response.status(Status.OK).build();
         }
-        catch(SubscriberNotFoundException ex){
+        catch(EnquiryNotFoundException ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
         }
@@ -166,10 +166,10 @@ public class SubscriberResource {
         }
     }
 
-    private SubscriberControllerLocal lookupSubscriberControllerLocal() {
+    private EnquiryControllerLocal lookupEnquiryControllerLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (SubscriberControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/SubscriberController!stateless.SubscriberControllerLocal");
+            return (EnquiryControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/EnquiryController!stateless.EnquiryControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

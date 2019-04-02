@@ -20,7 +20,7 @@ public interface AnswerControllerLocal {
 
     public Answer retrieveAnswerById(Long answerId) throws AnswerNotFoundException;
 
-    public Answer getAnswerFromEnquiryId(Long enquiryId) throws EnquiryNotFoundException;
+    public Answer getAnswerFromEnquiryId(Long enquiryId) throws EnquiryNotFoundException, AnswerNotFoundException;
 
     public void updateAnswer(Answer answer) throws AnswerNotFoundException;
 
