@@ -18,7 +18,12 @@ public class ApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
-        addRestResourceClasses(resources);
+        resources.add(EnquiryResource.class);
+        resources.add(AnswerResource.class);
+        resources.add(CategoryResource.class);
+        resources.add(RecipeResource.class);
+        resources.add(SubscriberResource.class);
+//        addRestResourceClasses(resources);
         return resources;
     }
 
@@ -28,8 +33,8 @@ public class ApplicationConfig extends Application {
      * all resources defined in the project.
      * If required, comment out calling this method in getClasses().
      */
-    private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ws.restful.SubscriberResource.class);
-    }
+//    private void addRestResourceClasses(Set<Class<?>> resources) {
+//        resources.add(ws.restful.SubscriberResource.class);
+//    }
     
 }
