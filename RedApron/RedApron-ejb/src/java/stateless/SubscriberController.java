@@ -28,7 +28,7 @@ public class SubscriberController implements SubscriberControllerLocal {
     }
 
     @Override
-    public Subscriber createNewSubscriber(Subscriber newSubscriber) {
+    public Subscriber createNewSubscriber(Subscriber newSubscriber){
         //check if subscriber already exist
         //if not then persist
         
@@ -64,7 +64,7 @@ public class SubscriberController implements SubscriberControllerLocal {
             throw new SubscriberNotFoundException("Subscriber ID " + subscriberId + " does not exist!");
         }  
     }
-    
+  
     @Override
     public Subscriber retrieveSubscriberByEmail(String subscriberEmail) throws SubscriberNotFoundException {
         if(subscriberEmail == null) {
@@ -89,6 +89,26 @@ public class SubscriberController implements SubscriberControllerLocal {
         
         em.remove(subscriberToDelete);
         
+    }
+    
+    @Override
+    public void updateSubscriber(Subscriber subscriber) throws SubscriberNotFoundException{
+        Subscriber subscriberToUpdate = retrieveSubscriberById(subscriber.getSubscriberId());
+        if(subscriberToUpdate != null){
+            subscriberToUpdate.setFirstName(subscriber.getFirstName());
+            subscriberToUpdate.setLastName(subscriber.getLastName());
+            subscriberToUpdate.setAddressLine1(subscriber.getAddressLine1());
+            subscriberToUpdate.setAddressLine2(subscriber.getAddressLine2());
+            subscriberToUpdate.setEmail(subscriber.getEmail());
+            subscriberToUpdate.setEnquiries(subscriber.getEnquiries());
+            subscriberToUpdate.setPassword(subscriber.getPassword());
+            subscriberToUpdate.setPhoneNumber(subscriber.getPhoneNumber());
+            subscriberToUpdate.setPostalCode(subscriber.getPostalCode());
+            subscriberToUpdate.setReviews(subscriber.getReviews());
+            subscriberToUpdate.setSubscriptionPlans(subscriber.getSubscriptionPlans());
+            
+            em.merge(subscriberToUpdate);
+        }
     }
        
     public void addPlanToSubscriber(Subscriber sub, SubscriptionPlan plan) {

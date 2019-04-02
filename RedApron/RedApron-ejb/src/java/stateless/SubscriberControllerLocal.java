@@ -26,5 +26,7 @@ public interface SubscriberControllerLocal {
     public Subscriber retrieveSubscriberByEmail(String subscriberEmail) throws SubscriberNotFoundException;
 
     public void deleteSubscriber(Long subscriberId) throws SubscriberNotFoundException;
+
+    public void updateSubscriber(Subscriber subscriber) throws SubscriberNotFoundException;
     
 }
