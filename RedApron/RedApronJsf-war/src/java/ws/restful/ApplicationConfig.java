@@ -23,6 +23,10 @@ public class ApplicationConfig extends Application {
         resources.add(CategoryResource.class);
         resources.add(RecipeResource.class);
         resources.add(SubscriberResource.class);
+        resources.add(ReviewResource.class);
+        resources.add(SubscriptionPlanResource.class);
+        resources.add(StepResource.class);
+        resources.add(TransactionResource.class);
 //        addRestResourceClasses(resources);
         return resources;
     }
