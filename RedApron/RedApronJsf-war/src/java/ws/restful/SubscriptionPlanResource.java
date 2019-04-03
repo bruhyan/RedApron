@@ -5,7 +5,11 @@
  */
 package ws.restful;
 
+import entity.Category;
+import entity.Recipe;
+import entity.Subscriber;
 import entity.SubscriptionPlan;
+import entity.Transaction;
 import exceptions.SubscriptionPlanNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,8 +62,19 @@ public class SubscriptionPlanResource {
             
             for(SubscriptionPlan s : subscriptionPlanEntities)
             {
+//                Category c = s.getCatergory();
+//                c.setSubscriptionPlans(null);
+//                
+//                List<Recipe> r = s.getRecipes();
+//                c.setSubscriptionPlans(null);
+//                
+//                Transaction t = s.getTransaction();
+//                t.setSubscriptionPlan(null);
+//                
+//                Subscriber sub = s.getSubscriber();
+//                sub.setSubscriptionPlans(null);
+                
                 s.setCatergory(null);
-                s.setRecipes(null);
                 s.setTransaction(null);
                 s.setSubscriber(null);
                 s.setRecipes(null);
