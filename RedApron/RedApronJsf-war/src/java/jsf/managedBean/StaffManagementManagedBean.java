@@ -59,7 +59,6 @@ public class StaffManagementManagedBean implements Serializable {
         
         newStaff = new Staff();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New staff created successfully (Staff ID: " + pe.getStaffId() + ")", null));
     }
 
     public void doUpdateStaff(ActionEvent event) {
