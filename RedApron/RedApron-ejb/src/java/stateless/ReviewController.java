@@ -55,5 +55,25 @@ public class ReviewController implements ReviewControllerLocal {
         return reviewEntities;
     }  
     
+    @Override
+    public void updateReview(Review review) throws ReviewNotFoundException {
+        
+        Review reviewToUpdate = retrieveReviewById(review.getReviewId());
+        if(reviewToUpdate != null){
+            reviewToUpdate.setDate(review.getDate());
+            reviewToUpdate.setRating(review.getRating());
+            reviewToUpdate.setRecipe(review.getRecipe());
+            reviewToUpdate.setSubscriber(review.getSubscriber());
+            reviewToUpdate.setText(review.getText());
+        }
+        em.merge(reviewToUpdate);
+    }
     
+    @Override
+    public void deleteReview(Long reviewId) throws ReviewNotFoundException {
+
+        Review review = retrieveReviewById(reviewId);
+        em.remove(review);
+
+    }
 }

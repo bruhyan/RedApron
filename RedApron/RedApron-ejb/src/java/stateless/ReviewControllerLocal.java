@@ -16,8 +16,14 @@ import javax.ejb.Local;
  */
 public interface ReviewControllerLocal {
     
-     public Review createNewReview(Review review);
+    public Review createNewReview(Review review);
+    
     public Review retrieveReviewById(Long reviewId) throws ReviewNotFoundException;
+    
     public List<Review> retrieveAllReviews();
+
+    public void updateReview(Review review) throws ReviewNotFoundException;
+
+    public void deleteReview(Long reviewId) throws ReviewNotFoundException;
     
 }

@@ -63,4 +63,64 @@
     <param-name>alternatedocroot_1</param-name>
     <param-value>/Users/matthealoo/Desktop/RedApron/glassfish-4.1.1-uploadedfiles</param-value>
     </context-param>
+    <ejb-local-ref>
+        <ejb-ref-name>StaffController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.StaffControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#StaffController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>SubscriberController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.SubscriberControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#SubscriberController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CategoryController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.CategoryControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#CategoryController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>AnswerController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.AnswerControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#AnswerController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>RecipeController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.RecipeControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#RecipeController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>EnquiryController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.EnquiryControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#EnquiryController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ReviewController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.ReviewControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#ReviewController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>SubscriptionPlanController</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.SubscriptionPlanControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#SubscriptionPlanController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>StepControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.StepControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#StepController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>TransactionControllerLocal </ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.TransactionControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#TransactionController</ejb-link>
+    </ejb-local-ref>
 </web-app>
