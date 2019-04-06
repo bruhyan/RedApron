@@ -5,12 +5,11 @@
  */
 package jsf.managedBean;
 
-import entity.Recipe;
-import exceptions.RecipeNotFoundException;
+import entity.Step;
+import exceptions.StepNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -18,23 +17,20 @@ import javax.faces.convert.FacesConverter;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import stateless.RecipeControllerLocal;
+import stateless.StepControllerLocal;
 
-/**
- *
- * @author mdk12
- */
-@FacesConverter(value = "pickListConverter")
 
-public class PickListConverter implements Converter, Serializable {
+@FacesConverter(value = "pickListConverterStep")
 
-    RecipeControllerLocal recipeController = lookupRecipeControllerLocal();
+public class PickListConverterStep implements Converter, Serializable {
+
+    StepControllerLocal stepController = lookupStepControllerLocal();
 
     /**
      * Creates a new instance of PickListConverter
      */
 
-    public PickListConverter() {
+    public PickListConverterStep() {
     }
 
     @Override
@@ -46,24 +42,24 @@ public class PickListConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
-            System.out.println("HELLLLO");
-            long recipeId = Long.parseLong(value);
-            System.out.println(recipeId);
+            System.out.println("HEYYOOOO");
+            long stepId = Long.parseLong(value);
+            System.out.println(stepId);
 
-            Recipe recipe = lookupRecipeControllerLocal().retrieveRecipeById(recipeId);
+            Step step = lookupStepControllerLocal().retrieveStepById(stepId);
             
 
-            return recipe;
-        }catch(RecipeNotFoundException ex){
-            System.out.println("No Such recipe found!");
+            return step;
+        } catch(StepNotFoundException ex){
+            System.out.println("No Such step found!");
         }
         return null;
     }
 
-    private RecipeControllerLocal lookupRecipeControllerLocal() {
+    private StepControllerLocal lookupStepControllerLocal() {
         try {
             Context c = new InitialContext();
-            return (RecipeControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/RecipeController!stateless.RecipeControllerLocal");
+            return (StepControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/StepController!stateless.StepControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

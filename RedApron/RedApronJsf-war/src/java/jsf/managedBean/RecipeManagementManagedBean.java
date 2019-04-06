@@ -10,6 +10,7 @@ import entity.Recipe;
 import entity.Step;
 import exceptions.CategoryNotFoundException;
 import exceptions.RecipeNotFoundException;
+import exceptions.StepNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -121,21 +122,30 @@ public class RecipeManagementManagedBean implements Serializable {
 
         try {
             Recipe recipe = recipeControllerLocal.createNewRecipe(newRecipe);
-
+            System.out.println(newCategoryChoices.getTarget());
             for (Category category : newCategoryChoices.getTarget()) {
                 Category temp = categoryControllerLocal.retrieveCategoryById(category.getCategoryId());
+                temp.getRecipes().size();
                 temp.getRecipes().add(recipe);
+                recipe.getCategories().size();
                 recipe.getCategories().add(temp);
+                System.out.println("adding category " + temp.getName() + "to recipe");
+               categoryControllerLocal.updateCategory(temp);
+               recipeControllerLocal.updateRecipe(recipe);
+
+            }
+            int i = 0;
+            for (Step s: steps) {
+                
+                System.out.println("adding step: " + s.getInstruction());
+                s.setOrderNum(i);
+                recipe.getSteps().add(s);
+                i++;
+                stepControllerLocal.updateStep(s);
             }
             
-            for (Step s: steps) {
-                recipe.getSteps().add(s);
-            }
-            try {
-                recipeControllerLocal.updateRecipe(recipe);
-            } catch (RecipeNotFoundException ex) {
-            System.out.println("Recipe not found!");
-            }
+            recipeControllerLocal.updateRecipe(recipe);
+      
             recipes.add(recipe);
             this.newCategories = new ArrayList<>();
 
@@ -145,6 +155,12 @@ public class RecipeManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Recipe created successfully (Recipe ID: " + recipe.getRecipeId() + ")", null));
         } catch (CategoryNotFoundException ex) {
             System.out.println("Category not found!");
+        } catch (RecipeNotFoundException ex) {
+                        System.out.println("Recipe not found!");
+
+        } catch (StepNotFoundException ex) {
+                                    System.out.println("Step not found!");
+
         }
     }
 

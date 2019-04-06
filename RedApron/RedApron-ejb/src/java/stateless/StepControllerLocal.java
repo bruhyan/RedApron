@@ -22,5 +22,7 @@ public interface StepControllerLocal {
     public Step retrieveStepById(long id) throws StepNotFoundException;
 
     public List<Step> retrieveAllSteps();
+
+    public void updateStep(Step step) throws StepNotFoundException;
     
 }

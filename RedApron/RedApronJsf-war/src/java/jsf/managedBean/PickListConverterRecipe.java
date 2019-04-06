@@ -5,12 +5,11 @@
  */
 package jsf.managedBean;
 
-import entity.Recipe;
-import exceptions.RecipeNotFoundException;
+import entity.Category;
+import exceptions.CategoryNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -18,23 +17,21 @@ import javax.faces.convert.FacesConverter;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import stateless.CategoryControllerLocal;
 import stateless.RecipeControllerLocal;
 
-/**
- *
- * @author mdk12
- */
-@FacesConverter(value = "pickListConverter")
 
-public class PickListConverter implements Converter, Serializable {
+@FacesConverter(value = "pickListConverterRecipe")
 
-    RecipeControllerLocal recipeController = lookupRecipeControllerLocal();
+public class PickListConverterRecipe implements Converter, Serializable {
+
+    CategoryControllerLocal categoryController = lookupCategoryControllerLocal();
 
     /**
      * Creates a new instance of PickListConverter
      */
 
-    public PickListConverter() {
+    public PickListConverterRecipe() {
     }
 
     @Override
@@ -46,24 +43,24 @@ public class PickListConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
-            System.out.println("HELLLLO");
-            long recipeId = Long.parseLong(value);
-            System.out.println(recipeId);
+            System.out.println("YOOOOO");
+            long categoryId = Long.parseLong(value);
+            System.out.println(categoryId);
 
-            Recipe recipe = lookupRecipeControllerLocal().retrieveRecipeById(recipeId);
+            Category category = lookupCategoryControllerLocal().retrieveCategoryById(categoryId);
             
 
-            return recipe;
-        }catch(RecipeNotFoundException ex){
-            System.out.println("No Such recipe found!");
+            return category;
+        } catch(CategoryNotFoundException ex){
+            System.out.println("No Such category found!");
         }
         return null;
     }
 
-    private RecipeControllerLocal lookupRecipeControllerLocal() {
+    private CategoryControllerLocal lookupCategoryControllerLocal() {
         try {
             Context c = new InitialContext();
-            return (RecipeControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/RecipeController!stateless.RecipeControllerLocal");
+            return (CategoryControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/CategoryController!stateless.CategoryControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
