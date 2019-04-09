@@ -1,0 +1,81 @@
+a {
+	text-decoration-line: none;	
+}
+
+a:hover {
+	text-decoration-line: underline;
+	cursor: hand;
+}
+
+
+
+/* PrimeFaces styling elements below this comment */
+
+.ui-widget {
+    font-size: small;
+}
+
+.ui-column-header {
+    font-size: small;
+}
+
+.ui-column-title {
+    font-size: small;
+}
+
+.ui-datatable {
+    font-size: small;
+}
+
+.ui-datatable-header {
+    font-size: small;
+}
+
+.ui-datatable-footer {
+    font-size: small;
+}
+
+.ui-datatable-column {
+    font-size: small;
+}
+
+.ui-sortable-column {
+    font-size: small;
+}
+
+.ui-sortable-column-icon {
+    font-size: small;
+}
+
+.ui-datatable-data {
+    font-size: small;
+}
+
+div.ui-growl {
+   left: 10;
+}
+
+.green-button.ui-button.ui-state-default {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+        color: #fff;
+    }
+ 
+    .green-button.ui-button.ui-state-default:enabled:hover, 
+    .green-button.ui-button.ui-state-default:focus {
+        background-color: #4cae4c;
+        border-color: #5cb85c;
+    }
+ 
+    .red-button.ui-button.ui-state-default {
+        background-color: #d9534f;
+        border-color: #d9534f;
+        color: #fff;
+    }
+ 
+    .red-button.ui-button.ui-state-default:enabled:hover, 
+    .red-button.ui-button.ui-state-default:focus {
+        background-color: #d43f3a;
+        border-color: #d9534f;
+    }
+     

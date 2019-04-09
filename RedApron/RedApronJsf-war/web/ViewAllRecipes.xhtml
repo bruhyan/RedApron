@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <style type="text/css">
+        .label {
+            width:20%;
+            padding:4px;
+        }
+
+        .value {
+            width:80%;
+            padding:4px;
+        }
+
+        .grid {
+            width:100%;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .outputLabel {
+            font-weight: bold;
+        }
+
+        .grid {
+            width:33%;
+            padding:4px;
+        }
+    </style>
+
+
+    <ui:define name="content">
+        <div>
+            <h3>All Recipes</h3>
+
+            <h:form>
+                <p:commandButton value="Create New Recipe" onclick="PF('dialogCreateNewRecipe').show()" icon="fa fa-plus" />
+                <br/>
+            </h:form>
+            <h:form id="recipeForm">
+                <p:messages id="mainMessages" redisplay="false" closable="true" />
+
+                <p:dataTable id="recipesDataTable" widgetVar="dataTableAllRecipes" value="#{recipeManagementManagedBean.recipes}" var="recipe" rowKey="#{recipe.recipeId}" 
+                             emptyMessage="Sorry, no recipes were found with given criteria!" rowIndexVar="row" style="width: 100%;" filteredValue="#{recipeManagementManagedBean.filteredRecipeEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRecipes').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{recipe.recipeId}" filterBy="#{recipe.recipeId}" filterMatchMode="contains">			
+
+                        <h:outputText value="#{recipe.recipeId}" />
+                    </p:column>
+
+                    <p:column headerText="Name" sortBy="#{recipe.name}" filterBy="#{recipe.name}" filterMatchMode="contains">    				
+
+                        <h:outputText value="#{recipe.name}" />
+                    </p:column>
+
+                    <p:column headerText="Description" sortBy="#{recipe.shortDescription}" filterBy="#{recipe.shortDescription}" filterMatchMode="contains">    				
+                        <h:outputText value="#{recipe.shortDescription}"/>
+                    </p:column>
+
+                    <p:column headerText="Availability" sortBy="#{recipe.isAvailable}" filterBy="#{recipe.isAvailable}" filterMatchMode="equals">    				
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('dataTableAllRecipes').filter()" styleClass="custom-filter">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="All" itemValue="" />
+                                <f:selectItem itemLabel="Available" itemValue="true" />
+                                <f:selectItem itemLabel="Unvailable" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{recipe.isAvailable ? 'Available' : 'Unavailable'}" />
+                    </p:column>
+                    <p:column headerText="Action" >
+
+                    </p:column>
+
+                </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+
+            <h:form id="addRecipeForm" >
+
+                <p:dialog id="dialogCreateNewRecipe" widgetVar="dialogCreateNewRecipe" header="Create New Recipe" closable="true">
+                    <p:wizard flowListener="#{recipeManagementManagedBean.onFlowProcess}">
+                        <p:tab id="recipeDetails" title="Recipe Details">
+                            <p:panel header="Recipe Details">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Name: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.newRecipe.name}" required="true" label="name"/>
+
+                                    <h:outputText value="Description: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.newRecipe.shortDescription}" required="true" label="description"/>
+
+                                    <h:outputText value="Ingredients: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.newRecipe.ingredients}" required="true" label="ingredients"/>
+
+                                    <h:outputText value="Availability: " />
+                                    <p:selectOneRadio id="available" value="#{recipeManagementManagedBean.newRecipe.isAvailable}">
+                                        <f:selectItem itemValue="True" itemLabel="True"></f:selectItem>
+                                        <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
+                                    </p:selectOneRadio> 
+                                    <h:outputText value="Recipe Image: " />
+
+                                    <p:fileUpload fileUploadListener="#{recipeManagementManagedBean.handleFileUploadRecipe}" />
+
+                                    <br /> <br />
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="addCategories" title="Add Categories">
+                            <p:panel header="Add Categories">
+                                <p:messages />
+                                <h:panelGrid>
+                                    <p:outputLabel value="Categories" class="fa fa-burger"/>
+                                    <p:pickList id="pickList" converter="pickListConverterRecipe" value="#{recipeManagementManagedBean.newCategoryChoices}" var="categories" itemLabel="#{categories.name}" itemValue="#{categories.categoryId}" required="true"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="addSteps" title="Add Steps">
+                            <p:panel header="Add Steps">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Instruction: " />
+                                    <p:inputText id="txtNewSteps" value="#{recipeManagementManagedBean.newStep.instruction}" required="true" label="instruction"/>
+                                    <h:outputText value="Step Image: " />
+                                    <p:fileUpload fileUploadListener="#{recipeManagementManagedBean.handleFileUploadStep}" />
+                                    <p:commandButton process="@this txtNewSteps" value="Save" actionListener="#{recipeManagementManagedBean.createNewStep}" iconPos="right" icon="fa fa-check-circle" update="stepsOrderList"/>
+                                </h:panelGrid>
+
+                                <p:growl id="msgs" showDetail="true" />
+                                <h:outputText value="Order Steps: " />
+                                <p:orderList value="#{recipeManagementManagedBean.steps}" converter="pickListConverterStep" id="stepsOrderList" var="step" itemLabel="#{step.instruction}" itemValue="#{step.stepId}" controlsLocation="left" responsive="true">
+                                    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                                    <p:ajax event="select" listener="#{recipeManagementManagedBean.onSelect}" update="msgs"/>
+                                    <p:ajax event="unselect" listener="#{recipeManagementManagedBean.onUnselect}" update="msgs"/>
+                                    <p:ajax event="reorder" listener="#{recipeManagementManagedBean.onReorder}" update="msgs"/>
+
+                                    <f:facet name="caption">Steps</f:facet>
+
+                                    <p:column style="width:40px">
+                                        <h:graphicImage value="#{'/uploadedFiles/'.concat(recipeManagementManagedBean.step.imageSrc)}"  styleClass="ui-theme"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{step.instruction}" />
+                                    </p:column>
+                                </p:orderList>
+
+                            </p:panel>
+                            <p:commandButton ajax="true" value="Submit" process="@this stepsOrderList" update="@form recipeForm:recipesDataTable" actionListener="#{recipeManagementManagedBean.createNewRecipe}" oncomplete="PF('dialogCreateNewRecipe').hide();" style="float: right"/>
+
+                        </p:tab>
+                    </p:wizard>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="viewRecipeForm">
+
+                <p:dialog id="dialogViewRecipe" widgetVar="dialogViewRecipe" header="View Recipe" closable="true">
+
+                    <p:panelGrid>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

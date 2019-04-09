@@ -97,4 +97,18 @@ public class RecipeController implements RecipeControllerLocal {
         Recipe recipe = retrieveRecipeById(id);
         em.remove(recipe);
     }
+    
+    @Override
+    public void updateRecipe(Recipe recipe) throws RecipeNotFoundException {
+
+        Recipe recipeToUpdate = retrieveRecipeById(recipe.getRecipeId());
+        recipeToUpdate.setIngredients(recipe.getIngredients());
+        recipeToUpdate.setShortDescription(recipe.getShortDescription());
+        recipeToUpdate.setCategories(recipe.getCategories());
+        recipeToUpdate.setSteps(recipe.getSteps());
+        recipeToUpdate.setImage(recipe.getImage());
+        recipeToUpdate.setIsAvailable(recipe.getIsAvailable());
+        recipeToUpdate.setName(recipe.getName());
+
+    }
 }

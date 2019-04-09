@@ -31,5 +31,7 @@ public interface RecipeControllerLocal {
     public List<Category> retriveCategoryByRecipeName(String name) throws RecipeNotFoundException;
 
     public void deleteRecipe(Long id) throws RecipeNotFoundException;
+
+    public void updateRecipe(Recipe recipe) throws RecipeNotFoundException;
     
 }

@@ -53,4 +53,16 @@ public class StepController implements StepControllerLocal {
         
         return query.getResultList();
     }
+    
+    @Override
+   public void updateStep(Step step) throws StepNotFoundException {
+
+        Step stepToUpdate = retrieveStepById(step.getStepId());
+
+        stepToUpdate.setInstruction(step.getInstruction());
+        stepToUpdate.setOrderNum(step.getOrderNum());
+        stepToUpdate.setImageSrc(step.getImageSrc());
+        
+
+    }
 }

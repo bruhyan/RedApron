@@ -123,6 +123,8 @@ public class CategoryController implements CategoryControllerLocal {
         categoryToUpdate.setIsAvailable(category.getIsAvailable());
         categoryToUpdate.setName(category.getName());
         categoryToUpdate.setPrice(category.getPrice());
+        categoryToUpdate.setRecipes(category.getRecipes());
+        
 
     }
 

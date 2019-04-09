@@ -24,6 +24,7 @@ public class Step implements Serializable {
     private Long stepId;
     private String instruction;
     private String imageSrc;
+    private int orderNum;
 
     public Step() {
     }
@@ -33,6 +34,15 @@ public class Step implements Serializable {
         this.imageSrc = imageSrc;
     }
 
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    
     public Long getStepId() {
         return stepId;
     }
