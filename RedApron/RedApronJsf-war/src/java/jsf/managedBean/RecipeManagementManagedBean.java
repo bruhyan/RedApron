@@ -36,7 +36,6 @@ import stateless.CategoryControllerLocal;
 import stateless.RecipeControllerLocal;
 import stateless.StepControllerLocal;
 
-
 @Named(value = "recipeManagementManagedBean")
 @ViewScoped
 public class RecipeManagementManagedBean implements Serializable {
@@ -49,7 +48,6 @@ public class RecipeManagementManagedBean implements Serializable {
 
     @EJB(name = "RecipeControllerLocal")
     private RecipeControllerLocal recipeControllerLocal;
-    
 
     /**
      * Creates a new instance of recipeManagementManagedBean
@@ -62,7 +60,6 @@ public class RecipeManagementManagedBean implements Serializable {
     private List<Category> categoriesToUpdate;
     private List<Category> newCategories;
     private DualListModel<Category> newCategoryChoices;
-    private DualListModel<Category> updateCategoryChoices;
     private List<Category> categories;
     private Long recipeIdNew;
     private boolean skip;
@@ -70,10 +67,10 @@ public class RecipeManagementManagedBean implements Serializable {
     private List<Step> steps;
     private Step step;
     private List<Step> orderedSteps;
-
+    private List<Category> oldCategories;
 
     public RecipeManagementManagedBean() {
-        this.newRecipe= new Recipe();
+        this.newRecipe = new Recipe();
         this.newStep = new Step();
         this.steps = new ArrayList<>();
     }
@@ -96,8 +93,14 @@ public class RecipeManagementManagedBean implements Serializable {
     public void setOrderedSteps(List<Step> orderedSteps) {
         this.orderedSteps = orderedSteps;
     }
-    
-    
+
+    public List<Category> getOldCategories() {
+        return oldCategories;
+    }
+
+    public void setOldCategories(List<Category> oldCategories) {
+        this.oldCategories = oldCategories;
+    }
 
     public Step getNewStep() {
         return newStep;
@@ -107,8 +110,8 @@ public class RecipeManagementManagedBean implements Serializable {
         this.newStep = newStep;
     }
 
-    public List<Step> getSteps() { 
-        
+    public List<Step> getSteps() {
+
         return steps;
     }
 
@@ -124,8 +127,6 @@ public class RecipeManagementManagedBean implements Serializable {
         this.step = step;
     }
 
-    
-    
     public List<Category> getCategories() {
         return categories;
     }
@@ -142,22 +143,22 @@ public class RecipeManagementManagedBean implements Serializable {
                 recipe.getCategories().size();
                 recipe.getCategories().add(temp);
                 System.out.println("adding category " + temp.getName() + "to recipe");
-               categoryControllerLocal.updateCategory(temp);
-               recipeControllerLocal.updateRecipe(recipe);
+                categoryControllerLocal.updateCategory(temp);
+                recipeControllerLocal.updateRecipe(recipe);
 
             }
             int i = 0;
-            for (Step s: steps) {
-                
+            for (Step s : steps) {
+
                 System.out.println("adding step: " + s.getInstruction());
                 s.setOrderNum(i);
                 recipe.getSteps().add(s);
                 i++;
                 stepControllerLocal.updateStep(s);
             }
-            
+
             recipeControllerLocal.updateRecipe(recipe);
-      
+
             recipes.add(recipe);
             this.newCategories = new ArrayList<>();
 
@@ -168,10 +169,10 @@ public class RecipeManagementManagedBean implements Serializable {
         } catch (CategoryNotFoundException ex) {
             System.out.println("Category not found!");
         } catch (RecipeNotFoundException ex) {
-                        System.out.println("Recipe not found!");
+            System.out.println("Recipe not found!");
 
         } catch (StepNotFoundException ex) {
-                                    System.out.println("Step not found!");
+            System.out.println("Step not found!");
 
         }
     }
@@ -190,22 +191,60 @@ public class RecipeManagementManagedBean implements Serializable {
         }
     }
 
-    public void doUpdateRecipe(ActionEvent event) {
-        selectedRecipeToUpdate = (Recipe) event.getComponent().getAttributes().get("recipeToUpdate");
-    }
-
     public void updateRecipe(ActionEvent event) {
 
         try {
             recipeControllerLocal.updateRecipe(selectedRecipeToUpdate);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category updated successfully", null));
+            for (Category c : oldCategories) { //need to remove old categories
+                Category temp = categoryControllerLocal.retrieveCategoryById(c.getCategoryId());
+                temp.getRecipes().size();
+                temp.getRecipes().remove(selectedRecipeToUpdate);
+                categoryControllerLocal.updateCategory(temp); //update the old category cos just removed recipe
+
+            }
+            selectedRecipeToUpdate.getCategories().clear(); //remove all categories from recipe to be updated
+
+            for (Category category : newCategoryChoices.getTarget()) { //adding new categories identified by the picklist
+                Category temp = categoryControllerLocal.retrieveCategoryById(category.getCategoryId());
+                temp.getRecipes().size();
+                temp.getRecipes().add(selectedRecipeToUpdate); //add this recipe to the category
+                selectedRecipeToUpdate.getCategories().size();
+                selectedRecipeToUpdate.getCategories().add(temp); //add category to the recipe
+                System.out.println("adding category " + temp.getName() + "to recipe");
+                categoryControllerLocal.updateCategory(temp);
+                recipeControllerLocal.updateRecipe(selectedRecipeToUpdate);
+
+            }
+            int i = 0;
+            selectedRecipeToUpdate.getSteps().clear();
+            for (Step s : orderedSteps) {
+
+                System.out.println("adding step: " + s.getInstruction());
+                s.setOrderNum(i);
+                selectedRecipeToUpdate.getSteps().add(s);
+                i++;
+                stepControllerLocal.updateStep(s);
+            }
+
+            recipeControllerLocal.updateRecipe(selectedRecipeToUpdate);
+
+            recipes.add(selectedRecipeToUpdate);
+            this.newCategories = new ArrayList<>();
+
+            newCategoryChoices = new DualListModel<Category>(categories, newCategories);
+            orderedSteps = null;
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recipe updated successfully", null));
         } catch (RecipeNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        } catch (CategoryNotFoundException ex) {
+            System.out.println("Category not found!");
+        } catch (StepNotFoundException ex) {
+            System.out.println("Step not found!");
+
         }
     }
-
-    
 
     public List<Recipe> getRecipes() {
         return recipes;
@@ -230,7 +269,7 @@ public class RecipeManagementManagedBean implements Serializable {
     public void setSelectedRecipeToView(Recipe selectedRecipeToView) {
         try {
             this.selectedRecipeToView = selectedRecipeToView;
-            
+
             setOrderedSteps(recipeControllerLocal.retrieveOrderedStepsByRecipeId(selectedRecipeToView.getRecipeId()));
         } catch (RecipeNotFoundException ex) {
             Logger.getLogger(RecipeManagementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,11 +286,19 @@ public class RecipeManagementManagedBean implements Serializable {
     }
 
     public Recipe getSelectedRecipeToUpdate() {
+
         return selectedRecipeToUpdate;
     }
 
     public void setSelectedRecipeToUpdate(Recipe selectedRecipeToUpdate) {
-        this.selectedRecipeToUpdate = selectedRecipeToUpdate;
+        try {
+            this.selectedRecipeToUpdate = selectedRecipeToUpdate;
+            System.out.println("RECIPE ID TO UPDATE : " + selectedRecipeToUpdate.getRecipeId());
+            oldCategories = selectedRecipeToUpdate.getCategories();
+            setOrderedSteps(recipeControllerLocal.retrieveOrderedStepsByRecipeId(selectedRecipeToUpdate.getRecipeId()));
+        } catch (RecipeNotFoundException ex) {
+            Logger.getLogger(RecipeManagementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Category> getCategoriesToUpdate() {
@@ -278,14 +325,6 @@ public class RecipeManagementManagedBean implements Serializable {
         this.newCategoryChoices = newCategoryChoices;
     }
 
-    public DualListModel<Category> getUpdateCategoryChoices() {
-        return updateCategoryChoices;
-    }
-
-    public void setUpdateCategoryChoices(DualListModel<Category> updateCategoryChoices) {
-        this.updateCategoryChoices = updateCategoryChoices;
-    }
-
     public Long getRecipeIdNew() {
         return recipeIdNew;
     }
@@ -295,23 +334,18 @@ public class RecipeManagementManagedBean implements Serializable {
     }
 
     public String onFlowProcess(FlowEvent event) {
-        if(skip) {
+        if (skip) {
             skip = false;   //reset in case user goes back
             return "confirm";
-        }
-        else {
+        } else {
             return event.getNewStep();
         }
     }
-    
-     public void handleFileUploadRecipe(FileUploadEvent event)
-    {
-        try
-        {
+
+    public void handleFileUploadRecipe(FileUploadEvent event) {
+        try {
             String storedpath = event.getFile().getFileName();
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + storedpath;
-
-
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -322,12 +356,10 @@ public class RecipeManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -339,49 +371,16 @@ public class RecipeManagementManagedBean implements Serializable {
             inputStream.close();
             newRecipe.setImage(storedpath);
 //            saveRecipe(newRecipe);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
-        }
-        catch(IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         }
     }
 
-     public void onSelect(SelectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
-    }
-     
-    public void onUnselect(UnselectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
-    }
-     
-    public void onReorder() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-    }
-   
-    public void createNewStep(ActionEvent event) 
-    {
-        System.err.println("********* Create new step");
-
-            Step step = stepControllerLocal.createNewStep(newStep);
-            steps.add(step);
-            
-            newStep = new Step();
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Recipe created successfully (Recipe ID: " + step.getStepId() + ")", null));
-    }
-
-        public void handleFileUploadStep(FileUploadEvent event)
-    {
-        try
-        {
+    public void updateHandleFileUploadRecipe(FileUploadEvent event) {
+        try {
             String storedpath = event.getFile().getFileName();
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + storedpath;
-
-
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -392,12 +391,81 @@ public class RecipeManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+            selectedRecipeToUpdate.setImage(storedpath);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+        }
+    }
+
+    public void onSelect(SelectEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
+    }
+
+    public void onUnselect(UnselectEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
+    }
+
+    public void onReorder() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
+    }
+
+    public void createNewStep(ActionEvent event) {
+        System.err.println("********* Create new step");
+
+        Step step = stepControllerLocal.createNewStep(newStep);
+        steps.add(step);
+
+        newStep = new Step();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Step created successfully (Step ID: " + step.getStepId() + ")", null));
+    }
+
+    public void createNewStepForUpdate(ActionEvent event) {
+        System.err.println("********* Create new step for update");
+
+        Step step = stepControllerLocal.createNewStep(newStep);
+        orderedSteps.add(step);
+
+        newStep = new Step();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Step created successfully (Step ID: " + step.getStepId() + ")", null));
+    }
+
+    public void handleFileUploadStep(FileUploadEvent event) {
+        try {
+            String storedpath = event.getFile().getFileName();
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + storedpath;
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
                     break;
                 }
 
@@ -408,11 +476,9 @@ public class RecipeManagementManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
             newStep.setImageSrc(storedpath);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
-        }
-        catch(IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         }
     }
 
