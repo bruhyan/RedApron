@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Category;
 import entity.Recipe;
+import entity.Step;
 import exceptions.RecipeNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -33,5 +34,7 @@ public interface RecipeControllerLocal {
     public void deleteRecipe(Long id) throws RecipeNotFoundException;
 
     public void updateRecipe(Recipe recipe) throws RecipeNotFoundException;
+
+    public List<Step> retrieveOrderedStepsByRecipeId(Long id) throws RecipeNotFoundException;
     
 }

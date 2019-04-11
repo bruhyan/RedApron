@@ -84,14 +84,17 @@
                         <h:outputText value="#{recipe.isAvailable ? 'Available' : 'Unavailable'}" />
                     </p:column>
                     <p:column headerText="Action" >
+                        <p:commandButton update="viewRecipeForm" oncomplete="PF('dialogViewRecipe').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{recipe}" target="#{recipeManagementManagedBean.selectedRecipeToView}" />
+                        </p:commandButton>
 
                     </p:column>
 
                 </p:dataTable>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                </p:confirmDialog>
+                <!--                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>-->
 
             </h:form>
 
@@ -181,8 +184,77 @@
 
                     <p:panelGrid>
 
-                    </p:panelGrid>
+                        <p:row>
+                            <f:facet name="header">
+                                <p:graphicImage value="#{'/uploadedFiles/'.concat(recipeManagementManagedBean.selectedRecipeToView.image)}" style="width: 130px;height:200px" /> 
+                            </f:facet>
+                        </p:row>
 
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Recipe ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.recipeId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.name}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.shortDescription}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Ingredients: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.ingredients}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Availability: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.isAvailable}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Categories: " />
+                            </p:column>
+                            <p:column>
+                                <p:dataList styleClass="borderless" value="#{recipeManagementManagedBean.selectedRecipeToView.categories}" var="category" type="unordered">
+                                    #{category.name}
+                                </p:dataList>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <br />
+                    <p:dataList value="#{recipeManagementManagedBean.orderedSteps}" var="step" type="ordered">
+                        <f:facet name="header">
+                            Steps
+                        </f:facet>
+                        Instruction : #{step.instruction}
+                        <p:graphicImage name="#{'/uploadedFiles/'.concat(step.imageSrc)}"/> 
+
+                    </p:dataList>
                 </p:dialog>
 
             </h:form>

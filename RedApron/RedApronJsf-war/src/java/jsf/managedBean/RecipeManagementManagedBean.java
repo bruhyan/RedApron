@@ -69,6 +69,7 @@ public class RecipeManagementManagedBean implements Serializable {
     private Step newStep;
     private List<Step> steps;
     private Step step;
+    private List<Step> orderedSteps;
 
 
     public RecipeManagementManagedBean() {
@@ -88,6 +89,16 @@ public class RecipeManagementManagedBean implements Serializable {
 
     }
 
+    public List<Step> getOrderedSteps() {
+        return orderedSteps;
+    }
+
+    public void setOrderedSteps(List<Step> orderedSteps) {
+        this.orderedSteps = orderedSteps;
+    }
+    
+    
+
     public Step getNewStep() {
         return newStep;
     }
@@ -96,7 +107,8 @@ public class RecipeManagementManagedBean implements Serializable {
         this.newStep = newStep;
     }
 
-    public List<Step> getSteps() {
+    public List<Step> getSteps() { 
+        
         return steps;
     }
 
@@ -193,13 +205,7 @@ public class RecipeManagementManagedBean implements Serializable {
         }
     }
 
-    public RecipeControllerLocal getRecipeControllerLocal() {
-        return recipeControllerLocal;
-    }
-
-    public void setRecipeControllerLocal(RecipeControllerLocal recipeControllerLocal) {
-        this.recipeControllerLocal = recipeControllerLocal;
-    }
+    
 
     public List<Recipe> getRecipes() {
         return recipes;
@@ -222,7 +228,14 @@ public class RecipeManagementManagedBean implements Serializable {
     }
 
     public void setSelectedRecipeToView(Recipe selectedRecipeToView) {
-        this.selectedRecipeToView = selectedRecipeToView;
+        try {
+            this.selectedRecipeToView = selectedRecipeToView;
+            
+            setOrderedSteps(recipeControllerLocal.retrieveOrderedStepsByRecipeId(selectedRecipeToView.getRecipeId()));
+        } catch (RecipeNotFoundException ex) {
+            Logger.getLogger(RecipeManagementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public Recipe getNewRecipe() {

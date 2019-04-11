@@ -82,6 +82,16 @@ public class RecipeController implements RecipeControllerLocal {
         return query.getResultList();
     }
     
+    
+    @Override
+    public List<Step> retrieveOrderedStepsByRecipeId(Long id) throws RecipeNotFoundException{
+                        Query query = em.createQuery("SELECT s FROM Step s, Recipe r WHERE r.recipeId=:id AND s MEMBER OF r.steps ORDER BY s.orderNum ASC");
+
+        query.setParameter("id", id);
+
+        return query.getResultList();
+    }
+    
     @Override
     public List<Category> retriveCategoryByRecipeName(String name) throws RecipeNotFoundException{
         Recipe recipe = retrieveRecipeByName(name);
