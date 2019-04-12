@@ -172,6 +172,10 @@
                                         <h:outputText value="#{step.instruction}" />
                                     </p:column>
                                 </p:orderList>
+                                <p:commandButton value="Delete Step" actionListener="#{recipeManagementManagedBean.removeStepFromListForCreate}" 
+                                                 update="stepsOrderList" process="@this">
+
+                                </p:commandButton> 
 
                             </p:panel>
                             <p:commandButton ajax="true" value="Submit" process="@this stepsOrderList" update="@form recipeForm:recipesDataTable" actionListener="#{recipeManagementManagedBean.createNewRecipe}" oncomplete="PF('dialogCreateNewRecipe').hide();" style="float: right"/>

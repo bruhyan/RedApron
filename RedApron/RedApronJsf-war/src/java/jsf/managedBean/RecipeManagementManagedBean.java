@@ -74,6 +74,7 @@ public class RecipeManagementManagedBean implements Serializable {
         this.newRecipe = new Recipe();
         this.newStep = new Step();
         this.stepsToDelete = new ArrayList<>();
+        this.steps = new ArrayList<>();
     }
 
     @PostConstruct
@@ -115,6 +116,7 @@ public class RecipeManagementManagedBean implements Serializable {
 
         return steps;
     }
+    
 
     public void setSteps(List<Step> steps) {
         this.steps = steps;
@@ -254,7 +256,7 @@ public class RecipeManagementManagedBean implements Serializable {
 
             newCategoryChoices = new DualListModel<Category>(categories, newCategories);
             orderedSteps = null;
-
+            stepsToDelete = new ArrayList<>();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recipe updated successfully", null));
         } catch (RecipeNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
@@ -440,6 +442,12 @@ public class RecipeManagementManagedBean implements Serializable {
     public void removeStepFromList(ActionEvent event) {
         stepsToDelete.add(step);
         orderedSteps.remove(step);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Step ID : " + step.getStepId() + " removed", ""));
+        step = new Step();
+    }
+    
+    public void removeStepFromListForCreate(ActionEvent event) {
+        steps.remove(step);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Step ID : " + step.getStepId() + " removed", ""));
         step = new Step();
     }
