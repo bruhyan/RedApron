@@ -68,11 +68,12 @@ public class RecipeManagementManagedBean implements Serializable {
     private Step step;
     private List<Step> orderedSteps;
     private List<Category> oldCategories;
+    private List<Step> stepsToDelete;
 
     public RecipeManagementManagedBean() {
         this.newRecipe = new Recipe();
         this.newStep = new Step();
-        this.steps = new ArrayList<>();
+        this.stepsToDelete = new ArrayList<>();
     }
 
     @PostConstruct
@@ -129,6 +130,14 @@ public class RecipeManagementManagedBean implements Serializable {
 
     public List<Category> getCategories() {
         return categories;
+    }
+
+    public List<Step> getStepsToDelete() {
+        return stepsToDelete;
+    }
+
+    public void setStepsToDelete(List<Step> stepsToDelete) {
+        this.stepsToDelete = stepsToDelete;
     }
 
     public void createNewRecipe(ActionEvent event) {
@@ -217,6 +226,17 @@ public class RecipeManagementManagedBean implements Serializable {
 
             }
             int i = 0;
+            for (Step s : stepsToDelete) {
+                try {
+                    selectedRecipeToUpdate.getSteps().remove(s);
+                    recipeControllerLocal.updateRecipe(selectedRecipeToUpdate);
+
+                    stepControllerLocal.deleteStep(s);
+                    System.out.println("deleting step..." + s.getStepId());
+                } catch (StepNotFoundException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Step not found: " + ex.getMessage(), ""));
+                }
+            }
             selectedRecipeToUpdate.getSteps().clear();
             for (Step s : orderedSteps) {
 
@@ -414,6 +434,14 @@ public class RecipeManagementManagedBean implements Serializable {
     public void onSelect(SelectEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
+        step = (Step) event.getObject();
+    }
+
+    public void removeStepFromList(ActionEvent event) {
+        stepsToDelete.add(step);
+        orderedSteps.remove(step);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Step ID : " + step.getStepId() + " removed", ""));
+        step = new Step();
     }
 
     public void onUnselect(UnselectEvent event) {

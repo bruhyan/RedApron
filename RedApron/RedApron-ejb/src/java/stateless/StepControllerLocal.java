@@ -24,5 +24,7 @@ public interface StepControllerLocal {
     public List<Step> retrieveAllSteps();
 
     public void updateStep(Step step) throws StepNotFoundException;
+
+    public void deleteStep(Step step) throws StepNotFoundException;
     
 }

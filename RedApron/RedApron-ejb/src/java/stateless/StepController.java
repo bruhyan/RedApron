@@ -65,4 +65,14 @@ public class StepController implements StepControllerLocal {
         
 
     }
+   
+    @Override
+   public void deleteStep(Step step) throws StepNotFoundException {
+
+        Step stepToDelete = retrieveStepById(step.getStepId());
+
+        em.remove(stepToDelete);
+        em.flush();
+
+    }
 }

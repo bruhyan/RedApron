@@ -90,13 +90,14 @@
                         <p:commandButton  update="updateRecipeForm" oncomplete="PF('dialogUpdateRecipe').show()" icon="ui-icon-pencil" title="Update">
                             <f:setPropertyActionListener value="#{recipe}" target="#{recipeManagementManagedBean.selectedRecipeToUpdate}" />
                         </p:commandButton>
+
                     </p:column>
 
                 </p:dataTable>
-                <!--                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                </p:confirmDialog>-->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
 
             </h:form>
 
@@ -259,8 +260,8 @@
                 </p:dialog>
 
             </h:form>
-            
-            
+
+
             <h:form id="updateRecipeForm" >
 
                 <p:dialog id="dialogUpdateRecipe" widgetVar="dialogUpdateRecipe" header="Update Recipe" closable="true">
@@ -302,11 +303,11 @@
                         </p:tab>
 
                         <p:tab id="addSteps" title="Update Steps">
-                            <p:panel header="Add Steps">
+                            <p:panel header="Update Steps">
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
                                     <h:outputText value="Instruction: " />
-                                    <p:inputText id="txtNewSteps" value="#{recipeManagementManagedBean.newStep.instruction}" required="true" label="instruction"/>
+                                    <p:inputText id="txtNewSteps" value="#{recipeManagementManagedBean.newStep.instruction}" label="instruction"/>
                                     <h:outputText value="Step Image: " />
                                     <p:fileUpload fileUploadListener="#{recipeManagementManagedBean.handleFileUploadStep}" />
                                     <p:commandButton process="@this txtNewSteps" value="Save" actionListener="#{recipeManagementManagedBean.createNewStepForUpdate}" iconPos="right" icon="fa fa-check-circle" update="stepsOrderListupdate"/>
@@ -329,8 +330,13 @@
                                     <p:column>
                                         <h:outputText value="#{step.instruction}" />
                                     </p:column>
-                                </p:orderList>
+                                   
 
+                                </p:orderList>
+                                <p:commandButton value="Delete Step" actionListener="#{recipeManagementManagedBean.removeStepFromList}" 
+                                                 update="stepsOrderListupdate" process="@this">
+
+                                </p:commandButton> 
                             </p:panel>
                             <p:commandButton ajax="true" value="Submit" process="@form" update="@form recipeForm:recipesDataTable" actionListener="#{recipeManagementManagedBean.updateRecipe}" oncomplete="PF('dialogUpdateRecipe').hide();" style="float: right"/>
 
@@ -338,8 +344,8 @@
                     </p:wizard>
                 </p:dialog>
             </h:form>
-            
-            
+
+
         </div>
 
     </ui:define>
