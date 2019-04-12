@@ -90,7 +90,10 @@
                         <p:commandButton  update="updateRecipeForm" oncomplete="PF('dialogUpdateRecipe').show()" icon="ui-icon-pencil" title="Update">
                             <f:setPropertyActionListener value="#{recipe}" target="#{recipeManagementManagedBean.selectedRecipeToUpdate}" />
                         </p:commandButton>
-
+                        <p:commandButton icon="ui-icon-trash"  actionListener="#{recipeManagementManagedBean.deleteRecipe}" update="recipeForm:recipesDataTable recipeForm:mainMessages">
+                            <f:attribute name="recipeToDelete" value="#{recipe}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{recipe.name} (Recipe ID: #{recipe.recipeId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
@@ -334,7 +337,7 @@
                                     <p:column>
                                         <h:outputText value="#{step.instruction}" />
                                     </p:column>
-                                   
+
 
                                 </p:orderList>
                                 <p:commandButton value="Delete Step" actionListener="#{recipeManagementManagedBean.removeStepFromList}" 

@@ -192,13 +192,34 @@ public class RecipeManagementManagedBean implements Serializable {
 
         try {
             Recipe recipeToDelete = (Recipe) event.getComponent().getAttributes().get("recipeToDelete");
+            List<Step> toDel = recipeToDelete.getSteps();
+            for (Step s: toDel){
+                try {
+                    recipeToDelete.getSteps().remove(s);
+                    recipeControllerLocal.updateRecipe(recipeToDelete);
+                    stepControllerLocal.deleteStep(s);
+                    System.out.println("deleting step..." + s.getStepId());
+                } catch (StepNotFoundException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Step not found: " + ex.getMessage(), ""));
+                }
+            }
+            List<Category> toDEL = recipeToDelete.getCategories();
+            for (Category c : toDEL) { 
+                Category temp = categoryControllerLocal.retrieveCategoryById(c.getCategoryId());
+                temp.getRecipes().size();
+                temp.getRecipes().remove(recipeToDelete);
+                categoryControllerLocal.updateCategory(temp); //update the category cos just removed recipe
+            }
+            
             recipeControllerLocal.deleteRecipe(recipeToDelete.getRecipeId());
 
             recipes.remove(recipeToDelete);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recipe deleted successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recipe " + recipeToDelete.getRecipeId()+ " deleted successfully", null));
         } catch (RecipeNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        } catch (CategoryNotFoundException ex) {
+            System.out.println("Category not found!");
         }
     }
 
