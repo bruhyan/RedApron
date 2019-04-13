@@ -84,7 +84,16 @@
                         <h:outputText value="#{recipe.isAvailable ? 'Available' : 'Unavailable'}" />
                     </p:column>
                     <p:column headerText="Action" >
-
+                        <p:commandButton update="viewRecipeForm" oncomplete="PF('dialogViewRecipe').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{recipe}" target="#{recipeManagementManagedBean.selectedRecipeToView}" />
+                        </p:commandButton>
+                        <p:commandButton  update="updateRecipeForm" oncomplete="PF('dialogUpdateRecipe').show()" icon="ui-icon-pencil" title="Update">
+                            <f:setPropertyActionListener value="#{recipe}" target="#{recipeManagementManagedBean.selectedRecipeToUpdate}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash"  actionListener="#{recipeManagementManagedBean.deleteRecipe}" update="recipeForm:recipesDataTable recipeForm:mainMessages">
+                            <f:attribute name="recipeToDelete" value="#{recipe}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{recipe.name} (Recipe ID: #{recipe.recipeId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
@@ -166,6 +175,10 @@
                                         <h:outputText value="#{step.instruction}" />
                                     </p:column>
                                 </p:orderList>
+                                <p:commandButton value="Delete Step" actionListener="#{recipeManagementManagedBean.removeStepFromListForCreate}" 
+                                                 update="stepsOrderList" process="@this">
+
+                                </p:commandButton> 
 
                             </p:panel>
                             <p:commandButton ajax="true" value="Submit" process="@this stepsOrderList" update="@form recipeForm:recipesDataTable" actionListener="#{recipeManagementManagedBean.createNewRecipe}" oncomplete="PF('dialogCreateNewRecipe').hide();" style="float: right"/>
@@ -181,11 +194,165 @@
 
                     <p:panelGrid>
 
-                    </p:panelGrid>
+                        <p:row>
+                            <f:facet name="header">
+                                <p:graphicImage value="#{'/uploadedFiles/'.concat(recipeManagementManagedBean.selectedRecipeToView.image)}" style="width: 130px;height:200px" /> 
+                            </f:facet>
+                        </p:row>
 
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Recipe ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.recipeId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.name}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.shortDescription}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Ingredients: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.ingredients}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Availability: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{recipeManagementManagedBean.selectedRecipeToView.isAvailable}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Categories: " />
+                            </p:column>
+                            <p:column>
+                                <p:dataList styleClass="borderless" value="#{recipeManagementManagedBean.selectedRecipeToView.categories}" var="category" type="unordered">
+                                    #{category.name}
+                                </p:dataList>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <br />
+                    <p:dataList value="#{recipeManagementManagedBean.orderedSteps}" var="step" type="ordered">
+                        <f:facet name="header">
+                            Steps
+                        </f:facet>
+                        Instruction : #{step.instruction}
+                        <p:graphicImage name="#{'/uploadedFiles/'.concat(step.imageSrc)}"/> 
+                    </p:dataList>
                 </p:dialog>
 
             </h:form>
+
+
+            <h:form id="updateRecipeForm" >
+
+                <p:dialog id="dialogUpdateRecipe" widgetVar="dialogUpdateRecipe" header="Update Recipe" closable="true">
+                    <p:wizard flowListener="#{recipeManagementManagedBean.onFlowProcess}">
+                        <p:tab id="recipeDetails" title="Recipe Details">
+                            <p:panel header="Recipe Details">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Name: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.selectedRecipeToUpdate.name}" required="true" requiredMessage="Name is required"/>
+
+                                    <h:outputText value="Description: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.selectedRecipeToUpdate.shortDescription}" required="true" requiredMessage="Description is required"/>
+
+                                    <h:outputText value="Ingredients: " />
+                                    <p:inputText value="#{recipeManagementManagedBean.selectedRecipeToUpdate.ingredients}" required="true" requiredMessage="Ingredients is required"/>
+                                    <h:outputText value="Availability: " />
+                                    <p:selectOneRadio id="available" value="#{recipeManagementManagedBean.selectedRecipeToUpdate.isAvailable}">
+                                        <f:selectItem itemValue="True" itemLabel="True"></f:selectItem>
+                                        <f:selectItem itemValue="False" itemLabel="False"></f:selectItem>
+                                    </p:selectOneRadio> 
+                                    <h:outputText value="Recipe Image: " />
+
+                                    <p:fileUpload fileUploadListener="#{recipeManagementManagedBean.updateHandleFileUploadRecipe}" />
+
+                                    <br /> <br />
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="addCategories" title="Update Categories">
+                            <p:panel header="Add Categories">
+                                <p:messages />
+                                <h:panelGrid>
+                                    <p:outputLabel value="Categories" class="fa fa-burger"/>
+                                    <p:pickList id="pickList" converter="pickListConverterRecipe" value="#{recipeManagementManagedBean.newCategoryChoices}" var="categories" itemLabel="#{categories.name}" itemValue="#{categories.categoryId}" required="true"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="addSteps" title="Update Steps">
+                            <p:panel header="Update Steps">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Instruction: " />
+                                    <p:inputText id="txtNewSteps" value="#{recipeManagementManagedBean.newStep.instruction}" label="instruction"/>
+                                    <h:outputText value="Step Image: " />
+                                    <p:fileUpload fileUploadListener="#{recipeManagementManagedBean.handleFileUploadStep}" />
+                                    <p:commandButton process="@this txtNewSteps" value="Save" actionListener="#{recipeManagementManagedBean.createNewStepForUpdate}" iconPos="right" icon="fa fa-check-circle" update="stepsOrderListupdate"/>
+                                </h:panelGrid>
+
+                                <p:growl id="msgs" showDetail="true" />
+                                <h:outputText value="Order Steps: " />
+                                <p:orderList value="#{recipeManagementManagedBean.orderedSteps}" converter="pickListConverterStep" id="stepsOrderListupdate" var="step" itemLabel="#{step.instruction}" itemValue="#{step.stepId}" controlsLocation="left" responsive="true">
+                                    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                                    <p:ajax event="select" listener="#{recipeManagementManagedBean.onSelect}" update="msgs"/>
+                                    <p:ajax event="unselect" listener="#{recipeManagementManagedBean.onUnselect}" update="msgs"/>
+                                    <p:ajax event="reorder" listener="#{recipeManagementManagedBean.onReorder}" update="msgs"/>
+
+                                    <f:facet name="caption">Steps</f:facet>
+
+                                    <p:column style="width:40px">
+                                        <h:graphicImage value="#{'/uploadedFiles/'.concat(recipeManagementManagedBean.step.imageSrc)}"  styleClass="ui-theme"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{step.instruction}" />
+                                    </p:column>
+
+
+                                </p:orderList>
+                                <p:commandButton value="Delete Step" actionListener="#{recipeManagementManagedBean.removeStepFromList}" 
+                                                 update="stepsOrderListupdate" process="@this">
+
+                                </p:commandButton> 
+                            </p:panel>
+                            <p:commandButton ajax="true" value="Submit" process="@form" update="@form recipeForm:recipesDataTable" actionListener="#{recipeManagementManagedBean.updateRecipe}" oncomplete="PF('dialogUpdateRecipe').hide();" style="float: right"/>
+
+                        </p:tab>
+                    </p:wizard>
+                </p:dialog>
+            </h:form>
+
+
         </div>
 
     </ui:define>
