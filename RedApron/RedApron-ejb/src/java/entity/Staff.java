@@ -8,11 +8,14 @@ package entity;
 import enumeration.Role;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -28,9 +31,16 @@ public class Staff implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    @NotNull
     private String password;
+    
     private Role role;
     private String picURL;
+    
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String salt;
     
     @OneToMany 
     private List<Event> events;
@@ -39,15 +49,18 @@ public class Staff implements Serializable {
     private List<Answer> answers;
 
     public Staff() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
     public Staff(String firstName, String lastName, String email, String password, Role role) {
         this();
+        
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.role = role;
+        
+        setPassword(password);
     }
 
     public List<Event> getEvents() {
@@ -134,7 +147,14 @@ public class Staff implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if(password != null)
+        {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        }
+        else
+        {
+            this.password = null;
+        }
     }
 
     public Role getRole() {
@@ -160,5 +180,13 @@ public class Staff implements Serializable {
     
     public void addAnswer(Answer answer){
         this.answers.add(answer);
+    }
+    
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

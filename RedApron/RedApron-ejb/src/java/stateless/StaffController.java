@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -132,8 +133,9 @@ public class StaffController implements StaffControllerLocal {
         try
         {
             Staff staff = retrieveStaffByEmail(email);
+            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + staff.getSalt()));
             
-            if(staff.getPassword().equals(password))
+            if(staff.getPassword().equals(passwordHash))
             {
                 return staff;
             }

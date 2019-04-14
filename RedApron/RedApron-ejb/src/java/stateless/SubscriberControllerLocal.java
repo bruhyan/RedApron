@@ -6,6 +6,7 @@
 package stateless;
 
 import entity.Subscriber;
+import exceptions.InvalidLoginCredentialException;
 import exceptions.SubscriberNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,5 +29,7 @@ public interface SubscriberControllerLocal {
     public void deleteSubscriber(Long subscriberId) throws SubscriberNotFoundException;
 
     public void updateSubscriber(Subscriber subscriber) throws SubscriberNotFoundException;
+
+    public Subscriber subscriberLogin(String email, String password) throws InvalidLoginCredentialException;
     
 }

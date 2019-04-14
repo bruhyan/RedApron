@@ -7,11 +7,14 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -30,8 +33,15 @@ public class Subscriber implements Serializable {
     private String addressLine1;
     private String addressLine2;
     private Integer postalCode;
+    
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    @NotNull
     private String password;
+    
     private String phoneNumber;
+    
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String salt;
     
     @OneToMany
     private List<SubscriptionPlan> subscriptionPlans;
@@ -43,9 +53,12 @@ public class Subscriber implements Serializable {
     private List<Enquiry> enquiries;
 
     public Subscriber() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
     public Subscriber(String firstName, String lastName, String email, String phoneNumber, String addressLine1, String addressLine2, Integer postalCode, String password) {
+        this();
+        
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -53,7 +66,8 @@ public class Subscriber implements Serializable {
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
-        this.password = password;
+        
+        setPassword(password);
     }
     
 
@@ -143,7 +157,14 @@ public class Subscriber implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if(password != null)
+        {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        }
+        else
+        {
+            this.password = null;
+        }
     }
 
     public List<SubscriptionPlan> getSubscriptionPlans() {
@@ -176,6 +197,14 @@ public class Subscriber implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
     
 }

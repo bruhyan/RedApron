@@ -7,12 +7,16 @@ package stateless;
 
 import entity.Subscriber;
 import entity.SubscriptionPlan;
+import exceptions.InvalidLoginCredentialException;
 import exceptions.SubscriberNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -35,6 +39,29 @@ public class SubscriberController implements SubscriberControllerLocal {
         em.persist(newSubscriber);
         em.flush();
         return newSubscriber;
+    }
+    
+    @Override
+    public Subscriber subscriberLogin(String email, String password) throws InvalidLoginCredentialException{
+        try{
+            Subscriber subscriber = retrieveSubscriberByEmail(email);
+            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + subscriber.getSalt()));
+            
+            if(subscriber.getPassword().equals(passwordHash))
+            {   
+                subscriber.getEnquiries().clear();
+                subscriber.getSubscriptionPlans().clear();
+                subscriber.getReviews().clear();
+                return subscriber;
+            }
+            else
+            {
+                throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
+            }
+            
+        } catch (SubscriberNotFoundException ex) {
+            throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
+        }
     }
     
     @Override
@@ -70,7 +97,12 @@ public class SubscriberController implements SubscriberControllerLocal {
         if(subscriberEmail == null) {
             throw new SubscriberNotFoundException("Subscriber ID not provided");
         }
-        Query query = em.createQuery("SELECT s FROM Subscriber s WHERE s.email = :subscriberEmail");
+        
+        System.out.println("email: " + subscriberEmail);
+        
+        Query query = em.createQuery("SELECT s FROM Subscriber s WHERE s.email =:insubscriberEmail");
+        query.setParameter("insubscriberEmail", subscriberEmail);
+        
         Subscriber subscriber = (Subscriber)query.getSingleResult();
         if (subscriber != null) {
             subscriber.getReviews().size();
