@@ -6,7 +6,7 @@
 package ws.restful;
 
 import entity.Subscriber;
-import exceptions.CreateSubscriberException;
+import exceptions.InvalidLoginCredentialException;
 import exceptions.SubscriberNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,6 +33,7 @@ import ws.restful.datamodel.CreateSubscriberRsp;
 import ws.restful.datamodel.ErrorRsp;
 import ws.restful.datamodel.RetrieveAllSubscribersRsp;
 import ws.restful.datamodel.RetrieveSubscriberRsp;
+import ws.restful.datamodel.SubscriberLoginRsp;
 import ws.restful.datamodel.UpdateSubscriberReq;
 
 /**
@@ -45,122 +46,142 @@ public class SubscriberResource {
 
     @Context
     private UriInfo context;
-    
+
     private SubscriberControllerLocal subscriberControllerLocal;
 
     public SubscriberResource() {
         subscriberControllerLocal = lookupSubscriberControllerLocal();
     }
 
-    @Path("retrieveSubscriberById/{id}")
+    @Path("subscriberLogin")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveSubscriberById(@PathParam("id") Long id) {
+    public Response subscriberLogin(@QueryParam("email") String email, @QueryParam("password") String password) {
         try
         {
-            Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(id);
-            
-            //detach the two way bidirectional relationship
+            Subscriber subscriber = subscriberControllerLocal.subscriberLogin(email, password);
+            System.out.println("********** SubscriberResource.subscriberLogin(): Subscriber " + subscriber.getEmail()+ " login remotely via web service");
+
+            subscriber.setPassword(null);
+            subscriber.setSalt(null);
             subscriber.getEnquiries().clear();
             subscriber.getSubscriptionPlans().clear();
             subscriber.getReviews().clear();
             
+            return Response.status(Status.OK).entity(new SubscriberLoginRsp(subscriber)).build();
+        }
+        catch(InvalidLoginCredentialException ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    @Path("retrieveSubscriberById/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveSubscriberById(@PathParam("id") Long id) {
+        try {
+            Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(id);
+
+            //detach the two way bidirectional relationship
+            subscriber.getEnquiries().clear();
+            subscriber.getSubscriptionPlans().clear();
+            subscriber.getReviews().clear();
+
             RetrieveSubscriberRsp retrieveSubscriberRsp = new RetrieveSubscriberRsp(subscriber);
             return Response.status(Status.OK).entity(retrieveSubscriberRsp).build();
-        }
-        catch(SubscriberNotFoundException ex){
+        } catch (SubscriberNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     @Path("retrieveAllSubscribers")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllSubscribers(){
-        try{
-            List <Subscriber> subscriberEntities = subscriberControllerLocal.retrieveAllSubscribers();
-            
-            for(Subscriber subscriber:subscriberEntities)
-            {
+    public Response retrieveAllSubscribers() {
+        try {
+            List<Subscriber> subscriberEntities = subscriberControllerLocal.retrieveAllSubscribers();
+
+            for (Subscriber subscriber : subscriberEntities) {
                 subscriber.getEnquiries().clear();
                 subscriber.getReviews().clear();
                 subscriber.getSubscriptionPlans().clear();
             }
-            
+
             RetrieveAllSubscribersRsp retrieveAllSubscribersRsp = new RetrieveAllSubscribersRsp(subscriberEntities);
             return Response.status(Status.OK).entity(retrieveAllSubscribersRsp).build();
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSubscriber(CreateSubscriberReq createSubscriberReq){
-        if(createSubscriberReq != null){
-            try{
+    public Response createSubscriber(CreateSubscriberReq createSubscriberReq) {
+        if (createSubscriberReq != null) {
+            try {
                 Subscriber subscriber = subscriberControllerLocal.createNewSubscriber(createSubscriberReq.getSubscriber());
                 CreateSubscriberRsp createSubscriberRsp = new CreateSubscriberRsp(subscriber);
                 return Response.status(Status.OK).entity(createSubscriberRsp).build();
-            }
-            catch(Exception ex){
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }else {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create subscriber request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSubscriber(UpdateSubscriberReq updateSubscriberReq){
-        if (updateSubscriberReq != null){
-            try{
+    public Response updateSubscriber(UpdateSubscriberReq updateSubscriberReq) {
+        if (updateSubscriberReq != null) {
+            try {
                 subscriberControllerLocal.updateSubscriber(updateSubscriberReq.getSubscriber());
                 return Response.status(Status.OK).build();
-            }
-            catch(SubscriberNotFoundException ex){
+            } catch (SubscriberNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();  
-            }
-            catch(Exception ex){
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid update subscriber request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteSubscriber(@QueryParam("id") Long id){
-        try{
+    public Response deleteSubscriber(@QueryParam("id") Long id) {
+        try {
             subscriberControllerLocal.deleteSubscriber(id);
             return Response.status(Status.OK).build();
-        }
-        catch(SubscriberNotFoundException ex){
+        } catch (SubscriberNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
