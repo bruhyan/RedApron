@@ -148,8 +148,10 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         return plan;
     }
     
+    @Override
     public List<SubscriptionPlan> retrieveSubscriptionPlanBySubscriberId(Long subscriberId) {
-        Query query = em.createQuery("SELECT s FROM SubscriptionPlan s WHERE s.subscriber.subscriberId = :subscriberId");
+        Query query = em.createQuery("SELECT s FROM SubscriptionPlan s WHERE s.subscriber.subscriberId =:inSubscriberId");
+        query.setParameter("inSubscriberId", subscriberId);
         List<SubscriptionPlan> plans = query.getResultList();
         for (SubscriptionPlan plan : plans) {
             plan.getSubscriber();
@@ -159,6 +161,19 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         }
         return plans;
     }
+    
+//    public List<Recipe> retrieveRecipesBySubscriptionPlanId(Long id){
+//        Query query = em.createQuery("SELECT s FROM Recipe s WHERE s.");
+//        query.setParameter("inSubscriberId", id);
+//        List<SubscriptionPlan> plans = query.getResultList();
+//        for (SubscriptionPlan plan : plans) {
+//            plan.getSubscriber();
+//            plan.getCatergory();
+//            plan.getTransaction();
+//            plan.getRecipes().size();
+//        }
+//        return plans;
+//    }
     
     @Override
     public void deleteSubscriptionPlan(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException {

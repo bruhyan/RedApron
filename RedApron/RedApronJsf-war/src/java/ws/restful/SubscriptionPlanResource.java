@@ -25,6 +25,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -61,19 +62,7 @@ public class SubscriptionPlanResource {
             List <SubscriptionPlan> subscriptionPlanEntities = subscriptionPlanControllerLocal.retrieveAllSubscriptionPlans();
             
             for(SubscriptionPlan s : subscriptionPlanEntities)
-            {
-//                Category c = s.getCatergory();
-//                c.setSubscriptionPlans(null);
-//                
-//                List<Recipe> r = s.getRecipes();
-//                c.setSubscriptionPlans(null);
-//                
-//                Transaction t = s.getTransaction();
-//                t.setSubscriptionPlan(null);
-//                
-//                Subscriber sub = s.getSubscriber();
-//                sub.setSubscriptionPlans(null);
-                
+            {          
                 s.setCatergory(null);
                 s.setTransaction(null);
                 s.setSubscriber(null);
@@ -161,6 +150,55 @@ public class SubscriptionPlanResource {
             throw new RuntimeException(ne);
         }
     }
+    
+    @Path("retrieveAllSubscriptionPlansBySubscriberId/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllSubscriptionPlansBySubscriberId(@PathParam("id") Long id){
+        try{
+            List <SubscriptionPlan> subscriptionPlanEntities = subscriptionPlanControllerLocal.retrieveSubscriptionPlanBySubscriberId(id);
+            
+            for(SubscriptionPlan s : subscriptionPlanEntities)
+            {
+                s.setCatergory(null);
+                s.setTransaction(null);
+                s.setSubscriber(null);
+                s.setRecipes(null);
+            }
+            
+            RetrieveAllSubscriptionPlansRsp retrieveAllSubscriptionPlansRsp = new RetrieveAllSubscriptionPlansRsp(subscriptionPlanEntities);
+            return Response.status(Status.OK).entity(retrieveAllSubscriptionPlansRsp).build();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
+//    @Path("retrieveAllRecipesBySubscriptionPlansId/{id}")
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response retrieveAllRecipesBySubscriptionPlansId(@PathParam("id") Long id){
+//        try{
+//            List <Recipe> recipeEntities = subscriptionPlanControllerLocal.retrieveSubscriptionPlanBySubscriberId(id);
+//            
+//            for(SubscriptionPlan s : subscriptionPlanEntities)
+//            {
+//                s.setCatergory(null);
+//                s.setTransaction(null);
+//                s.setSubscriber(null);
+//                s.setRecipes(null);
+//            }
+//            
+//            RetrieveAllSubscriptionPlansRsp retrieveAllSubscriptionPlansRsp = new RetrieveAllSubscriptionPlansRsp(subscriptionPlanEntities);
+//            return Response.status(Status.OK).entity(retrieveAllSubscriptionPlansRsp).build();
+//        }
+//        catch(Exception ex){
+//            ex.printStackTrace();
+//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+//            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+//        }
+//    }
     
 }
