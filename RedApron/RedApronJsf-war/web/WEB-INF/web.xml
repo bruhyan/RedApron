@@ -61,7 +61,7 @@
     </ejb-local-ref>
     <context-param>
         <param-name>alternatedocroot_1</param-name>
-        <param-value>C:\Users\MX\Documents\GitHub\RedApron\glassfish-4.1.1-uploadedfiles</param-value>
+        <param-value>/Users/matthealoo/Desktop/RedApron/glassfish-4.1.1-uploadedfiles</param-value>
     </context-param>
     <ejb-local-ref>
         <ejb-ref-name>StaffController</ejb-ref-name>
@@ -128,5 +128,11 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <local>stateless.StaffControllerLocal</local>
         <ejb-link>RedApron-ejb.jar#StaffController</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CategoryController1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stateless.CategoryControllerLocal</local>
+        <ejb-link>RedApron-ejb.jar#CategoryController</ejb-link>
     </ejb-local-ref>
 </web-app>
