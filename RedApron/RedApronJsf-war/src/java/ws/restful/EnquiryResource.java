@@ -31,6 +31,7 @@ import ws.restful.datamodel.CreateEnquiryReq;
 import ws.restful.datamodel.CreateEnquiryRsp;
 import ws.restful.datamodel.ErrorRsp;
 import ws.restful.datamodel.RetrieveAllEnquiriesRsp;
+import ws.restful.datamodel.RetrieveEnquiriesBySubscriber;
 import ws.restful.datamodel.RetrieveEnquiryRsp;
 import ws.restful.datamodel.UpdateEnquiryReq;
 
@@ -55,24 +56,43 @@ public class EnquiryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveEnquiryById(@PathParam("id") Long id) {
-        try
-        {
+        try {
             Enquiry enquiry = enquiryControllerLocal.retrieveEnquiryById(id);
-            
+
             System.out.println("enquiry: " + enquiry);
             //detach the two way bidirectional relationship
             enquiry.setAnswer(null);
             enquiry.setSubscriber(null);
-            
+
             RetrieveEnquiryRsp retrieveEnquiryRsp = new RetrieveEnquiryRsp(enquiry);
             return Response.status(Status.OK).entity(retrieveEnquiryRsp).build();
-        }
-        catch(EnquiryNotFoundException ex){
+        } catch (EnquiryNotFoundException ex) {
             ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
-        catch (Exception ex){
+    }
+
+    @Path("retrieveEnquiryBySubscriber/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveEnquiryBySubscriber(@PathParam("id") Long id) {
+        try {
+            List<Enquiry> enquiries = enquiryControllerLocal.retrieveEnquiryBySubscriber(id);
+
+            //detach the two way bidirectional relationship
+            for (Enquiry e : enquiries) {
+                e.setAnswer(null);
+                e.setSubscriber(null);
+            }
+
+            RetrieveEnquiriesBySubscriber retrieveEnquiriesBySubscriber = new RetrieveEnquiriesBySubscriber(enquiries);
+            return Response.status(Status.OK).entity(retrieveEnquiriesBySubscriber).build();
+        } catch (Exception ex) {
             ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
@@ -82,85 +102,79 @@ public class EnquiryResource {
     @Path("retrieveAllEnquiries")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllEnquiries(){
-        try{
-            List <Enquiry> enquiryEntities = enquiryControllerLocal.retrieveAllEnquiries();
-            
-            for(Enquiry e: enquiryEntities)
-            {
-               e.setAnswer(null);
-               e.setSubscriber(null);
+    public Response retrieveAllEnquiries() {
+        try {
+            List<Enquiry> enquiryEntities = enquiryControllerLocal.retrieveAllEnquiries();
+
+            for (Enquiry e : enquiryEntities) {
+                e.setAnswer(null);
+                e.setSubscriber(null);
             }
-            
-            RetrieveAllEnquiriesRsp retrieveAllSubscribersRsp = new RetrieveAllEnquiriesRsp(enquiryEntities);
-            return Response.status(Status.OK).entity(retrieveAllSubscribersRsp).build();
-        }
-        catch(Exception ex){
+
+            RetrieveAllEnquiriesRsp retrieveAllEnquiriesRsp = new RetrieveAllEnquiriesRsp(enquiryEntities);
+            return Response.status(Status.OK).entity(retrieveAllEnquiriesRsp).build();
+        } catch (Exception ex) {
             ex.printStackTrace();
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEnquiry(CreateEnquiryReq createEnquiryReq){
-        if(createEnquiryReq != null){
-            try{
+    public Response createEnquiry(CreateEnquiryReq createEnquiryReq
+    ) {
+        if (createEnquiryReq != null) {
+            try {
                 Enquiry enquiry = enquiryControllerLocal.createNewEnquiry(createEnquiryReq.getEnquiry());
                 CreateEnquiryRsp createEnquiryRsp = new CreateEnquiryRsp(enquiry);
                 return Response.status(Status.OK).entity(createEnquiryRsp).build();
-            }
-            catch(Exception ex){
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }else {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create enquiry request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEnquiry(UpdateEnquiryReq updateEnquiryReq){
-        if (updateEnquiryReq != null){
-            try{
+    public Response updateEnquiry(UpdateEnquiryReq updateEnquiryReq
+    ) {
+        if (updateEnquiryReq != null) {
+            try {
                 enquiryControllerLocal.updateEnquiry(updateEnquiryReq.getEnquiry());
                 return Response.status(Status.OK).build();
-            }
-            catch(EnquiryNotFoundException ex){
+            } catch (EnquiryNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();  
-            }
-            catch(Exception ex){
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid update enquiry request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEnquiry(@QueryParam("id") Long id){
-        try{
+    public Response deleteEnquiry(@QueryParam("id") Long id
+    ) {
+        try {
             enquiryControllerLocal.deleteEnquiry(id);
             return Response.status(Status.OK).build();
-        }
-        catch(EnquiryNotFoundException ex){
+        } catch (EnquiryNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
