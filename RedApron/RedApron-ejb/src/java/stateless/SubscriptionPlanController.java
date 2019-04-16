@@ -162,18 +162,18 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         return plans;
     }
     
-//    public List<Recipe> retrieveRecipesBySubscriptionPlanId(Long id){
-//        Query query = em.createQuery("SELECT s FROM Recipe s WHERE s.");
-//        query.setParameter("inSubscriberId", id);
-//        List<SubscriptionPlan> plans = query.getResultList();
-//        for (SubscriptionPlan plan : plans) {
-//            plan.getSubscriber();
-//            plan.getCatergory();
-//            plan.getTransaction();
-//            plan.getRecipes().size();
-//        }
-//        return plans;
-//    }
+    @Override
+    public List<Recipe> retrieveRecipesBySubscriptionPlanId(Long id){
+        try {
+            SubscriptionPlan sp = retrieveSubscriptionPlanById(id);
+            sp.getRecipes().size();
+            return sp.getRecipes();
+        } catch (SubscriptionPlanNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
     
     @Override
     public void deleteSubscriptionPlan(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException {

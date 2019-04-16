@@ -5,11 +5,8 @@
  */
 package ws.restful;
 
-import entity.Category;
 import entity.Recipe;
-import entity.Subscriber;
 import entity.SubscriptionPlan;
-import entity.Transaction;
 import exceptions.SubscriptionPlanNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,6 +31,7 @@ import stateless.SubscriptionPlanControllerLocal;
 import ws.restful.datamodel.CreateSubscriptionPlanReq;
 import ws.restful.datamodel.CreateSubscriptionPlanRsp;
 import ws.restful.datamodel.ErrorRsp;
+import ws.restful.datamodel.RetrieveAllRecipesRsp;
 import ws.restful.datamodel.RetrieveAllSubscriptionPlansRsp;
 import ws.restful.datamodel.UpdateSubscriptionPlanReq;
 
@@ -176,29 +174,28 @@ public class SubscriptionPlanResource {
         }
     }
 
-//    @Path("retrieveAllRecipesBySubscriptionPlansId/{id}")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response retrieveAllRecipesBySubscriptionPlansId(@PathParam("id") Long id){
-//        try{
-//            List <Recipe> recipeEntities = subscriptionPlanControllerLocal.retrieveSubscriptionPlanBySubscriberId(id);
-//            
-//            for(SubscriptionPlan s : subscriptionPlanEntities)
-//            {
-//                s.setCatergory(null);
-//                s.setTransaction(null);
-//                s.setSubscriber(null);
-//                s.setRecipes(null);
-//            }
-//            
-//            RetrieveAllSubscriptionPlansRsp retrieveAllSubscriptionPlansRsp = new RetrieveAllSubscriptionPlansRsp(subscriptionPlanEntities);
-//            return Response.status(Status.OK).entity(retrieveAllSubscriptionPlansRsp).build();
-//        }
-//        catch(Exception ex){
-//            ex.printStackTrace();
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-//        }
-//    }
+    @Path("retrieveAllRecipesBySubscriptionPlanId/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllRecipesBySubscriptionPlanId(@PathParam("id") Long id){
+        try{
+            List <Recipe> recipeEntities = subscriptionPlanControllerLocal.retrieveRecipesBySubscriptionPlanId(id);
+            
+            for(Recipe s : recipeEntities)
+            {
+                s.getCategories().clear();
+                s.getReviews().clear();
+                s.getSteps().clear();
+            }
+            
+            RetrieveAllRecipesRsp retrieveAllRecipesRsp = new RetrieveAllRecipesRsp(recipeEntities);
+            return Response.status(Status.OK).entity(retrieveAllRecipesRsp).build();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
     
 }
