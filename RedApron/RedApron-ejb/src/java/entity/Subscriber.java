@@ -29,6 +29,7 @@ public class Subscriber implements Serializable {
     private Long subscriberId;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
     private String addressLine1;
     private String addressLine2;
