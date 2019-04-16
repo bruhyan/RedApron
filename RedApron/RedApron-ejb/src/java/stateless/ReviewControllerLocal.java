@@ -25,5 +25,7 @@ public interface ReviewControllerLocal {
     public void updateReview(Review review) throws ReviewNotFoundException;
 
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;
-    
+
+    public List<Review> retrieveReviewsByRecipeId(Long subscriberId);
+
 }
