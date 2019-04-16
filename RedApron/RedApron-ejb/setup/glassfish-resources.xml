@@ -8,7 +8,7 @@
     <property name="URL" value="jdbc:mysql://localhost:3306/redapron?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC"/>
     <property name="User" value="root"/>
 
-    <property name="Password" value="12345678"/>
+    <property name="Password" value="admin"/>
 
     <property name="autoConnect" value="true"/>
     <property name="useSSL" value="false"/>
