@@ -64,7 +64,7 @@ public class EnquiryController implements EnquiryControllerLocal {
 
     @Override
     public List<Enquiry> retrieveEnquiryBySubscriber(Long subscriberId) {
-        Query query = em.createQuery("SELECT e FROM Enquiry e WHERE e.subscriber.subscriberId := subscriberId");
+        Query query = em.createQuery("SELECT e FROM Enquiry e WHERE e.subscriber.subscriberId = :subscriberId");
         query.setParameter("subscriberId", subscriberId);
         List<Enquiry> enquiryEntities = query.getResultList();
         return enquiryEntities;

@@ -8,6 +8,7 @@ package stateless;
 import entity.Category;
 import entity.Recipe;
 import exceptions.CategoryNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -76,10 +77,9 @@ public class CategoryController implements CategoryControllerLocal {
     @Override
     public List<Recipe> retrieveRecipesByCategoryId(Long id) throws CategoryNotFoundException {
         Category category = retrieveCategoryById(id);
-        Query query = em.createQuery("SELECT c FROM Recipe c WHERE c.categories.categoryId=:id");
-        query.setParameter("id", id);
-
-        return query.getResultList();
+        category.getRecipes().size();
+     
+        return category.getRecipes();
     }
 
     @Override

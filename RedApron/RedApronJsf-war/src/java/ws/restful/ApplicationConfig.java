@@ -27,6 +27,7 @@ public class ApplicationConfig extends Application {
         resources.add(SubscriptionPlanResource.class);
         resources.add(StepResource.class);
         resources.add(TransactionResource.class);
+        resources.add(StaffResource.class);
 //        addRestResourceClasses(resources);
         return resources;
     }

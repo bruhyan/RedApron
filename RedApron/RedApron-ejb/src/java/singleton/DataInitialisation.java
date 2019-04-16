@@ -5,6 +5,7 @@
  */
 package singleton;
 
+import entity.Answer;
 import entity.Category;
 import entity.Enquiry;
 import entity.Event;
@@ -27,6 +28,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import stateless.AnswerControllerLocal;
 import stateless.CategoryControllerLocal;
 import stateless.EnquiryControllerLocal;
 import stateless.EventControllerLocal;
@@ -45,6 +47,9 @@ import stateless.TransactionControllerLocal;
 @LocalBean
 @Startup
 public class DataInitialisation {
+
+    @EJB(name = "AnswerControllerLocal")
+    private AnswerControllerLocal answerControllerLocal;
 
     @EJB(name = "ReviewControllerLocal")
     private ReviewControllerLocal reviewControllerLocal;
@@ -111,23 +116,27 @@ public class DataInitialisation {
         SubscriptionPlan plan2 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
         SubscriptionPlan plan3 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
 
-        Category cat1 = categoryControllerLocal.createNewCategory(new Category("Free Style For 2", 40.00, true));
-        Category cat2 = categoryControllerLocal.createNewCategory(new Category("Free Style For 4", 60.00, true));
+        Category cat1 = categoryControllerLocal.createNewCategory(new Category("Seasonal For 2", 40.00, true));
+        Category cat2 = categoryControllerLocal.createNewCategory(new Category("Seasonal For 4", 60.00, true));
         Category cat3 = categoryControllerLocal.createNewCategory(new Category("Signature For 2", 40.00, true));
         Category cat4 = categoryControllerLocal.createNewCategory(new Category("Signature For 4", 60.00, true));
-        Category cat5 = categoryControllerLocal.createNewCategory(new Category("Vegeterian For 2", 35.00, true));
-        Category cat6 = categoryControllerLocal.createNewCategory(new Category("Vegeterian For 4", 52.00, true));
+        Category cat5 = categoryControllerLocal.createNewCategory(new Category("Vegetarian For 2", 35.00, true));
+        Category cat6 = categoryControllerLocal.createNewCategory(new Category("Vegetarian For 4", 52.00, true));
         Category cat7 = categoryControllerLocal.createNewCategory(new Category("Healthy Living For 2", 45.00, true));
         Category cat8 = categoryControllerLocal.createNewCategory(new Category("Healthy Living For 4", 62.00, true));
+        Category cat9 = categoryControllerLocal.createNewCategory(new Category("Baking For 2", 45.00, true));
+        Category cat10 = categoryControllerLocal.createNewCategory(new Category("Baking For 4", 62.00, true));
+        Category cat11 = categoryControllerLocal.createNewCategory(new Category("Quick For 2", 32.00, true));
+        Category cat12 = categoryControllerLocal.createNewCategory(new Category("Quick For 4", 52.00, true));
 
-        Recipe recipe1 = recipeControllerLocal.createNewRecipe(new Recipe("Hainan-style Roasted Chicken", "", "with Steamed Oiled Rice & Fresh Cucumbers", "", true));
-        Recipe recipe2 = recipeControllerLocal.createNewRecipe(new Recipe("Smoky Ancho Baked Chicken", "", "with Spiced Rice & Black Beans", "", true)); //860 cal, 35 min
-        Recipe recipe3 = recipeControllerLocal.createNewRecipe(new Recipe("Nashville-Style Hot Chicken", "", "with Maple Kale & Mashed Sweet Potatoes", "", true)); //810 calroies, 
-        Recipe recipe4 = recipeControllerLocal.createNewRecipe(new Recipe("Calabrian Shrimp & Orzo", "", "with Zucchini", "", true)); //480 calories, 20 mins
-        Recipe recipe5 = recipeControllerLocal.createNewRecipe(new Recipe("Goat Cheese & Mushroom Quesadillas", "", "with Lemon-Dressed Zucchini", "", true)); //vegeterian, 590 cal, 45 mins
-        Recipe recipe6 = recipeControllerLocal.createNewRecipe(new Recipe("Middle Eastern-Style Pasta", "", "with Roasted Broccoli & Brown Butter-Tomato Sauce", "", true)); //800 cal, 25 mins, vegeterian
-        Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "", "with Kombu & Peanuts", "", true)); //440 cal, 35 mins, vegeterian
-        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "", "with Carrot & Currant Rice", "", true)); // 590 cal, 25 mins
+        Recipe recipe1 = recipeControllerLocal.createNewRecipe(new Recipe("Hainan-style Roasted Chicken", "Chicken, Rice, Herbs, Hainan, Cucumber", "with Steamed Oiled Rice & Fresh Cucumbers", "groceries.png", true));
+        Recipe recipe2 = recipeControllerLocal.createNewRecipe(new Recipe("Smoky Ancho Baked Chicken", "Chicken, Rice, Spice, Black Beans", "with Spiced Rice & Black Beans", "groceries.png", true)); //860 cal, 35 min
+        Recipe recipe3 = recipeControllerLocal.createNewRecipe(new Recipe("Nashville-Style Hot Chicken", "Chicken, Kale, Maple Syrup, Sweet Potato", "with Maple Kale & Mashed Sweet Potatoes", "groceries.png", true)); //810 calroies, 
+        Recipe recipe4 = recipeControllerLocal.createNewRecipe(new Recipe("Calabrian Shrimp & Orzo", "Shrimp, Zucchini, Orzo", "with Zucchini", "groceries.png", true)); //480 calories, 20 mins
+        Recipe recipe5 = recipeControllerLocal.createNewRecipe(new Recipe("Goat Cheese & Mushroom Quesadillas", "Wrap, Mushroom, Goat Cheese, Lemon, Zucchini", "with Lemon-Dressed Zucchini", "groceries.png", true)); //vegeterian, 590 cal, 45 mins
+        Recipe recipe6 = recipeControllerLocal.createNewRecipe(new Recipe("Middle Eastern-Style Pasta", "Pasata", "with Roasted Broccoli & Brown Butter-Tomato Sauce", "groceries.png", true)); //800 cal, 25 mins, vegeterian
+        Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "Fried RRICEEE", "with Kombu & Peanuts", "groceries.png", true)); //440 cal, 35 mins, vegeterian
+        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "Cali", "with Carrot & Currant Rice", "groceries.png", true)); // 590 cal, 25 mins
 
         Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.MASTER));
         Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.VISA));
@@ -139,11 +148,13 @@ public class DataInitialisation {
         Enquiry enquiry1 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Hello, I would like to ask where is my meal?", sub1));
         Enquiry enquiry2 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Give me free food pl0x", sub2));
         Enquiry enquiry3 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Where is the toilet?", sub3));
+        Enquiry enquiry4 = enquiryControllerLocal.createNewEnquiry(new Enquiry("How are you?", sub1));
 
         Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019 - 1900, 2, 10), sub1, recipe1));
         Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019 - 1900, 2, 11), sub1, recipe2));
         Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019 - 1900, 2, 15), sub3, recipe1));
 
+        Answer answer1 = answerControllerLocal.createNewAnswer(new Answer("We apologise for the inconvenience, your meal's detail will be emailed to you shortly."));
         //setting relation
         //test if object is managed here
         //subscriber -> review
@@ -176,10 +187,26 @@ public class DataInitialisation {
         cat3.getRecipes().add(recipe2);
         cat5.getRecipes().add(recipe7);
 
+        cat1.getRecipes().add(recipe3);
+        cat1.getRecipes().add(recipe4);
+        cat1.getRecipes().add(recipe5);
+        cat1.getRecipes().add(recipe6);
+        cat1.getRecipes().add(recipe2);
+        cat1.getRecipes().add(recipe7);
+        cat1.getRecipes().add(recipe7);
+
         //Category <- Recipe (Categories have several recipes)
         recipe1.getCategories().add(cat1);
         recipe2.getCategories().add(cat3);
         recipe7.getCategories().add(cat5);
+
+        recipe2.getCategories().add(cat1);
+        recipe3.getCategories().add(cat1);
+        recipe4.getCategories().add(cat1);
+        recipe5.getCategories().add(cat1);
+        recipe6.getCategories().add(cat1);
+        recipe7.getCategories().add(cat1);
+        recipe8.getCategories().add(cat1);
 
         //Subscriber -> Plan (Subscribers make plans)
         sub1.getSubscriptionPlans().add(plan1);
@@ -200,6 +227,12 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
+        
+        enquiry1.setAnswer(answer1);
+        
+        
+        answer1.setEnquiry(enquiry1);
+        answer1.setStaff(staff1);
 
         Event event1 = new Event("Test 1", new Date(2019 - 1900, 2, 1, 8, 0), new Date(2019 - 1900, 2, 1, 9, 0));
         Event event2 = new Event("Test 2", new Date(2019 - 1900, 2, 2, 8, 0), new Date(2019 - 1900, 2, 2, 9, 0));
@@ -210,6 +243,8 @@ public class DataInitialisation {
         staff1.addEvent(event1);
         staff1.addEvent(event2);
         staff1.addEvent(event3);
+        
+        staff1.getAnswers().add(answer1);
 
     }
 

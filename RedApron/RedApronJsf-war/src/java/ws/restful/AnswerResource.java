@@ -41,23 +41,20 @@ public class AnswerResource {
     public AnswerResource() {
         answerControllerLocal = lookupAnswerControllerLocal();
     }
-    
+
     @Path("retrieveAnswerById/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAnswerById(@PathParam("id") Long id) {
-        try
-        {
+        try {
             Answer answer = answerControllerLocal.retrieveAnswerById(id);
-            
+
             RetrieveAnswerRsp retrieveAnswerRsp = new RetrieveAnswerRsp(answer);
             return Response.status(Status.OK).entity(retrieveAnswerRsp).build();
-        }
-        catch(AnswerNotFoundException ex){
+        } catch (AnswerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
@@ -67,27 +64,26 @@ public class AnswerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAnswerByEnquiryId(@PathParam("id") Long id) {
-        try
-        {
+        try {
             Answer answer = answerControllerLocal.getAnswerFromEnquiryId(id);
-            
+            answer.setEnquiry(null);
+            answer.getStaff().setAnswers(null);
+
+
             RetrieveAnswerRsp retrieveAnswerRsp = new RetrieveAnswerRsp(answer);
             return Response.status(Status.OK).entity(retrieveAnswerRsp).build();
-        }
-        catch(EnquiryNotFoundException ex){
+        } catch (EnquiryNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch(AnswerNotFoundException ex){
+        } catch (AnswerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     private AnswerControllerLocal lookupAnswerControllerLocal() {
         try {
             javax.naming.Context c = new InitialContext();
