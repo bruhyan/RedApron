@@ -5,6 +5,7 @@
  */
 package stateless;
 
+import entity.Recipe;
 import entity.SubscriptionPlan;
 import exceptions.SubscriptionPlanNotFoundException;
 import java.util.Date;
@@ -31,5 +32,9 @@ public interface SubscriptionPlanControllerLocal {
     public List<SubscriptionPlan> retrieveSubscriptionPlanByDateRange(Date date1, Date date2);
 
     public List<SubscriptionPlan> retrieveSubscriptionPlanByDate(Date date1);
+
+    public List<SubscriptionPlan> retrieveSubscriptionPlanBySubscriberId(Long subscriberId);
+
+    public List<Recipe> retrieveRecipesBySubscriptionPlanId(Long id);
     
 }

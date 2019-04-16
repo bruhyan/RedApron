@@ -61,7 +61,7 @@
     </ejb-local-ref>
     <context-param>
         <param-name>alternatedocroot_1</param-name>
-        <param-value>/Users/matthealoo/Desktop/RedApron/glassfish-4.1.1-uploadedfiles</param-value>
+        <param-value>C:\Users\MX\Documents\GitHub\RedApron\glassfish-4.1.1-uploadedfiles</param-value>
     </context-param>
     <ejb-local-ref>
         <ejb-ref-name>StaffController</ejb-ref-name>
