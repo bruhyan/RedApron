@@ -5,6 +5,7 @@
  */
 package singleton;
 
+import entity.Answer;
 import entity.Category;
 import entity.Enquiry;
 import entity.Event;
@@ -27,6 +28,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import stateless.AnswerControllerLocal;
 import stateless.CategoryControllerLocal;
 import stateless.EnquiryControllerLocal;
 import stateless.EventControllerLocal;
@@ -45,6 +47,9 @@ import stateless.TransactionControllerLocal;
 @LocalBean
 @Startup
 public class DataInitialisation {
+
+    @EJB(name = "AnswerControllerLocal")
+    private AnswerControllerLocal answerControllerLocal;
 
     @EJB(name = "ReviewControllerLocal")
     private ReviewControllerLocal reviewControllerLocal;
@@ -143,11 +148,13 @@ public class DataInitialisation {
         Enquiry enquiry1 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Hello, I would like to ask where is my meal?", sub1));
         Enquiry enquiry2 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Give me free food pl0x", sub2));
         Enquiry enquiry3 = enquiryControllerLocal.createNewEnquiry(new Enquiry("Where is the toilet?", sub3));
+        Enquiry enquiry4 = enquiryControllerLocal.createNewEnquiry(new Enquiry("How are you?", sub1));
 
         Review review1 = reviewControllerLocal.createNewReview(new Review("Good, 10/10 would get this again.", 5, new Date(2019 - 1900, 2, 10), sub1, recipe1));
         Review review2 = reviewControllerLocal.createNewReview(new Review("gr8 b8 m8 i r8 8/8", 5, new Date(2019 - 1900, 2, 11), sub1, recipe2));
         Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019 - 1900, 2, 15), sub3, recipe1));
 
+        Answer answer1 = answerControllerLocal.createNewAnswer(new Answer("We apologise for the inconvenience, your meal's detail will be emailed to you shortly."));
         //setting relation
         //test if object is managed here
         //subscriber -> review
@@ -220,6 +227,12 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
+        
+        enquiry1.setAnswer(answer1);
+        
+        
+        answer1.setEnquiry(enquiry1);
+        answer1.setStaff(staff1);
 
         Event event1 = new Event("Test 1", new Date(2019 - 1900, 2, 1, 8, 0), new Date(2019 - 1900, 2, 1, 9, 0));
         Event event2 = new Event("Test 2", new Date(2019 - 1900, 2, 2, 8, 0), new Date(2019 - 1900, 2, 2, 9, 0));
@@ -230,6 +243,8 @@ public class DataInitialisation {
         staff1.addEvent(event1);
         staff1.addEvent(event2);
         staff1.addEvent(event3);
+        
+        staff1.getAnswers().add(answer1);
 
     }
 
