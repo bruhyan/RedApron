@@ -132,6 +132,7 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
         return plans;
     }
     
+    @Override
     public SubscriptionPlan retrieveSubscriptionPlanById(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException {
         if (subscriptionPlanId == null) {
             

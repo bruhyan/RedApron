@@ -28,17 +28,22 @@ public class Answer implements Serializable {
 
     @OneToOne
     private Enquiry enquiry;
-    
+
     @ManyToOne
     private Staff staff;
-    
+
     public Answer() {
     }
-    
-    
+
     public Answer(String text) {
         this();
         this.text = text;
+    }
+
+    public Answer(String text, Enquiry enquiry) {
+        this();
+        this.text = text;
+        this.enquiry = enquiry;
     }
 
     public Enquiry getEnquiry() {
@@ -49,8 +54,6 @@ public class Answer implements Serializable {
         this.enquiry = enquiry;
     }
 
-    
-    
     public String getText() {
         return text;
     }
@@ -58,9 +61,6 @@ public class Answer implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-    
-    
-
 
     public Long getAnswerId() {
         return answerId;
@@ -98,5 +98,5 @@ public class Answer implements Serializable {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
-    
+
 }

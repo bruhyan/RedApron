@@ -65,7 +65,7 @@ public class AnswerController implements AnswerControllerLocal {
     public Answer getAnswerFromEnquiryId(Long enquiryId) throws EnquiryNotFoundException, AnswerNotFoundException {
         Query query = em.createQuery("SELECT a FROM Answer a WHERE a.enquiry.enquiryId = :enquiry");
         query.setParameter("enquiry", enquiryId);
-
+        System.out.println(enquiryId);
         Answer answer = (Answer) query.getSingleResult();
 
         answer.getStaff();
