@@ -141,7 +141,7 @@ public class DataInitialisation {
         Recipe recipe5 = recipeControllerLocal.createNewRecipe(new Recipe("Goat Cheese & Mushroom Quesadillas", "Wrap, Mushroom, Goat Cheese, Lemon, Zucchini", "with Lemon-Dressed Zucchini 30 200", "quesadillas.jpg", true)); //vegeterian, 590 cal, 45 mins
         Recipe recipe6 = recipeControllerLocal.createNewRecipe(new Recipe("Middle Eastern-Style Pasta", "Pasata", "with Roasted Broccoli & Brown Butter-Tomato Sauce 70 100", "middleeast.jpeg", true)); //800 cal, 25 mins, vegeterian
         Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "Fried RRICEEE", "with Kombu & Peanuts 50 300", "friedrice.jpg", true)); //440 cal, 35 mins, vegeterian
-        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "Cali", "with Carrot & Currant Rice 30 250", "chickencurry.jpg", true)); // 590 cal, 25 mins
+        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "Curry, Chicken, Coconut milk", "with Carrot & Currant Rice 30 250", "chickencurry.jpg", true)); // 590 cal, 25 mins
 
         Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.MASTER));
         Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.VISA));
