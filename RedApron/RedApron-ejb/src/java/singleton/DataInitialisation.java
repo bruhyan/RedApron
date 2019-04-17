@@ -113,9 +113,9 @@ public class DataInitialisation {
         staffController.createNewStaff(staff2);
         staffController.createNewStaff(staff3);
 
-        Subscriber sub1 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Alpha", "Tan", "alpha@gmail.com", "90000001", "kent ridge", "corner1", 000001, "password"));
-        Subscriber sub2 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Kenny", "Tan", "kenny@gmail.com", "90000002", "kent ridge", "corner2", 000002, "password"));
-        Subscriber sub3 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Bady", "Tan", "bady@gmail.com", "90000003", "kent ridge", "corner3", 000003, "password"));
+        Subscriber sub1 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Alpha", "Tan", "alpha@gmail.com", "90000001", "kent ridge", "corner1", 738343, "password"));
+        Subscriber sub2 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Kenny", "Tan", "kenny@gmail.com", "90000002", "kent ridge", "corner2", 139345, "password"));
+        Subscriber sub3 = subscriberControllerLocal.createNewSubscriber(new Subscriber("Bady", "Tan", "bady@gmail.com", "90000003", "kent ridge", "corner3", 556083, "password"));
 
         SubscriptionPlan plan1 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
         SubscriptionPlan plan2 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
