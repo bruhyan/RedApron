@@ -134,14 +134,14 @@ public class DataInitialisation {
         Category cat11 = categoryControllerLocal.createNewCategory(new Category("Quick For 2", 32.00, true));
         Category cat12 = categoryControllerLocal.createNewCategory(new Category("Quick For 4", 52.00, true));
 
-        Recipe recipe1 = recipeControllerLocal.createNewRecipe(new Recipe("Hainan-style Roasted Chicken", "Chicken, Rice, Herbs, Hainan, Cucumber", "with Steamed Oiled Rice & Fresh Cucumbers 30 200", "roastchicken.jpg", true));
+        Recipe recipe1 = recipeControllerLocal.createNewRecipe(new Recipe("Hainan-style Roasted Chicken", "Chicken, Rice, Herbs, Hainan, Cucumber", "with Steamed Oiled Rice & Fresh Cucumbers 30 200", "roastchicken.jpeg", true));
         Recipe recipe2 = recipeControllerLocal.createNewRecipe(new Recipe("Smoky Ancho Baked Chicken", "Chicken, Rice, Spice, Black Beans", "with Spiced Rice & Black Beans 60 300", "bakedchicken.jpg", true)); //860 cal, 35 min
         Recipe recipe3 = recipeControllerLocal.createNewRecipe(new Recipe("Nashville-Style Hot Chicken", "Chicken, Kale, Maple Syrup, Sweet Potato", "with Maple Kale & Mashed Sweet Potatoes 30 810", "chickenkale.jpg", true)); //810 calroies, 
         Recipe recipe4 = recipeControllerLocal.createNewRecipe(new Recipe("Calabrian Shrimp & Orzo", "Shrimp, Zucchini, Orzo", "with Zucchini 50 300", "shrimporzo.jpg", true)); //480 calories, 20 mins
         Recipe recipe5 = recipeControllerLocal.createNewRecipe(new Recipe("Goat Cheese & Mushroom Quesadillas", "Wrap, Mushroom, Goat Cheese, Lemon, Zucchini", "with Lemon-Dressed Zucchini 30 200", "quesadillas.jpg", true)); //vegeterian, 590 cal, 45 mins
         Recipe recipe6 = recipeControllerLocal.createNewRecipe(new Recipe("Middle Eastern-Style Pasta", "Pasata", "with Roasted Broccoli & Brown Butter-Tomato Sauce 70 100", "middleeast.jpeg", true)); //800 cal, 25 mins, vegeterian
         Recipe recipe7 = recipeControllerLocal.createNewRecipe(new Recipe("Vegetable & Freekeh Fried Rice", "Fried RRICEEE", "with Kombu & Peanuts 50 300", "friedrice.jpg", true)); //440 cal, 35 mins, vegeterian
-        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "Cali", "with Carrot & Currant Rice 30 250", "chickencurry.jpg", true)); // 590 cal, 25 mins
+        Recipe recipe8 = recipeControllerLocal.createNewRecipe(new Recipe("Chicken & Curry Mustard", "Curry, Chicken, Coconut milk", "with Carrot & Currant Rice 30 250", "chickencurry.jpg", true)); // 590 cal, 25 mins
 
         Transaction transaction1 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.MASTER));
         Transaction transaction2 = transactionControllerLocal.createNewTransaction(new Transaction(40.00, new Date(2019 - 1900, 2, 10), PaymentType.VISA));
