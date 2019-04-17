@@ -56,6 +56,19 @@ public class ReviewController implements ReviewControllerLocal {
     }  
     
     @Override
+    public List<Review> retrieveReviewsByRecipeId(Long id) {
+        Query query = em.createQuery("SELECT s FROM Review s WHERE s.recipe.recipeId=:inRecipeId");
+        query.setParameter("inRecipeId", id);
+        List<Review> plans = query.getResultList();
+        for (Review plan : plans) {
+            plan.getSubscriber();
+            plan.getRecipe();
+        }
+        
+        return plans;
+    }
+    
+    @Override
     public void updateReview(Review review) throws ReviewNotFoundException {
         
         Review reviewToUpdate = retrieveReviewById(review.getReviewId());

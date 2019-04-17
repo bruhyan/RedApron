@@ -5,9 +5,12 @@
  */
 package stateless;
 
+import entity.Recipe;
 import entity.Step;
+import exceptions.RecipeNotFoundException;
 import exceptions.StepNotFoundException;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,8 +27,13 @@ import javax.persistence.Query;
 @Local(StepControllerLocal.class)
 public class StepController implements StepControllerLocal {
 
+    @EJB
+    private RecipeControllerLocal recipeController;
+
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
+    
+    
     
     @Override
     public Step createNewStep(Step step){
@@ -64,6 +72,14 @@ public class StepController implements StepControllerLocal {
         stepToUpdate.setImageSrc(step.getImageSrc());
         
 
+    }
+   
+   @Override
+    public List<Step> retrieveStepsByRecipeId(Long id) throws RecipeNotFoundException {
+        Recipe recipe = recipeController.retrieveRecipeById(id);
+        recipe.getSteps().size();
+     
+        return recipe.getSteps();
     }
    
     @Override

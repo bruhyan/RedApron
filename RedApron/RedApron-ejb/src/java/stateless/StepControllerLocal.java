@@ -6,6 +6,7 @@
 package stateless;
 
 import entity.Step;
+import exceptions.RecipeNotFoundException;
 import exceptions.StepNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
@@ -26,5 +27,7 @@ public interface StepControllerLocal {
     public void updateStep(Step step) throws StepNotFoundException;
 
     public void deleteStep(Step step) throws StepNotFoundException;
+
+    public List<Step> retrieveStepsByRecipeId(Long id) throws RecipeNotFoundException;
     
 }

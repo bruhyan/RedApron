@@ -99,6 +99,29 @@ public class ReviewResource {
         }
     }
     
+    @Path("retrieveReviewsByRecipeId/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveReviewsByRecipeId(@PathParam("id") Long id){
+        try{
+            List <Review> reviewEntities = reviewControllerLocal.retrieveReviewsByRecipeId(id);
+            
+            for(Review review : reviewEntities)
+            {
+                review.setRecipe(null);
+                review.setSubscriber(null);
+            }
+            
+            RetrieveAllReviewsRsp retrieveAllReviewsRsp = new RetrieveAllReviewsRsp(reviewEntities);
+            return Response.status(Status.OK).entity(retrieveAllReviewsRsp).build();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
