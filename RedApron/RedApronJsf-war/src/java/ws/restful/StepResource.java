@@ -87,6 +87,24 @@ public class StepResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveStepsByRecipeId/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveStepsByRecipeId(@PathParam("id") Long id) {
+        try {
+            List<Step> steps = stepControllerLocal.retrieveStepsByRecipeId(id);
+            System.out.println(steps);
+            
+            RetrieveAllStepsRsp retrieveAllRecipesRsp = new RetrieveAllStepsRsp(steps);
+            return Response.status(Status.OK).entity(retrieveAllRecipesRsp).build();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
     private StepControllerLocal lookupStepControllerLocal() {
         try {

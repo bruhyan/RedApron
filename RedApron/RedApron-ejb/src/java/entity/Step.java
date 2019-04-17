@@ -34,6 +34,14 @@ public class Step implements Serializable {
         this.imageSrc = imageSrc;
     }
 
+    public Step(String instruction, String imageSrc, int orderNum) {
+        this.instruction = instruction;
+        this.imageSrc = imageSrc;
+        this.orderNum = orderNum;
+    }
+    
+    
+
     public int getOrderNum() {
         return orderNum;
     }

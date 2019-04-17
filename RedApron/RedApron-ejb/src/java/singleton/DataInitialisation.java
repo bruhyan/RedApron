@@ -12,6 +12,7 @@ import entity.Event;
 import entity.Recipe;
 import entity.Review;
 import entity.Staff;
+import entity.Step;
 import entity.Subscriber;
 import entity.SubscriptionPlan;
 import entity.Transaction;
@@ -35,6 +36,7 @@ import stateless.EventControllerLocal;
 import stateless.RecipeControllerLocal;
 import stateless.ReviewControllerLocal;
 import stateless.StaffControllerLocal;
+import stateless.StepControllerLocal;
 import stateless.SubscriberControllerLocal;
 import stateless.SubscriptionPlanControllerLocal;
 import stateless.TransactionControllerLocal;
@@ -47,6 +49,9 @@ import stateless.TransactionControllerLocal;
 @LocalBean
 @Startup
 public class DataInitialisation {
+
+    @EJB
+    private StepControllerLocal stepController;
 
     @EJB(name = "AnswerControllerLocal")
     private AnswerControllerLocal answerControllerLocal;
@@ -155,7 +160,36 @@ public class DataInitialisation {
         Review review3 = reviewControllerLocal.createNewReview(new Review("I have had better", 3, new Date(2019 - 1900, 2, 15), sub3, recipe1));
 
         Answer answer1 = answerControllerLocal.createNewAnswer(new Answer("We apologise for the inconvenience, your meal's detail will be emailed to you shortly."));
+
+        Step step1 = stepController.createNewStep(new Step("Prepare & roast the potatoes:Preheat the oven to 450°F. Place on a sheet pan. Roast 28 to 30 minutes, or until tender when pierced with a fork.", "roastpotato.png"));
+        step1.setOrderNum(1);
+        Step step2 = stepController.createNewStep(new Step("Prepare the remaining ingredients:While the potatoes roast, cut off and discard the bottom ½ inch of the broccoli stem; cut the broccoli into small florets.", "prepbroc.png"));
+        step2.setOrderNum(2);
+        Step step3 = stepController.createNewStep(new Step("Bake the chicken & broccoli:While the potatoes continue to roast, line a separate sheet pan with foil. Pat the chicken dry with paper towels; season and bake.", "bakechic.png"));
+        step3.setOrderNum(3);
+        Step step4 = stepController.createNewStep(new Step("Finish the broccoli & serve your dish:Evenly top the baked broccoli with the juice of 2 lemon wedges. Serve the baked chicken with finished broccoli and roasted potatoes. Enjoy! ", "sprinkle.png"));
+        step4.setOrderNum(4);
+        
+        Step step5 = stepController.createNewStep(new Step("Cook the rice:In a small pot, combine the rice, a big pinch of salt, and 1 cup of water. Heat to boiling on high. Once boiling, reduce the heat to low. Turn off the heat and fluff with a fork.", "cookrice.png"));
+        step5.setOrderNum(1);
+        Step step6 = stepController.createNewStep(new Step("Cook & finish the vegetables:While the rice cooks, in a medium pan (nonstick, if you have one), heat 1 teaspoon of olive oil on medium-high until hot. Add the sliced mushrooms in an even layer.", "cookvege.png"));
+        step6.setOrderNum(2);
+        Step step7 = stepController.createNewStep(new Step("Cook the chicken:While the rice continues to cook, pat the chicken dry with paper towels. Season with salt and pepper on both sides. In the same pan, heat 1 teaspoon of olive oil. ", "panchicken.png", 3));
+        step7.setOrderNum(3);
+        Step step8 = stepController.createNewStep(new Step("Finish & serve your dish:To the pan of reserved fond, add the sauce (carefully, as the liquid may splatter). Cook on medium-high, stirring frequently. Serve. Enjoy!", "finishserve.png", 4));
+        step8.setOrderNum(4);
+        
         //setting relation
+        recipe2.getSteps().add(step1);
+        recipe2.getSteps().add(step2);
+        recipe2.getSteps().add(step3);
+        recipe2.getSteps().add(step4);
+        
+        recipe1.getSteps().add(step5);
+        recipe1.getSteps().add(step6);
+        recipe1.getSteps().add(step7);
+        recipe1.getSteps().add(step8);
+
         //test if object is managed here
         //subscriber -> review
         sub1.getReviews().add(review1);
@@ -227,10 +261,9 @@ public class DataInitialisation {
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
-        
+
         enquiry1.setAnswer(answer1);
-        
-        
+
         answer1.setEnquiry(enquiry1);
         answer1.setStaff(staff1);
 
@@ -243,12 +276,16 @@ public class DataInitialisation {
         staff1.addEvent(event1);
         staff1.addEvent(event2);
         staff1.addEvent(event3);
-        
+
         staff1.getAnswers().add(answer1);
 
     }
 
     public void persist(Object object) {
+        em.persist(object);
+    }
+
+    public void persist1(Object object) {
         em.persist(object);
     }
 
