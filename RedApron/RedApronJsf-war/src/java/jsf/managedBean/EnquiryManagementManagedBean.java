@@ -103,6 +103,7 @@ public class EnquiryManagementManagedBean implements Serializable {
         setEnquiryToUpdate((Enquiry) event.getComponent().getAttributes().get("enquiryToUpdate"));
         Answer answer = answerControllerLocal.createNewAnswer(getAnswer());
         answer.setStaff(currentStaff);
+        answer.setEnquiry(enquiryToUpdate);
         enquiryToUpdate.setAnswer(answer);
     }
 

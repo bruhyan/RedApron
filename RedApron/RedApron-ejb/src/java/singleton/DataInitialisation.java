@@ -189,6 +189,36 @@ public class DataInitialisation {
         recipe1.getSteps().add(step6);
         recipe1.getSteps().add(step7);
         recipe1.getSteps().add(step8);
+        
+        recipe3.getSteps().add(step5);
+        recipe3.getSteps().add(step6);
+        recipe3.getSteps().add(step7);
+        recipe3.getSteps().add(step8);
+        
+        recipe4.getSteps().add(step5);
+        recipe4.getSteps().add(step6);
+        recipe4.getSteps().add(step7);
+        recipe4.getSteps().add(step8);
+        
+        recipe5.getSteps().add(step5);
+        recipe5.getSteps().add(step6);
+        recipe5.getSteps().add(step7);
+        recipe5.getSteps().add(step8);
+        
+        recipe6.getSteps().add(step5);
+        recipe6.getSteps().add(step6);
+        recipe6.getSteps().add(step7);
+        recipe6.getSteps().add(step8);
+        
+        recipe7.getSteps().add(step1);
+        recipe7.getSteps().add(step2);
+        recipe7.getSteps().add(step3);
+        recipe7.getSteps().add(step4);
+        
+        recipe8.getSteps().add(step1);
+        recipe8.getSteps().add(step2);
+        recipe8.getSteps().add(step3);
+        recipe8.getSteps().add(step4);
 
         //test if object is managed here
         //subscriber -> review
@@ -227,7 +257,54 @@ public class DataInitialisation {
         cat1.getRecipes().add(recipe6);
         cat1.getRecipes().add(recipe2);
         cat1.getRecipes().add(recipe7);
-        cat1.getRecipes().add(recipe7);
+        cat1.getRecipes().add(recipe8);
+        
+        cat2.getRecipes().add(recipe3);
+        cat2.getRecipes().add(recipe4);
+        cat2.getRecipes().add(recipe5);
+        cat2.getRecipes().add(recipe6);
+        
+        cat3.getRecipes().add(recipe1);
+        cat3.getRecipes().add(recipe7);
+        cat3.getRecipes().add(recipe3);
+        cat3.getRecipes().add(recipe8);
+        
+        cat4.getRecipes().add(recipe1);
+        cat4.getRecipes().add(recipe2);
+        cat4.getRecipes().add(recipe3);
+        
+        cat5.getRecipes().add(recipe4);
+        cat5.getRecipes().add(recipe5);
+        cat5.getRecipes().add(recipe6);
+        
+        cat6.getRecipes().add(recipe7);
+        cat6.getRecipes().add(recipe8);
+        cat6.getRecipes().add(recipe1);
+        
+        cat7.getRecipes().add(recipe1);
+        cat7.getRecipes().add(recipe2);
+        cat7.getRecipes().add(recipe3);
+        
+        cat8.getRecipes().add(recipe4);
+        cat8.getRecipes().add(recipe5);
+        cat8.getRecipes().add(recipe6);
+        
+        cat9.getRecipes().add(recipe7);
+        cat9.getRecipes().add(recipe8);
+        cat9.getRecipes().add(recipe1);
+        
+        cat10.getRecipes().add(recipe1);
+        cat10.getRecipes().add(recipe2);
+        cat10.getRecipes().add(recipe3);
+        
+        cat11.getRecipes().add(recipe4);
+        cat11.getRecipes().add(recipe6);
+        cat11.getRecipes().add(recipe2);
+        
+        cat12.getRecipes().add(recipe7);
+        cat12.getRecipes().add(recipe6);
+        cat12.getRecipes().add(recipe2);
+      
 
         //Category <- Recipe (Categories have several recipes)
         recipe1.getCategories().add(cat1);
@@ -241,7 +318,53 @@ public class DataInitialisation {
         recipe6.getCategories().add(cat1);
         recipe7.getCategories().add(cat1);
         recipe8.getCategories().add(cat1);
-
+        
+        recipe3.getCategories().add(cat2);
+        recipe4.getCategories().add(cat2);
+        recipe5.getCategories().add(cat2);
+        recipe6.getCategories().add(cat2);
+        
+        recipe1.getCategories().add(cat3);
+        recipe7.getCategories().add(cat3);
+        recipe3.getCategories().add(cat3);
+        recipe8.getCategories().add(cat3);
+        
+        recipe1.getCategories().add(cat4);
+        recipe2.getCategories().add(cat4);
+        recipe3.getCategories().add(cat4);
+        
+        recipe4.getCategories().add(cat5);
+        recipe5.getCategories().add(cat5);
+        recipe6.getCategories().add(cat5);
+        
+        recipe7.getCategories().add(cat6);
+        recipe8.getCategories().add(cat6);
+        recipe1.getCategories().add(cat6);
+        
+        recipe1.getCategories().add(cat7);
+        recipe2.getCategories().add(cat7);
+        recipe3.getCategories().add(cat7);
+        
+        recipe4.getCategories().add(cat8);
+        recipe5.getCategories().add(cat8);
+        recipe6.getCategories().add(cat8);
+        
+        recipe7.getCategories().add(cat9);
+        recipe8.getCategories().add(cat9);
+        recipe1.getCategories().add(cat9);
+        
+        recipe1.getCategories().add(cat10);
+        recipe2.getCategories().add(cat10);
+        recipe3.getCategories().add(cat10);
+        
+        recipe4.getCategories().add(cat11);
+        recipe6.getCategories().add(cat11);
+        recipe2.getCategories().add(cat11);
+        
+        recipe7.getCategories().add(cat12);
+        recipe6.getCategories().add(cat12);
+        recipe2.getCategories().add(cat12);
+        
         //Subscriber -> Plan (Subscribers make plans)
         sub1.getSubscriptionPlans().add(plan1);
         sub1.getSubscriptionPlans().add(plan2);
