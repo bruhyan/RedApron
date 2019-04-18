@@ -9,4 +9,3 @@
   </jsp-config>
 
 <property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=C:\Users\mdk12\OneDrive\Documents\IS3106 jsf\RedApron\glassfish-4.1.1-uploadedfiles"/></glassfish-web-app>
-

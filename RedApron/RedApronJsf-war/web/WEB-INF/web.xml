@@ -60,10 +60,8 @@
         <ejb-link>RedApron-ejb.jar#RecipeController</ejb-link>
     </ejb-local-ref>
     <context-param>
-
         <param-name>alternatedocroot_1</param-name>
         <param-value>C:\Users\mdk12\OneDrive\Documents\IS3106 jsf\RedApron\glassfish-4.1.1-uploadedfiles</param-value>
-
     </context-param>
     <ejb-local-ref>
         <ejb-ref-name>StaffController</ejb-ref-name>
