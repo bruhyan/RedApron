@@ -5,11 +5,15 @@
  */
 package stateless;
 
+import entity.SubscriptionPlan;
 import entity.Transaction;
+import exceptions.SubscriptionPlanNotFoundException;
 import exceptions.TransactionNotFoundException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,12 +28,21 @@ import javax.persistence.Query;
 @Local(TransactionControllerLocal.class)
 public class TransactionController implements TransactionControllerLocal {
 
+    @EJB(name = "SubscriptionPlanControllerLocal")
+    private SubscriptionPlanControllerLocal subscriptionPlanControllerLocal;
+
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
 
     @Override
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
+        try {
+            SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
+            subPlan.setTransaction(transaction);
+        } catch (SubscriptionPlanNotFoundException ex) {
+            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         em.flush();
 
         return transaction;
@@ -55,7 +68,6 @@ public class TransactionController implements TransactionControllerLocal {
         dCal.set(Calendar.MINUTE, 0);
         dCal.set(Calendar.SECOND, 0);
         dCal.set(Calendar.MILLISECOND, 0);
-     
 
         Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.paymentDate BETWEEN :start AND :end");
         System.out.println(dCal.getTime());
