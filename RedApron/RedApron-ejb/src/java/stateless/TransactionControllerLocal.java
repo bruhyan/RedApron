@@ -7,6 +7,7 @@ package stateless;
 
 import entity.Transaction;
 import exceptions.TransactionNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -23,6 +24,8 @@ public interface TransactionControllerLocal {
     public List<Transaction> retrieveAllTransactions();
 
     public List<Transaction> retrieveThisMonthTransaction();
+
+    public List<BigDecimal> retrieveSixMonthsTransactions();
 
     
 }
