@@ -9,6 +9,8 @@ import entity.SubscriptionPlan;
 import entity.Transaction;
 import exceptions.SubscriptionPlanNotFoundException;
 import exceptions.TransactionNotFoundException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -70,14 +72,46 @@ public class TransactionController implements TransactionControllerLocal {
         dCal.set(Calendar.MILLISECOND, 0);
 
         Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.paymentDate BETWEEN :start AND :end");
-        System.out.println(dCal.getTime());
+//        System.out.println(dCal.getTime());
         query.setParameter("start", dCal.getTime());
 
         int endDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         dCal.set(Calendar.DAY_OF_MONTH, endDate);
-        System.out.println(dCal.getTime());
+//        System.out.println(dCal.getTime());
         query.setParameter("end", dCal.getTime());
         return query.getResultList();
+    }
+
+    @Override
+    public List<BigDecimal> retrieveSixMonthsTransactions() {
+
+        Calendar dCal = Calendar.getInstance();
+        dCal.set(Calendar.DAY_OF_MONTH, 1);
+        dCal.set(Calendar.HOUR_OF_DAY, 0);
+        dCal.set(Calendar.MINUTE, 0);
+        dCal.set(Calendar.SECOND, 0);
+        dCal.set(Calendar.MILLISECOND, 0);
+        dCal.add(Calendar.MONTH, -6);
+
+        List<BigDecimal> monthlyTransactions = new ArrayList<>();
+
+        for (int i = 0; i < 6; i++) {
+            Query query = em.createQuery("SELECT t.amount FROM Transaction t WHERE t.paymentDate BETWEEN :start AND :end");
+            query.setParameter("start", dCal.getTime());
+            int endDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+            dCal.set(Calendar.DAY_OF_MONTH, endDate);
+            query.setParameter("end", dCal.getTime());
+            System.out.println(dCal.getTime());
+            List<Double> monthAmount = query.getResultList();
+            Double monthSum = 0.0;
+            for (Double amount : monthAmount) {
+                monthSum += amount;
+            }
+            monthlyTransactions.add(BigDecimal.valueOf(monthSum));
+            dCal.add(Calendar.MONTH, 1);
+        }
+        System.out.println(monthlyTransactions);
+        return monthlyTransactions;
     }
 
     @Override
