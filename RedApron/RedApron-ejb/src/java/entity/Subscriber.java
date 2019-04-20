@@ -156,11 +156,19 @@ public class Subscriber implements Serializable {
     public String getPassword() {
         return password;
     }
-
+    public void setPassword2(String password) {
+        this.password = password;
+    }
+    
+    public void hashPassword() {
+        this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(this.password + this.salt));
+    }
+    
     public void setPassword(String password) {
         if(password != null)
         {
-            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+            this.password = password;
+//            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
         }
         else
         {

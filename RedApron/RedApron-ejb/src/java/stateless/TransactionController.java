@@ -39,11 +39,13 @@ public class TransactionController implements TransactionControllerLocal {
     @Override
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
+        if(transaction.getSubscriptionPlan() != null) {
         try {
             SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
             subPlan.setTransaction(transaction);
         } catch (SubscriptionPlanNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
         em.flush();
 
