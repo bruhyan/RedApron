@@ -6,7 +6,6 @@
 package ws.restful;
 
 import entity.Transaction;
-import exceptions.TransactionNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,9 +16,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -28,7 +27,7 @@ import ws.restful.datamodel.CreateTransactionReq;
 import ws.restful.datamodel.CreateTransactionRsp;
 import ws.restful.datamodel.ErrorRsp;
 import ws.restful.datamodel.RetrieveAllTransactionsRsp;
-import ws.restful.datamodel.UpdateTransactionReq;
+import ws.restful.datamodel.RetrieveTransactionBySubscriberIdRsp;
 
 /**
  * REST Web Service
@@ -68,6 +67,27 @@ public class TransactionResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveTransactionBySubscriberId")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveTransactionBySubscriberId(@QueryParam("id") Long id) {
+        try {
+            List<Transaction> transactionEntities = transactionControllerLocal.retrieveTransactionWithSubscriberId(id);
+
+            //detach the two way bidirectional relationship
+            for(Transaction tran : transactionEntities) {
+                tran.setSubscriptionPlan(null);
+            }
+            RetrieveTransactionBySubscriberIdRsp retrieveTransactionBySubscriberIdRsp = new RetrieveTransactionBySubscriberIdRsp(transactionEntities);
+            return Response.status(Status.OK).entity(retrieveTransactionBySubscriberIdRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

@@ -13,6 +13,7 @@ import entity.Enquiry;
  */
 public class CreateEnquiryReq {
     private Enquiry enquiry;
+    
 
     public CreateEnquiryReq() {
     }

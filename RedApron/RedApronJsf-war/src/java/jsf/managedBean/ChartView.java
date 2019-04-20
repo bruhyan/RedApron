@@ -251,7 +251,7 @@ public class ChartView implements Serializable {
  
         LineChartSeries boys = new LineChartSeries();
         boys.setFill(true);
-        boys.setLabel("Boys");
+        boys.setLabel("Cost");
         boys.set("2004", 120);
         boys.set("2005", 100);
         boys.set("2006", 44);
@@ -260,7 +260,7 @@ public class ChartView implements Serializable {
  
         LineChartSeries girls = new LineChartSeries();
         girls.setFill(true);
-        girls.setLabel("Girls");
+        girls.setLabel("Revenue");
         girls.set("2004", 52);
         girls.set("2005", 60);
         girls.set("2006", 110);
@@ -270,7 +270,7 @@ public class ChartView implements Serializable {
         areaModel.addSeries(boys);
         areaModel.addSeries(girls);
  
-        areaModel.setTitle("Area Chart");
+        areaModel.setTitle("Cost & Revenue");
         areaModel.setLegendPosition("ne");
         areaModel.setStacked(true);
         areaModel.setShowPointLabels(true);
@@ -279,7 +279,7 @@ public class ChartView implements Serializable {
         Axis xAxis = new CategoryAxis("Years");
         areaModel.getAxes().put(AxisType.X, xAxis);
         Axis yAxis = areaModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Amount (thousand)");
         yAxis.setMin(0);
         yAxis.setMax(300);
     }
@@ -317,7 +317,7 @@ public class ChartView implements Serializable {
     private void createBarModel() {
         barModel = initBarModel();
  
-        barModel.setTitle("Bar Chart");
+        barModel.setTitle("Customer gender demographic");
         barModel.setLegendPosition("ne");
  
         Axis xAxis = barModel.getAxis(AxisType.X);
@@ -663,7 +663,7 @@ public class ChartView implements Serializable {
  
     private void createAnimatedModels() {
         animatedModel1 = initLinearModel();
-        animatedModel1.setTitle("Line Chart");
+        animatedModel1.setTitle("Customer Satisfaction");
         animatedModel1.setAnimate(true);
         animatedModel1.setLegendPosition("se");
         Axis yAxis = animatedModel1.getAxis(AxisType.Y);
@@ -682,7 +682,7 @@ public class ChartView implements Serializable {
     private void createDateModel() {
         dateModel = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Series 1");
+        series1.setLabel("Online survey");
  
         series1.set("2014-01-01", 51);
         series1.set("2014-01-06", 22);
@@ -692,7 +692,7 @@ public class ChartView implements Serializable {
         series1.set("2014-01-30", 51);
  
         LineChartSeries series2 = new LineChartSeries();
-        series2.setLabel("Series 2");
+        series2.setLabel("Offline survey");
  
         series2.set("2014-01-01", 32);
         series2.set("2014-01-06", 73);

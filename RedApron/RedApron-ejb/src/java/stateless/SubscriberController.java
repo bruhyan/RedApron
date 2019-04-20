@@ -35,7 +35,7 @@ public class SubscriberController implements SubscriberControllerLocal {
     public Subscriber createNewSubscriber(Subscriber newSubscriber){
         //check if subscriber already exist
         //if not then persist
-        
+        newSubscriber.hashPassword();
         em.persist(newSubscriber);
         em.flush();
         return newSubscriber;
@@ -47,8 +47,12 @@ public class SubscriberController implements SubscriberControllerLocal {
             Subscriber subscriber = retrieveSubscriberByEmail(email);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + subscriber.getSalt()));
             
+            System.out.println("subscriber pw hash "+subscriber.getPassword());
+            System.out.println("incoming pw hash "+passwordHash);
+            
             if(subscriber.getPassword().equals(passwordHash))
             {   
+                System.out.println("password hash not equal");
                 subscriber.getEnquiries().clear();
                 subscriber.getSubscriptionPlans().clear();
                 subscriber.getReviews().clear();
@@ -56,10 +60,12 @@ public class SubscriberController implements SubscriberControllerLocal {
             }
             else
             {
+                System.out.println("invalid login credential");
                 throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
             }
             
         } catch (SubscriberNotFoundException ex) {
+            System.out.println("subscriber not found");
             throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
         }
     }
@@ -123,9 +129,15 @@ public class SubscriberController implements SubscriberControllerLocal {
         
     }
     
+    
+    
     @Override
     public void updateSubscriber(Subscriber subscriber) throws SubscriberNotFoundException{
+        
         Subscriber subscriberToUpdate = retrieveSubscriberById(subscriber.getSubscriberId());
+        System.out.println("test: "+CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing("password" + subscriberToUpdate.getSalt())));
+        System.out.println("Before: "+subscriberToUpdate.getPassword()+ " "+ subscriberToUpdate.getSalt());
+        System.out.println("Before password raw: "+subscriber.getPassword());
         if(subscriberToUpdate != null){
             subscriberToUpdate.setFirstName(subscriber.getFirstName());
             subscriberToUpdate.setLastName(subscriber.getLastName());
@@ -134,12 +146,14 @@ public class SubscriberController implements SubscriberControllerLocal {
             subscriberToUpdate.setEmail(subscriber.getEmail());
             subscriberToUpdate.setEnquiries(subscriber.getEnquiries());
             subscriberToUpdate.setPassword(subscriber.getPassword());
+            subscriberToUpdate.hashPassword();
             subscriberToUpdate.setPhoneNumber(subscriber.getPhoneNumber());
             subscriberToUpdate.setPostalCode(subscriber.getPostalCode());
             subscriberToUpdate.setReviews(subscriber.getReviews());
             subscriberToUpdate.setSubscriptionPlans(subscriber.getSubscriptionPlans());
             
             em.merge(subscriberToUpdate);
+            System.out.println("After: "+subscriberToUpdate.getPassword()+ " "+ subscriberToUpdate.getSalt());
         }
     }
        

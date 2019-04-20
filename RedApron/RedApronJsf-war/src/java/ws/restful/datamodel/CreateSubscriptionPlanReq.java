@@ -5,6 +5,8 @@
  */
 package ws.restful.datamodel;
 
+import entity.Category;
+import entity.Subscriber;
 import entity.SubscriptionPlan;
 
 /**
@@ -13,14 +15,19 @@ import entity.SubscriptionPlan;
  */
 public class CreateSubscriptionPlanReq {
     private SubscriptionPlan subscriptionPlan;
+    private Category category;
+    private Subscriber subscriber;
 
     public CreateSubscriptionPlanReq() {
     }
 
-    public CreateSubscriptionPlanReq(SubscriptionPlan subscriptionPlan) {
+    public CreateSubscriptionPlanReq(SubscriptionPlan subscriptionPlan, Category category, Subscriber subscriber) {
         this.subscriptionPlan = subscriptionPlan;
+        this.category = category;
+        this.subscriber = subscriber;
     }
 
+    
     /**
      * @return the subscriptionPlan
      */
@@ -33,6 +40,22 @@ public class CreateSubscriptionPlanReq {
      */
     public void setSubscriptionPlan(SubscriptionPlan subscriptionPlan) {
         this.subscriptionPlan = subscriptionPlan;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Subscriber getSubscriber() {
+        return subscriber;
+    }
+
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
     }
     
     

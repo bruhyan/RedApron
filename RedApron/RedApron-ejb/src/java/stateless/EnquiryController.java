@@ -9,6 +9,7 @@ import entity.Answer;
 import entity.Enquiry;
 import exceptions.EnquiryNotFoundException;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,6 +24,9 @@ import javax.persistence.Query;
 @Local(EnquiryControllerLocal.class)
 
 public class EnquiryController implements EnquiryControllerLocal {
+
+    @EJB(name = "AnswerControllerLocal")
+    private AnswerControllerLocal answerControllerLocal;
 
     @PersistenceContext(unitName = "RedApron-ejbPU")
     private EntityManager em;
@@ -87,6 +91,10 @@ public class EnquiryController implements EnquiryControllerLocal {
 
         enquiryToUpdate.setAnswer(enquiry.getAnswer());
         enquiryToUpdate.setText(enquiry.getText());
+        
+        
+        
+        
 
     }
 }
