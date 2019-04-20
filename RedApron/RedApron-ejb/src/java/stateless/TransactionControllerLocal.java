@@ -24,5 +24,7 @@ public interface TransactionControllerLocal {
 
     public List<Transaction> retrieveThisMonthTransaction();
 
+    public List<Transaction> retrieveTransactionWithSubscriberId(Long subscriberId);
+
     
 }

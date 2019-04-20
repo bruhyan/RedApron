@@ -91,5 +91,17 @@ public class TransactionController implements TransactionControllerLocal {
 
         return transactionEntities;
     }
+    
+    @Override
+    public List<Transaction> retrieveTransactionWithSubscriberId(Long subscriberId) {
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.subscriptionPlan.subscriber.subscriberId = :inSubscriberId");
+        query.setParameter("inSubscriberId", subscriberId);
+        List<Transaction> transactionEntities = query.getResultList();
+        for (Transaction transactionEntity : transactionEntities) {
+            transactionEntity.getSubscriptionPlan();
+        }
 
+        return transactionEntities;
+    }
+        
 }
