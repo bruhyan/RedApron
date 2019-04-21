@@ -40,6 +40,7 @@ public class TransactionController implements TransactionControllerLocal {
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
         try {
+            
             SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
             subPlan.setTransaction(transaction);
         } catch (SubscriptionPlanNotFoundException ex) {

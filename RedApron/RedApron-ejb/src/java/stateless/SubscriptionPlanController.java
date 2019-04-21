@@ -12,8 +12,10 @@ import entity.SubscriptionPlan;
 import exceptions.CategoryNotFoundException;
 import exceptions.SubscriberNotFoundException;
 import exceptions.SubscriptionPlanNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -53,20 +55,35 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
 
     @Override
     public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId) {
+        em.persist(subscriptionPlan);
         try {
             Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(subscriberId);
             subscriber.getSubscriptionPlans().add(subscriptionPlan);
             subscriptionPlan.setSubscriber(subscriber);
+
         } catch (SubscriberNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             Category category = categoryControllerLocal.retrieveCategoryById(categoryId);
             subscriptionPlan.setCatergory(category);
+            List<Recipe> recipes = new ArrayList<>();
+            List<Recipe> recipesChosen = new ArrayList<>();
+            recipes = categoryControllerLocal.retrieveRecipesByCategoryId(categoryId);
+            System.out.println("Hello");
+            for (int i = 0; i < subscriptionPlan.getNumOfRecipes(); i++) {
+                Random rand = new Random();
+                int index = rand.nextInt(recipes.size());
+                System.out.println(index);
+                recipesChosen.add(recipes.get(index));
+            }
+
+            subscriptionPlan.setRecipes(recipesChosen);
+
         } catch (CategoryNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        em.persist(subscriptionPlan);
+
         em.flush();
         return subscriptionPlan;
     }
