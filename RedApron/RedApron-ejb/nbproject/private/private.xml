@@ -2,6 +2,21 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Subscriber.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Enquiry.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Staff.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/stateless/StepController.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/singleton/DataInitialisation.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Category.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Recipe.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/stateless/RecipeController.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/stateless/CategoryController.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Answer.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/setup/glassfish-resources.xml</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Step.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Transaction.java</file>
+            <file>file:/Users/matthealoo/Desktop/RedApron/RedApron/RedApron-ejb/src/java/entity/Review.java</file>
+        </group>
     </open-files>
 </project-private>

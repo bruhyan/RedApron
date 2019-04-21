@@ -120,7 +120,25 @@ public class DataInitialisation {
         SubscriptionPlan plan1 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
         SubscriptionPlan plan2 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
         SubscriptionPlan plan3 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan4 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan5 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan6 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan7 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan8 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan9 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan10 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan11= subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan12 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan13 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan14 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan15 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan16 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan17 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
+        SubscriptionPlan plan18 = subscriptionPlanControllerLocal.createSubscriptionPlan(new SubscriptionPlan(new Date(2019, 4, 1), new Date(2019, 6, 1), "No shrimp i die", 9, 1, SubscriptionPlanStatus.ONGOING, DeliveryDay.MONDAY));
 
+        
+        
+        
         Category cat1 = categoryControllerLocal.createNewCategory(new Category("Seasonal For 2", 40.00, true));
         Category cat2 = categoryControllerLocal.createNewCategory(new Category("Seasonal For 4", 60.00, true));
         Category cat3 = categoryControllerLocal.createNewCategory(new Category("Signature For 2", 40.00, true));
@@ -437,22 +455,86 @@ public class DataInitialisation {
         sub1.getSubscriptionPlans().add(plan1);
         sub1.getSubscriptionPlans().add(plan2);
         sub1.getSubscriptionPlans().add(plan3);
+        sub1.getSubscriptionPlans().add(plan4);
+        sub1.getSubscriptionPlans().add(plan5);
+        sub1.getSubscriptionPlans().add(plan6);
+        sub1.getSubscriptionPlans().add(plan7);
+        sub1.getSubscriptionPlans().add(plan8);
+        sub1.getSubscriptionPlans().add(plan9);
+        sub1.getSubscriptionPlans().add(plan10);
+        sub1.getSubscriptionPlans().add(plan11);
+        sub1.getSubscriptionPlans().add(plan12);
+        sub1.getSubscriptionPlans().add(plan13);
+        sub1.getSubscriptionPlans().add(plan14);
+        sub1.getSubscriptionPlans().add(plan15);
+        sub1.getSubscriptionPlans().add(plan16);
+        sub1.getSubscriptionPlans().add(plan17);
+        sub1.getSubscriptionPlans().add(plan18);
 
         //Subscriber <- Plan (Subscribers make plans)
         plan1.setSubscriber(sub1);
         plan2.setSubscriber(sub1);
         plan3.setSubscriber(sub1);
+         plan4.setSubscriber(sub1);
+        plan5.setSubscriber(sub1);
+        plan6.setSubscriber(sub1);
+         plan7.setSubscriber(sub1);
+        plan8.setSubscriber(sub1);
+        plan9.setSubscriber(sub1);
+         plan10.setSubscriber(sub1);
+        plan11.setSubscriber(sub1);
+        plan12.setSubscriber(sub1);
+         plan13.setSubscriber(sub1);
+        plan14.setSubscriber(sub1);
+        plan15.setSubscriber(sub1);
+         plan16.setSubscriber(sub1);
+        plan17.setSubscriber(sub1);
+        plan18.setSubscriber(sub1);
+        
 
         //Transaction -> Plan 
         transaction1.setSubscriptionPlan(plan1);
         transaction2.setSubscriptionPlan(plan2);
         transaction3.setSubscriptionPlan(plan3);
+        transaction4.setSubscriptionPlan(plan4);
+        transaction5.setSubscriptionPlan(plan5);
+        transaction6.setSubscriptionPlan(plan6);
+        transaction7.setSubscriptionPlan(plan7);
+        transaction8.setSubscriptionPlan(plan8);
+        transaction9.setSubscriptionPlan(plan9);
+        transaction10.setSubscriptionPlan(plan10);
+        transaction11.setSubscriptionPlan(plan11);
+        transaction12.setSubscriptionPlan(plan12);
+        transaction13.setSubscriptionPlan(plan13);
+        transaction14.setSubscriptionPlan(plan14);
+        transaction15.setSubscriptionPlan(plan15);
+        transaction16.setSubscriptionPlan(plan16);
+        transaction17.setSubscriptionPlan(plan17);
+        transaction18.setSubscriptionPlan(plan18);
+        
+        
 
         //Transaction <- Plan 
         plan1.setTransaction(transaction1);
         plan2.setTransaction(transaction2);
         plan3.setTransaction(transaction3);
-
+        plan4.setTransaction(transaction4);
+        plan5.setTransaction(transaction5);
+        plan6.setTransaction(transaction6);
+        plan7.setTransaction(transaction7);
+        plan8.setTransaction(transaction8);
+        plan9.setTransaction(transaction9);
+        plan10.setTransaction(transaction10);
+        plan11.setTransaction(transaction11);
+        plan12.setTransaction(transaction12);    
+        plan13.setTransaction(transaction13);
+        plan14.setTransaction(transaction14);
+        plan15.setTransaction(transaction15);
+        plan16.setTransaction(transaction16);
+        plan17.setTransaction(transaction17);
+        plan18.setTransaction(transaction18);
+        
+        
         enquiry1.setAnswer(answer1);
 
         answer1.setEnquiry(enquiry1);
