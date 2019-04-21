@@ -40,39 +40,46 @@ import stateless.TransactionControllerLocal;
  */
 @Named(value = "subscriptionPlanManagedBean")
 @ViewScoped
-public class SubscriptionPlanManagedBean implements Serializable{
+public class SubscriptionPlanManagedBean implements Serializable {
+
+    public SubscriptionPlanStatus getUpdatePlanStatus() {
+        return updatePlanStatus;
+    }
 
     @EJB(name = "RecipeControllerLocal")
     private RecipeControllerLocal recipeControllerLocal;
-    
+
     @EJB(name = "CategoryControllerLocal")
     private CategoryControllerLocal categoryControllerLocal;
 
     @EJB(name = "SubscriberControllerLocal")
     private SubscriberControllerLocal subscriberControllerLocal;
-    
+
     @EJB(name = "TransactionControllerLocal")
     private TransactionControllerLocal transactionControllerLocal;
 
     @EJB(name = "SubscriptionPlanControllerLocal")
     private SubscriptionPlanControllerLocal subscriptionPlanControllerLocal;
-    
+
     private List<SubscriptionPlan> subscriptionPlans;
     private List<SubscriptionPlan> filteredSubscriptionPlans;
     private SubscriptionPlan newSubscriptionPlan;
     private SubscriptionPlan selectedSubscriptionPlanToView;
     private SubscriptionPlan selectedSubscriptionPlanToUpdate;
-    
+
     private List<Subscriber> subscribers;
     private Long newSubscriberId;
     private Long subscriberIdUpdate;
-    
+
     private List<Recipe> recipeList;
     private List<String> recipeIdsStringNew;
-    
+
     private List<Category> categoryList;
     private Long newCategoryId;
     private Long categoryIdUpdate;
+
+    private SubscriptionPlanStatus updatePlanStatus;
+    private DeliveryDay updateDeliveryDay;
 
     /**
      * Creates a new instance of SubscriptionPlanManagedBean
@@ -83,9 +90,9 @@ public class SubscriptionPlanManagedBean implements Serializable{
         recipeList = new ArrayList();
         recipeIdsStringNew = new ArrayList();
         categoryList = new ArrayList();
-        
+
     }
-    
+
     @PostConstruct
     public void postConstruct() {
         subscriptionPlans = subscriptionPlanControllerLocal.retrieveAllSubscriptionPlans();
@@ -101,64 +108,66 @@ public class SubscriptionPlanManagedBean implements Serializable{
     public void setSubscriptionPlans(List<SubscriptionPlan> subscriptionPlans) {
         this.subscriptionPlans = subscriptionPlans;
     }
-    
+
     public void viewPlanDetails(ActionEvent event) throws IOException {
-        Long planIdToView = (Long)event.getComponent().getAttributes().get("planId");
+        Long planIdToView = (Long) event.getComponent().getAttributes().get("planId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("planIdToView", planIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewPlanDetails.xhtml");
     }
-    
-    public void createNewPlan(ActionEvent event){
+
+    public void createNewPlan(ActionEvent event) {
         SubscriptionPlan pl = getNewSubscriptionPlan();
         LocalDate start = LocalDate.of(pl.getStartDate().getYear(), pl.getStartDate().getMonth(), pl.getStartDate().getDate());
         LocalDate end = LocalDate.of(pl.getEndDate().getYear(), pl.getEndDate().getMonth(), pl.getEndDate().getDate());
-        int numWeeks = (int)ChronoUnit.WEEKS.between(start, end);
-        int numRecipes = recipeIdsStringNew.size();
+        int numWeeks = (int) ChronoUnit.WEEKS.between(start, end);
+//        int numRecipes = recipeIdsStringNew.size();
         pl.setNumOfWeeks(numWeeks);
-        pl.setNumOfRecipes(numRecipes);
-        
+//        pl.setNumOfRecipes(numRecipes);
+
         List<Long> recipeIdsNew = null;
-        if(recipeIdsStringNew != null && (!recipeIdsStringNew.isEmpty())) {
+        if (recipeIdsStringNew != null && (!recipeIdsStringNew.isEmpty())) {
             recipeIdsNew = new ArrayList();
-            for(String recipeIdString : recipeIdsStringNew) {
+            for (String recipeIdString : recipeIdsStringNew) {
                 recipeIdsNew.add(Long.valueOf(recipeIdString));
             }
         }
-        
+
         pl = subscriptionPlanControllerLocal.createSubscriptionPlan2(getNewSubscriptionPlan(), newSubscriberId, newCategoryId);
-        
+
         subscriptionPlans.add(pl);
         setNewSubscriptionPlan(new SubscriptionPlan());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New plan created successfully (Plan ID: "+ pl.getSubscriptionPlanId()+")", null));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New plan created successfully (Plan ID: " + pl.getSubscriptionPlanId() + ")", null));
     }
-    
+
     public void doUpdateSubscriptionPlan(ActionEvent event) {
-        selectedSubscriptionPlanToUpdate = (SubscriptionPlan)event.getComponent().getAttributes().get("subscriptionPlanToUpdate");
-        
+        selectedSubscriptionPlanToUpdate = (SubscriptionPlan) event.getComponent().getAttributes().get("subscriptionPlanToUpdate");
+
         categoryIdUpdate = selectedSubscriptionPlanToUpdate.getCatergory().getCategoryId();
         subscriberIdUpdate = selectedSubscriptionPlanToUpdate.getSubscriber().getSubscriberId();
     }
-    
+
     public void updateSubscriptionPlan(ActionEvent event) {
         LocalDate start = LocalDate.of(selectedSubscriptionPlanToUpdate.getStartDate().getYear(), selectedSubscriptionPlanToUpdate.getStartDate().getMonth(), selectedSubscriptionPlanToUpdate.getStartDate().getDate());
         LocalDate end = LocalDate.of(selectedSubscriptionPlanToUpdate.getEndDate().getYear(), selectedSubscriptionPlanToUpdate.getEndDate().getMonth(), selectedSubscriptionPlanToUpdate.getEndDate().getDate());
-        int numWeeks = (int)ChronoUnit.WEEKS.between(start, end);
-        int numRecipes = recipeIdsStringNew.size();
+        int numWeeks = (int) ChronoUnit.WEEKS.between(start, end);
+//        int numRecipes = recipeIdsStringNew.size();
+        selectedSubscriptionPlanToUpdate.setStatus(updatePlanStatus);
+        selectedSubscriptionPlanToUpdate.setDeliveryDay(updateDeliveryDay);
         selectedSubscriptionPlanToUpdate.setNumOfWeeks(numWeeks);
-        selectedSubscriptionPlanToUpdate.setNumOfRecipes(numRecipes);
-        if(categoryIdUpdate == 0) {
+//        selectedSubscriptionPlanToUpdate.setNumOfRecipes(numRecipes);
+        if (categoryIdUpdate == 0) {
             categoryIdUpdate = null;
         }
-        if(subscriberIdUpdate == 0) {
+        if (subscriberIdUpdate == 0) {
             subscriberIdUpdate = null;
         }
-        
+
         subscriptionPlanControllerLocal.updatePlan(selectedSubscriptionPlanToUpdate, categoryIdUpdate, subscriberIdUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plan updated successfully", null));
     }
-    
+
     public void deleteSubscriptionPlan(ActionEvent event) {
-        SubscriptionPlan planToDelete = (SubscriptionPlan)event.getComponent().getAttributes().get("subscriptionPlanToDelete");
+        SubscriptionPlan planToDelete = (SubscriptionPlan) event.getComponent().getAttributes().get("subscriptionPlanToDelete");
         try {
             subscriptionPlanControllerLocal.deleteSubscriptionPlan(planToDelete.getSubscriptionPlanId());
             subscriptionPlans.remove(planToDelete);
@@ -166,7 +175,7 @@ public class SubscriptionPlanManagedBean implements Serializable{
         } catch (SubscriptionPlanNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting product: " + ex.getMessage(), null));
         }
-        
+
     }
 
     public SubscriptionPlan getNewSubscriptionPlan() {
@@ -192,20 +201,20 @@ public class SubscriptionPlanManagedBean implements Serializable{
     public void setNewSubscriberId(Long newSubscriberId) {
         this.newSubscriberId = newSubscriberId;
     }
-    
+
     public SelectItem[] getDeliveryDayValues() {
         SelectItem[] items = new SelectItem[DeliveryDay.values().length];
         int i = 0;
-        for(DeliveryDay d : DeliveryDay.values()) {
+        for (DeliveryDay d : DeliveryDay.values()) {
             items[i++] = new SelectItem(d, d.getLabel());
         }
         return items;
     }
-    
+
     public SelectItem[] getStatusValues() {
         SelectItem[] items = new SelectItem[SubscriptionPlanStatus.values().length];
         int i = 0;
-        for(SubscriptionPlanStatus s : SubscriptionPlanStatus.values()) {
+        for (SubscriptionPlanStatus s : SubscriptionPlanStatus.values()) {
             items[i++] = new SelectItem(s, s.getLabel());
         }
         return items;
@@ -282,6 +291,29 @@ public class SubscriptionPlanManagedBean implements Serializable{
     public void setFilteredSubscriptionPlans(List<SubscriptionPlan> filteredSubscriptionPlans) {
         this.filteredSubscriptionPlans = filteredSubscriptionPlans;
     }
-    
-    
+
+    public SubscriptionPlanStatus getSubscriptionPlanStatusOngoing() {
+        return getUpdatePlanStatus().ONGOING;
+    }
+
+    public SubscriptionPlanStatus getSubscriptionPlanStatusCancelled() {
+        return getUpdatePlanStatus().CANCELLED;
+    }
+
+    public SubscriptionPlanStatus getSubscriptionPlanStatusCompleted() {
+        return getUpdatePlanStatus().COMPLETED;
+    }
+
+    public void setUpdatePlanStatus(SubscriptionPlanStatus updatePlanStatus) {
+        this.updatePlanStatus = updatePlanStatus;
+    }
+
+    public DeliveryDay getUpdateDeliveryDay() {
+        return updateDeliveryDay;
+    }
+
+    public void setUpdateDeliveryDay(DeliveryDay updateDeliveryDay) {
+        this.updateDeliveryDay = updateDeliveryDay;
+    }
+
 }

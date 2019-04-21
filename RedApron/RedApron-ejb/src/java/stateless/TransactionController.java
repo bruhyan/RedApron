@@ -39,12 +39,14 @@ public class TransactionController implements TransactionControllerLocal {
     @Override
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
+        if(transaction.getSubscriptionPlan() != null) {
         try {
             
             SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
             subPlan.setTransaction(transaction);
         } catch (SubscriptionPlanNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
         em.flush();
 
@@ -126,5 +128,17 @@ public class TransactionController implements TransactionControllerLocal {
 
         return transactionEntities;
     }
+    
+    @Override
+    public List<Transaction> retrieveTransactionWithSubscriberId(Long subscriberId) {
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.subscriptionPlan.subscriber.subscriberId = :inSubscriberId");
+        query.setParameter("inSubscriberId", subscriberId);
+        List<Transaction> transactionEntities = query.getResultList();
+        for (Transaction transactionEntity : transactionEntities) {
+            transactionEntity.getSubscriptionPlan();
+        }
 
+        return transactionEntities;
+    }
+        
 }
