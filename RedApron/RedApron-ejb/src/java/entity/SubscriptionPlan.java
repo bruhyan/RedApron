@@ -137,7 +137,7 @@ public class SubscriptionPlan implements Serializable {
         this.numOfRecipes = numOfRecipes;
     }
 
-    public SubscriptionPlanStatus getStatus() {
+   public SubscriptionPlanStatus getStatus() {
         return status;
     }
 
