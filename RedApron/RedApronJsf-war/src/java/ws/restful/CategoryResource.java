@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import stateless.CategoryControllerLocal;
+import stateless.RecipeControllerLocal;
 import ws.restful.datamodel.CreateCategoryReq;
 import ws.restful.datamodel.CreateCategoryRsp;
 import ws.restful.datamodel.ErrorRsp;
@@ -38,10 +39,14 @@ import ws.restful.datamodel.RetrieveCategoryRsp;
 @Path("Category")
 public class CategoryResource {
 
+    private RecipeControllerLocal recipeControllerLocal = lookupRecipeControllerLocal();
+
     @Context
     private UriInfo context;
     
     private CategoryControllerLocal categoryControllerLocal;
+    
+    
 
     public CategoryResource() {
         categoryControllerLocal = lookupCategoryControllerLocal();
@@ -90,6 +95,28 @@ public class CategoryResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveCategoriesByRecipeId/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCategoriesByRecipeId(@PathParam("id") Long id) {
+        try {
+            List<Category> categoryEntities = recipeControllerLocal.retriveCategoryByRecipeId(id);
+            
+            for (Category c: categoryEntities) {
+                c.getRecipes().clear();
+                c.getSubscriptionPlans().clear();
+            }
+
+             RetrieveAllCategoriesRsp retrieveAllCategoriesRsp = new RetrieveAllCategoriesRsp(categoryEntities);
+            return Response.status(Status.OK).entity(retrieveAllCategoriesRsp).build();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -121,4 +148,15 @@ public class CategoryResource {
             throw new RuntimeException(ne);
         }
     }
+
+    private RecipeControllerLocal lookupRecipeControllerLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (RecipeControllerLocal) c.lookup("java:global/RedApron/RedApron-ejb/RecipeController!stateless.RecipeControllerLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+  
 }

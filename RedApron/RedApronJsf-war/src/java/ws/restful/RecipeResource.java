@@ -5,6 +5,7 @@
  */
 package ws.restful;
 
+import entity.Category;
 import entity.Recipe;
 import exceptions.RecipeNotFoundException;
 import java.util.List;
@@ -114,6 +115,8 @@ public class RecipeResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+
 
     private RecipeControllerLocal lookupRecipeControllerLocal() {
         try {

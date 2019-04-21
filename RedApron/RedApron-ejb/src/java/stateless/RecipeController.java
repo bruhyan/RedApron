@@ -76,10 +76,9 @@ public class RecipeController implements RecipeControllerLocal {
     public List<Category> retriveCategoryByRecipeId(Long id) throws RecipeNotFoundException{
         Recipe recipe = retrieveRecipeById(id);
         
-        Query query = em.createQuery("SELECT r FROM Category r WHERE r.recipes.recipeId=:id");
-        query.setParameter("id", id);
+        recipe.getCategories().size();
         
-        return query.getResultList();
+        return recipe.getCategories();
     }
     
     
