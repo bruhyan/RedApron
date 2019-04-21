@@ -4,6 +4,14 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>hot-sneaks</param-value>
+    </context-param>
+     <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>primefaces-start</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -61,7 +69,7 @@
     </ejb-local-ref>
     <context-param>
         <param-name>alternatedocroot_1</param-name>
-        <param-value>C:\Users\Bryan\Documents\NetBeansProjects\RedApron\glassfish-4.1.1-uploadedfiles</param-value>
+        <param-value>C:\Users\MX\Documents\GitHub\RedApron\glassfish-4.1.1-uploadedfiles</param-value>
     </context-param>
     <ejb-local-ref>
         <ejb-ref-name>StaffController</ejb-ref-name>
