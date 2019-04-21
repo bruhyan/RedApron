@@ -40,6 +40,7 @@ public class StaffController implements StaffControllerLocal {
     
 
     public Staff createNewStaff(Staff staff) {
+        staff.hashPassword();
         em.persist(staff);
         em.flush();
         return staff;
@@ -120,6 +121,7 @@ public class StaffController implements StaffControllerLocal {
             staffToUpdate.setRole(staff.getRole());
             staffToUpdate.setEmail(staff.getEmail());
             staffToUpdate.setPassword(staff.getPassword());
+            staffToUpdate.hashPassword();
             staffToUpdate.setPicURL(staff.getPicURL());
             staffToUpdate.setEvents(staff.getEvents());
 

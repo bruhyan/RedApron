@@ -152,6 +152,7 @@ public class SubscriptionPlanManagedBean implements Serializable {
         int numWeeks = (int) ChronoUnit.WEEKS.between(start, end);
 //        int numRecipes = recipeIdsStringNew.size();
         selectedSubscriptionPlanToUpdate.setStatus(updatePlanStatus);
+        System.out.println("new status "+selectedSubscriptionPlanToUpdate.getStatus());
         selectedSubscriptionPlanToUpdate.setDeliveryDay(updateDeliveryDay);
         selectedSubscriptionPlanToUpdate.setNumOfWeeks(numWeeks);
 //        selectedSubscriptionPlanToUpdate.setNumOfRecipes(numRecipes);
