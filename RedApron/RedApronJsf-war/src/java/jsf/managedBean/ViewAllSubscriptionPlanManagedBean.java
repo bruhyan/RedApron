@@ -6,12 +6,13 @@
 package jsf.managedBean;
 
 import entity.SubscriptionPlan;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import stateless.SubscriptionPlanControllerLocal;
 
 /**
@@ -19,8 +20,8 @@ import stateless.SubscriptionPlanControllerLocal;
  * @author mdk12
  */
 @Named(value = "viewAllSubscriptionPlanManagedBean")
-@RequestScoped
-public class ViewAllSubscriptionPlanManagedBean {
+@ViewScoped
+public class ViewAllSubscriptionPlanManagedBean implements Serializable{
 
     @EJB(name = "SubscriptionPlanControllerLocal")
     private SubscriptionPlanControllerLocal subscriptionPlanControllerLocal;
