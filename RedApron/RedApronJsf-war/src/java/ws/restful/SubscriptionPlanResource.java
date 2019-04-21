@@ -94,6 +94,12 @@ public class SubscriptionPlanResource {
                 if (sub.getTransaction() != null) {
                     sub.setTransaction(null);
                 }
+                
+                if(sub.getRecipes() != null){
+                    sub.setRecipes(null);
+                }
+                
+                
 
             }
             Collections.reverse(subscriptionPlans);

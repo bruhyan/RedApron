@@ -55,35 +55,36 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
 
     @Override
     public SubscriptionPlan createSubscriptionPlan2(SubscriptionPlan subscriptionPlan, Long subscriberId, Long categoryId) {
-        em.persist(subscriptionPlan);
         try {
             Subscriber subscriber = subscriberControllerLocal.retrieveSubscriberById(subscriberId);
             subscriber.getSubscriptionPlans().add(subscriptionPlan);
             subscriptionPlan.setSubscriber(subscriber);
-
         } catch (SubscriberNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             Category category = categoryControllerLocal.retrieveCategoryById(categoryId);
             subscriptionPlan.setCatergory(category);
-            List<Recipe> recipes = new ArrayList<>();
+            List<Recipe> recipes = categoryControllerLocal.retrieveRecipesByCategoryId(categoryId);
             List<Recipe> recipesChosen = new ArrayList<>();
-            recipes = categoryControllerLocal.retrieveRecipesByCategoryId(categoryId);
-            System.out.println("Hello");
             for (int i = 0; i < subscriptionPlan.getNumOfRecipes(); i++) {
                 Random rand = new Random();
                 int index = rand.nextInt(recipes.size());
-                System.out.println(index);
-                recipesChosen.add(recipes.get(index));
+                Recipe recipePicked = recipes.get(index);
+                while (recipesChosen.contains(recipePicked)) {
+                    recipePicked = recipes.get(rand.nextInt(recipes.size()));
+                }
+
+                recipesChosen.add(recipePicked);
+                System.out.println(recipePicked);
             }
 
+            System.out.println(recipesChosen);
             subscriptionPlan.setRecipes(recipesChosen);
-
         } catch (CategoryNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        em.persist(subscriptionPlan);
         em.flush();
         return subscriptionPlan;
     }
