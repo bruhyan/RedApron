@@ -128,6 +128,8 @@ public class SubscriptionPlanController implements SubscriptionPlanControllerLoc
             planToUpdate.setPreferences(plan.getPreferences());
             planToUpdate.setNumOfWeeks(plan.getNumOfWeeks());
             planToUpdate.setNumOfRecipes(plan.getNumOfRecipes());
+            planToUpdate.setDeliveryDay(plan.getDeliveryDay());
+            planToUpdate.setStatus(plan.getStatus());
         } catch (SubscriptionPlanNotFoundException ex) {
             Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
         }
