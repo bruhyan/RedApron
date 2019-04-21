@@ -1,19 +1,133 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      template="/template/defaultTemplate.xhtml">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/defaultTemplate.xhtml"
+                    
+                xmlns:p="http://primefaces.org/ui">
 
+    <style type="text/css">
+        .left {
+            text-align: left;
+        }
+
+        .right div {
+            float: right;
+        }
+    </style>
     <ui:define name="content">
-        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-            <article>
-                <h3>Welcome to Red Apron's Staff Site</h3>
-                <p>
-                    Expand panels on the left by clicking on them!                   
-                </p>
-            </article>
-        </h:panelGroup>
+        <div class="ui-g dashboardBg">
+            <div class="ui-g-12">
+
+                <div class="ui-g-12 ui-lg-6 ui-xl-4">
+                    <div class="ui-g-12  numProfit analytics">
+                        <div class="analyticsIcon"><i class="fa fa-money-bill-alt"></i></div>
+                        <div class="ui-g-12 analyticsHeader">
+                            #{generalAnalyticsManagedBean.thisMonth}'s Profits
+                        </div>
+
+                        <div class="ui-g-4">
+
+                            <div class="analyticsTitle">Transactions : #{generalAnalyticsManagedBean.thisMonthTransactionsNum} </div>
+                            <div class="analyticsStats">$#{generalAnalyticsManagedBean.thisMonthProfit}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-lg-6 ui-xl-4 " >
+                    <div  class="ui-g-12 numSubscribers analytics">
+                        <div class="analyticsIcon"><i class="fa fa-users"></i></div>
+                        <div class="ui-g-12 analyticsHeader">
+                            Number of Subscribers
+                        </div>
+
+                        <div class="ui-g-4">
+                            <div class="analyticsTitle">Subscribers</div>
+                            <div class="analyticsStats">50</div>
+                        </div>
+                        <canvas id="doughnut-chart" class="ui-g-7"></canvas>
+                    </div>
+                </div>
+
+
+                <div class="ui-g-12 ui-lg-6 ui-xl-4 ">
+                    <div class="ui-g-12 numDeliveries analytics">
+                        <div class="analyticsIcon"><i class="fa fa-truck"></i></div>
+                        <div class="ui-g-12 analyticsHeader">
+                            Number of ongoing Deliveries
+                        </div>
+
+                        <div class="ui-g-4">
+                            <div class="analyticsTitle">Deliveries</div>
+                            <div class="analyticsStats">3</div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <h:panelGroup styleClass="ui-g-12 ui-lg-12">
+                <p:chart type="line" model="#{analyticsMonthlyRevenueManagedBean.areaModel}" style="height:120%;" />
+            </h:panelGroup>
+            <h:panelGroup styleClass="ui-g-12  ui-xl-12">
+                <p:chart type="line" model="#{analyticNumOfSubscriberManagedBean.lineModel}" style="width:auto;" />
+            </h:panelGroup>
+
+
+
+
+        </div>
+
+        <script type="text/javascript">
+
+            var config = {
+                type: 'doughnut',
+                data: {
+                    labels: ["Current Subscribers", "Subscribers left to go"],
+                    datasets: [
+                        {
+                            label: ["Current Subscribers"],
+                            backgroundColor: ["#fff", "rgba(255,255,255,0)"],
+                            data: [2500, 500],
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: {
+                    legend: {
+                        labels: {
+                            fontColor: "white",
+                            fontSize: 17,
+                            filter: function (item, chart) {
+                                return !item.text.includes('Subscribers left to go');
+                            }
+                        }
+
+
+                    },
+                    responsive: false,
+
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+
+                    }
+
+                }
+            };
+
+            window.onload = function () {
+                var ctx = document.getElementById("doughnut-chart").getContext('2d');
+                window.doughnut = new Chart(ctx, config);
+
+                window.doughnut.update();
+
+            }
+
+        </script>
     </ui:define>
 </ui:composition>
 

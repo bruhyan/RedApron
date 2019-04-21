@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import stateless.SubscriberControllerLocal;
+import util.security.CryptographicHelper;
 import ws.restful.datamodel.CreateSubscriberReq;
 import ws.restful.datamodel.CreateSubscriberRsp;
 import ws.restful.datamodel.ErrorRsp;
@@ -60,6 +61,8 @@ public class SubscriberResource {
     public Response subscriberLogin(@QueryParam("email") String email, @QueryParam("password") String password) {
         try
         {
+            System.out.println("received email "+email);
+            System.out.println("received password "+password);
             Subscriber subscriber = subscriberControllerLocal.subscriberLogin(email, password);
             System.out.println("********** SubscriberResource.subscriberLogin(): Subscriber " + subscriber.getEmail()+ " login remotely via web service");
 
@@ -156,6 +159,8 @@ public class SubscriberResource {
     public Response updateSubscriber(UpdateSubscriberReq updateSubscriberReq) {
         if (updateSubscriberReq != null) {
             try {
+                System.out.println("req pw hash: "+updateSubscriberReq.getSubscriber().getPassword());
+                
                 subscriberControllerLocal.updateSubscriber(updateSubscriberReq.getSubscriber());
                 return Response.status(Status.OK).build();
             } catch (SubscriberNotFoundException ex) {

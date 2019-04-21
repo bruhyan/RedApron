@@ -38,5 +38,7 @@ public interface SubscriptionPlanControllerLocal {
     public List<Recipe> retrieveRecipesBySubscriptionPlanId(Long id);
 
     public SubscriptionPlan retrieveSubscriptionPlanById(Long subscriptionPlanId) throws SubscriptionPlanNotFoundException;
+
+    public List<SubscriptionPlan> retrieveLatestSubscriptionPlan(int num);
     
 }
