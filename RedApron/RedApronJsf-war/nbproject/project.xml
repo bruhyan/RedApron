@@ -17,11 +17,15 @@
                     <file>${reference.RedApron-ejb.dist}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.hot-sneaks-1.0.10.jar}</file>
+                    <file>${file.reference.hot-sneaks-1.0.10.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
+<<<<<<< HEAD
                     <file>${file.reference.start-1.0.10.jar}</file>
+=======
+                    <file>${file.reference.start-1.0.10.jar-1}</file>
+>>>>>>> a1ae1670d6612b2de81ceb85d025ecc758b87e57
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

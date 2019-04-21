@@ -39,14 +39,14 @@ public class TransactionController implements TransactionControllerLocal {
     @Override
     public Transaction createNewTransaction(Transaction transaction) {
         em.persist(transaction);
-        if(transaction.getSubscriptionPlan() != null) {
-        try {
-            
-            SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
-            subPlan.setTransaction(transaction);
-        } catch (SubscriptionPlanNotFoundException ex) {
-            Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (transaction.getSubscriptionPlan() != null) {
+            try {
+
+                SubscriptionPlan subPlan = subscriptionPlanControllerLocal.retrieveSubscriptionPlanById(transaction.getSubscriptionPlan().getSubscriptionPlanId());
+                subPlan.setTransaction(transaction);
+            } catch (SubscriptionPlanNotFoundException ex) {
+                Logger.getLogger(SubscriptionPlanController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         em.flush();
 
@@ -100,6 +100,7 @@ public class TransactionController implements TransactionControllerLocal {
 
         for (int i = 0; i < 6; i++) {
             Query query = em.createQuery("SELECT t.amount FROM Transaction t WHERE t.paymentDate BETWEEN :start AND :end");
+            System.out.println(dCal.getTime());
             query.setParameter("start", dCal.getTime());
             int endDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
             dCal.set(Calendar.DAY_OF_MONTH, endDate);
@@ -110,6 +111,7 @@ public class TransactionController implements TransactionControllerLocal {
             for (Double amount : monthAmount) {
                 monthSum += amount;
             }
+            System.out.println(monthAmount);
             monthlyTransactions.add(BigDecimal.valueOf(monthSum));
             dCal.add(Calendar.MONTH, 1);
         }
@@ -128,7 +130,7 @@ public class TransactionController implements TransactionControllerLocal {
 
         return transactionEntities;
     }
-    
+
     @Override
     public List<Transaction> retrieveTransactionWithSubscriberId(Long subscriberId) {
         Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.subscriptionPlan.subscriber.subscriberId = :inSubscriberId");
@@ -140,5 +142,5 @@ public class TransactionController implements TransactionControllerLocal {
 
         return transactionEntities;
     }
-        
+
 }
